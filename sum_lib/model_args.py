@@ -29,6 +29,9 @@ class ModelArguments:
         default="main",
         metadata={"help": "The specific model version to use (can be a branch name, tag name or commit id)."},
     )
+    check_monotonicity: Optional[bool] = field(
+        default=False, metadata={"help": "Check if the model is monotonic or not"}
+    )
     use_auth_token: bool = field(
         default=False,
         metadata={
