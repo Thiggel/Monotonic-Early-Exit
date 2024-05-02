@@ -2,7 +2,11 @@ from torch import nn
 
 
 class SentenceSaver(nn.Module):
-    def __init__(self, embedding_layer):
+    def __init__(self, embedding_layer: nn.Module):
+        """
+        Args:
+            embedding_layer: The embedding layer
+        """
         super().__init__()
 
         self.embedding_layer = embedding_layer

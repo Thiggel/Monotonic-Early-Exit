@@ -2,18 +2,27 @@ import html
 import numpy as np
 import re
 from check_monotonicity.WordToColor import WordToColor
+from transformers import PreTrainedTokenizerBase
 import matplotlib.pyplot as plt
 import os
+from .SentenceSaver import SentenceSaver
 
 
 class PlotMonotonicity:
     def __init__(
         self,
-        tokenizer,
-        encoder_sentence_saver,
-        decoder_sentence_saver,
-        model_name_or_path,
+        tokenizer: PreTrainedTokenizerBase,
+        encoder_sentence_saver: SentenceSaver,
+        decoder_sentence_saver: SentenceSaver,
+        model_name_or_path: str,
     ):
+        """
+        Args:
+            tokenizer: The tokenizer
+            encoder_sentence_saver: The SentenceSaver for the encoder
+            decoder_sentence_saver: The SentenceSaver for the decoder
+            model_name_or_path: The model name or path
+        """
         self.tokenizer = tokenizer
         self.encoder_sentence_saver = encoder_sentence_saver
         self.decoder_sentence_saver = decoder_sentence_saver

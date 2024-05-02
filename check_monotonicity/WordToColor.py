@@ -14,7 +14,7 @@ class WordToColor:
 
         self.word_to_color = {}
 
-    def get_color(self, word):
+    def get_color(self, word: str):
         if word not in self.word_to_color:
             self.word_to_color[word] = self.colors[self.current_color]
             self.current_color += 1

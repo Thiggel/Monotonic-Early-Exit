@@ -1,16 +1,25 @@
 from torch import nn
 import torch.nn.functional as F
+from .PlotMonotonicity import PlotMonotonicity
 
 
 class CheckMonotonicityModule(nn.Module):
     def __init__(
         self,
-        layer, 
-        layer_idx, 
-        lm_head, 
-        final_layer_norm,
-        plot_monotonicity
+        layer: nn.Module, 
+        layer_idx: int, 
+        lm_head: nn.Module, 
+        final_layer_norm: nn.Module,
+        plot_monotonicity: PlotMonotonicity
     ):
+        """
+        Args:
+            layer: The layer to monitor
+            layer_idx: The index of the layer
+            lm_head: The language model head
+            final_layer_norm: The final layer normalization
+            plot_monotonicity: The PlotMonotonicity instance
+        """
         super().__init__()
 
         self.layer = layer
