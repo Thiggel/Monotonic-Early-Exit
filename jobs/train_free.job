@@ -14,11 +14,13 @@ module load Anaconda3/2022.05
 
 export CUBLAS_WORKSPACE_CONFIG=:4096:8
 
+cd $HOME/fast_robust_early_exit
 conda activate dl2
+pip install -r requirements.txt
 
 CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
     run_summarization.py \
-    --model_name_or_path ./save/bigpatent_longt5_base/ \
+    --model_name_or_path google/long-t5-tglobal-base \
     --do_train \
     --do_eval \
     --dataset_name big_patent \
