@@ -1,6 +1,15 @@
 class WordToColor:
     def __init__(self):
-        self.colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
+        self.colors = [
+            '#7EAF4D',
+            '#447512',
+            '#0B6383',
+            '#4793AF',
+            '#FFC470',
+            '#DD5746',
+            '#8B322C',
+        ]
+
         self.current_color = 0
 
         self.word_to_color = {}

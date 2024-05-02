@@ -71,7 +71,7 @@ from util import (
 )
 
 from check_monotonicity.SentenceSaver import SentenceSaver
-from check_monotonicity.CheckMonotonicity import CheckMonotonicity
+from check_monotonicity.CheckMonotonicityModule import CheckMonotonicityModule
 from check_monotonicity.PlotMonotonicity import PlotMonotonicity 
 
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.
@@ -245,7 +245,7 @@ def main(model_args, data_args, training_args, additional_args, model_cls, train
         use_auth_token=True if model_args.use_auth_token else None,
     )
 
-    if args.check_monotonicity:
+    if model_args.check_monotonicity:
         model.encoder.embed_tokens = SentenceSaver(model.encoder.embed_tokens)
         model.decoder.embed_tokens = SentenceSaver(model.decoder.embed_tokens)
 
@@ -253,6 +253,7 @@ def main(model_args, data_args, training_args, additional_args, model_cls, train
             tokenizer,
             model.encoder.embed_tokens,
             model.decoder.embed_tokens,
+            model_args.model_name_or_path
         )
 
         for module_idx, module in enumerate(model.decoder.block):
