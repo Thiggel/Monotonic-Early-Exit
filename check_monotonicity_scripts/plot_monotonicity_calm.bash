@@ -1,7 +1,9 @@
 python3 run_summarization.py \
     --check_monotonicity \
-    --model_name_or_path google/long-t5-tglobal-base \
-    --do_predict \
+    --plot_monotonicity \
+    --model_name_or_path ./checkpoints/BIGPATENT/big_patent_longt5_base_weighted_ce \
+    --tokenizer_name google/long-t5-tglobal-base \
+    --do_eval \
     --dataset_name big_patent \
     --dataset_config_name e \
     --output_dir ./save/bigpatent_longt5_base/ \

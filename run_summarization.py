@@ -73,6 +73,7 @@ from util import (
 from check_monotonicity.SentenceSaver import SentenceSaver
 from check_monotonicity.CheckMonotonicityModule import CheckMonotonicityModule
 from check_monotonicity.PlotMonotonicity import PlotMonotonicity 
+from check_monotonicity.RecordMonotonicity import RecordMonotonicity
 
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.
 # check_min_version("4.28.0.dev0")
@@ -249,11 +250,16 @@ def main(model_args, data_args, training_args, additional_args, model_cls, train
         model.encoder.embed_tokens = SentenceSaver(model.encoder.embed_tokens)
         model.decoder.embed_tokens = SentenceSaver(model.decoder.embed_tokens)
 
+        # to be printed at line ~570
+        record_monotonicity = RecordMonotonicity()
+
         plot_monotonicity = PlotMonotonicity(
             tokenizer,
             model.encoder.embed_tokens,
             model.decoder.embed_tokens,
-            model_args.model_name_or_path
+            record_monotonicity,
+            model_args.model_name_or_path,
+            do_plot=model_args.plot_monotonicity
         )
 
         for module_idx, module in enumerate(model.decoder.block):
@@ -560,6 +566,10 @@ def main(model_args, data_args, training_args, additional_args, model_cls, train
                 output_prediction_file = os.path.join(training_args.output_dir, "generated_predictions.txt")
                 with open(output_prediction_file, "w") as writer:
                     writer.write("\n".join(predictions))
+
+    # Print table with monotonicity
+    if model_args.check_monotonicity:
+        record_monotonicity.print_results()
 
     kwargs = {"finetuned_from": model_args.model_name_or_path, "tasks": "summarization"}
     if data_args.dataset_name is not None:
