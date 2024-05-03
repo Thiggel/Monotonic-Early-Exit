@@ -1,6 +1,6 @@
 python3 run_summarization.py \
     --check_monotonicity \
-    --model_name_or_path ./checkpoints/BIGPATENT/big_patent_longt5_base_weighted_ce \
+    --model_name_or_path ./checkpoints/BIGPATENT/big_patent_longt5_base_shallowdeep_kd_dyna \
     --tokenizer_name google/long-t5-tglobal-base \
     --do_predict \
     --dataset_name big_patent \

@@ -18,7 +18,6 @@ Fine-tuning the library models for sequence to sequence.
 """
 # You can also adapt this script on your own sequence to sequence task. Pointers for this are left as comments.
 
-from dataclasses import dataclass, field
 from typing import Optional
 
 import logging
@@ -27,7 +26,13 @@ import sys
 import nltk  # Here to have a nice missing dependency error message early on
 import numpy as np
 import torch
+from torch import nn
 from filelock import FileLock
+from torch.nn import functional as F
+import matplotlib.pyplot as plt
+from textwrap import wrap
+import html
+import re
 
 import datasets
 import evaluate
@@ -64,6 +69,10 @@ from util import (
     additional_args,
     update_autoconfig,
 )
+
+from check_monotonicity.SentenceSaver import SentenceSaver
+from check_monotonicity.CheckMonotonicityModule import CheckMonotonicityModule
+from check_monotonicity.PlotMonotonicity import PlotMonotonicity 
 
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.
 # check_min_version("4.28.0.dev0")
@@ -235,6 +244,26 @@ def main(model_args, data_args, training_args, additional_args, model_cls, train
         revision=model_args.model_revision,
         use_auth_token=True if model_args.use_auth_token else None,
     )
+
+    if model_args.check_monotonicity:
+        model.encoder.embed_tokens = SentenceSaver(model.encoder.embed_tokens)
+        model.decoder.embed_tokens = SentenceSaver(model.decoder.embed_tokens)
+
+        plot_monotonicity = PlotMonotonicity(
+            tokenizer,
+            model.encoder.embed_tokens,
+            model.decoder.embed_tokens,
+            model_args.model_name_or_path
+        )
+
+        for module_idx, module in enumerate(model.decoder.block):
+            model.decoder.block[module_idx] = CheckMonotonicityModule(
+                module,
+                module_idx,
+                model.lm_head,
+                model.decoder.final_layer_norm,
+                plot_monotonicity
+            )
         
     if additional_args.use_lora:
         if training_args.do_train:

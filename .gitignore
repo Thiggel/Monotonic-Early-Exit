@@ -157,3 +157,5 @@ save
 *.jsonl
 *.csv
 *.sh
+checkpoints
+monotonicity_plots
