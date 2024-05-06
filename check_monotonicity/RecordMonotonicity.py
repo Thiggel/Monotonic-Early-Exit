@@ -25,7 +25,11 @@ class RecordMonotonicity:
         for layer_idx, num_no_change in enumerate(self.num_tokens_no_change):
             print(f'Layer {layer_idx}: {num_no_change / self.num_tokens:.2f}')
 
+        print()
+
         print(f'Fraction of tokens that decrease in probability after being at their maximum: {self.num_tokens_decrease / self.num_tokens:.2f}')
+
+        print()
 
         print('Fraction of switches between first and second position at each layer:')
         for layer_idx, num_switches in enumerate(self.num_switches):
@@ -58,8 +62,8 @@ class RecordMonotonicity:
             for x, y in enumerate(y_values):
 
                 # Check if the token has not decreased in probability
-                # until layer x
-                if all(y >= y_prec for y_prec in y_values[:x]):
+                # after layer x
+                if all(y <= y_subsequent for y_subsequent in y_values[x:]):
                     self.num_tokens_no_change[x] += 1
 
                 # Check if the token has decreased in probability
@@ -86,7 +90,7 @@ class RecordMonotonicity:
             top1_label = max(
                 sorted_data.keys(),
                 key=lambda label: sorted_data[label][x]
-            )
+            ) if sorted_data and len(sorted_data) > 0 else []
 
             top1_labels.append(top1_label)
 

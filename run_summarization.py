@@ -406,9 +406,12 @@ def main(model_args, data_args, training_args, additional_args, model_cls, train
     if training_args.do_eval:
         max_target_length = data_args.val_max_target_length
         eval_dataset = raw_datasets["validation"]
+        
         if data_args.max_eval_samples is not None:
             max_eval_samples = min(len(eval_dataset), data_args.max_eval_samples)
+            eval_dataset = eval_dataset.shuffle(seed=42)
             eval_dataset = eval_dataset.select(range(max_eval_samples))
+
         with training_args.main_process_first(desc="validation dataset map pre-processing"):
             eval_dataset = eval_dataset.map(
                 preprocess_function,
