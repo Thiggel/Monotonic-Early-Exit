@@ -6,34 +6,28 @@ class RecordMonotonicity:
         # The number of tokens encountered (to calculate fractions)
         self.num_tokens = 0
 
-        # The number of tokens that do not change in probability
-        # after each layer
-        self.num_tokens_no_change = [0] * num_layers
+        # number of predicted tokens that are monotonically increasing
+        # in probability after layer x
+        self.num_mono_incr_probs_predicted = [0] * num_layers
 
-        # The number of tokens that decrease in probability
-        # after being at their maximum
-        self.num_tokens_decrease = 0
-
-        # The number of switches between first and second position
-        # at each layer
-        self.num_switches = [0] * num_layers
+        # number of tokens where the top1 prediction does not change after layer x
+        self.num_tokens_no_change_top1 = [0] * num_layers
 
         self.num_layers = num_layers
 
     def print_results(self):
-        print('Fraction of tokens that do not change in probability after each layer:')
-        for layer_idx, num_no_change in enumerate(self.num_tokens_no_change):
+        print('Fraction of tokens that are monotonic in probability after layer x:')
+        for layer_idx, num_monot in enumerate(self.num_mono_incr_probs_predicted):
+            print(f'Layer {layer_idx}: {num_monot / self.num_tokens:.2f}')
+
+        print()
+
+
+        print('Fraction of tokens where the top1 prediction does not change after layer x:')
+        for layer_idx, num_no_change in enumerate(self.num_tokens_no_change_top1):
             print(f'Layer {layer_idx}: {num_no_change / self.num_tokens:.2f}')
 
         print()
-
-        print(f'Fraction of tokens that decrease in probability after being at their maximum: {self.num_tokens_decrease / self.num_tokens:.2f}')
-
-        print()
-
-        print('Fraction of switches between first and second position at each layer:')
-        for layer_idx, num_switches in enumerate(self.num_switches):
-            print(f'Layer {layer_idx}: {num_switches / self.num_tokens:.2f}')
 
     def record(
         self,
@@ -51,27 +45,31 @@ class RecordMonotonicity:
         top1_labels = self.get_top1_labels(sorted_data)
 
         self.num_tokens += 1
+        
+        def get_top1(labs):
+            return labs[0] if len(labs) > 0 else None
 
         for label_idx in range(1, len(top1_labels)):
-            if top1_labels[label_idx] != top1_labels[label_idx - 1]:
-                self.num_switches[label_idx] += 1
+            label = get_top1(top1_labels[label_idx])
+            if label != None and all([label == get_top1(top3) for top3 in top1_labels[label_idx:]]):
+                self.num_tokens_no_change_top1[label_idx] += 1
 
-        for label, y_values in sorted_data.items():
-            has_decreased = False
+        print()
 
-            for x, y in enumerate(y_values):
 
-                # Check if the token has not decreased in probability
-                # after layer x
-                if all(y <= y_subsequent for y_subsequent in y_values[x:]):
-                    self.num_tokens_no_change[x] += 1
+        # get the predicted token (has max probability at last layer)
+        max_label = max(sorted_data.keys(), key=lambda label: sorted_data[label][-1])
+        
+        # check whether the y_values for max_label are monotonically increasing
+        def is_monotonically_increasing(list_of_values):
+            return all(x <= y for x, y in zip(list_of_values, list_of_values[1:]))
 
-                # Check if the token has decreased in probability
-                else:
-                    has_decreased = True
+        for layer_idx in range(self.num_layers):
+            if is_monotonically_increasing(sorted_data[max_label][layer_idx:]):
+                self.num_mono_incr_probs_predicted[layer_idx] += 1
 
-            if has_decreased:
-                self.num_tokens_decrease += 1
+        self.print_results()
+
 
     def get_top1_labels(
         self,
