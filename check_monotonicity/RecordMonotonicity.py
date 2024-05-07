@@ -57,18 +57,19 @@ class RecordMonotonicity:
         print()
 
 
-        # get the predicted token (has max probability at last layer)
-        max_label = max(sorted_data.keys(), key=lambda label: sorted_data[label][-1])
-        
-        # check whether the y_values for max_label are monotonically increasing
-        def is_monotonically_increasing(list_of_values):
-            return all(x <= y for x, y in zip(list_of_values, list_of_values[1:]))
+        if len(sorted_data) != 0:
+            # get the predicted token (has max probability at last layer)
+            max_label = max(sorted_data.keys(), key=lambda label: sorted_data[label][-1])
+            
+            # check whether the y_values for max_label are monotonically increasing
+            def is_monotonically_increasing(list_of_values):
+                return all(int(100 * x) <= int(100 * y) for x, y in zip(list_of_values, list_of_values[1:]))
 
-        for layer_idx in range(self.num_layers):
-            if is_monotonically_increasing(sorted_data[max_label][layer_idx:]):
-                self.num_mono_incr_probs_predicted[layer_idx] += 1
+            for layer_idx in range(self.num_layers):
+                if is_monotonically_increasing(sorted_data[max_label][layer_idx:]):
+                    self.num_mono_incr_probs_predicted[layer_idx] += 1
 
-        self.print_results()
+            self.print_results()
 
 
     def get_top1_labels(
