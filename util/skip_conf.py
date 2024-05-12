@@ -109,8 +109,9 @@ def get_skip_mask(
         hidden_states=hidden_states, 
         classifier=classifier,
     )
+    print(conf)
     mask = torch.where(conf <= threshold, 0., 1.).bool()
-    
+    print(mask)
     if not return_conf:
         return mask.item()  # False (0) and True (1) denote keep and exit
     else:
