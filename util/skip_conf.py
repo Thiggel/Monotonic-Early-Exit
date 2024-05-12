@@ -9,9 +9,11 @@ def mono_confidence(
     hidden_states: torch.Tensor = None,
     classifier: torch.nn.Linear = None,
 ):
-    assert hidden_states is not None and hidden_states.shape[0] >= 3
-    assert classifier is not None
-
+    assert hidden_states is not None
+    print(hidden_states.shape)
+    if hidden_states.shape[0] < 3:
+        return torch.tensor([0.0])
+        
     last_three_states = hidden_states[-3:]
 
     probs = [torch.softmax(classifier(state), dim=-1) for state in last_three_states]
