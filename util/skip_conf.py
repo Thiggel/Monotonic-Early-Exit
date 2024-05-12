@@ -4,6 +4,24 @@ import torch
 from transformers import AutoConfig
 
 
+def mono_confidence(
+    logits: torch.Tensor = None,
+    hidden_states: torch.Tensor = None,
+    classifier: torch.nn.Linear = None,
+):
+    assert hidden_states is not None and hidden_states.shape[0] >= 3
+    assert classifier is not None
+
+    last_three_states = hidden_states[-3:]
+
+    probs = [torch.softmax(classifier(state), dim=-1) for state in last_three_states]
+
+    top_probs = [torch.max(p, dim=-1)[0] for p in probs]
+
+    increasing = all(top_probs[i] <= top_probs[i + 1] for i in range(2))
+
+    return torch.tensor([1.0 if increasing else 0.0])
+
 def softmax_confidence(
     logits: torch.Tensor = None,
     hidden_states: torch.Tensor = None,
@@ -28,12 +46,28 @@ def meta_confidence(
     probs = torch.softmax(preds, dim=-1)
     return probs[..., 1].squeeze()
 
+def meta_n_confidence(
+    logits: torch.Tensor = None,
+    hidden_states: torch.Tensor = None,
+    classifier: torch.nn.Linear = None,
+):
+    assert hidden_states is not None
+    assert classifier is not None
+    
+    preds = classifier(hidden_states[-3:])
+    probs = torch.softmax(preds, dim=-1)
+    return_value = probs[..., 1].squeeze()
+    print(return_value.shape)
+    return return_value
+
 
 def get_confidence_class(key):
 
     _conf_class_map = {
         'softmax': softmax_confidence,
         'meta': meta_confidence,
+        'meta_n': meta_confidence,
+        'mono': mono_confidence
     }
 
     if key in _conf_class_map:
