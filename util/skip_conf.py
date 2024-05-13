@@ -55,11 +55,11 @@ def meta_n_confidence(
 ):
     assert hidden_states is not None
     assert classifier is not None
-    
+    if hidden_states.shape[0] < 3:
+        return torch.tensor([0.0])
     preds = classifier(hidden_states[-3:])
     probs = torch.softmax(preds, dim=-1)
     return_value = probs[..., 1].squeeze()
-    print(return_value.shape)
     return return_value
 
 
