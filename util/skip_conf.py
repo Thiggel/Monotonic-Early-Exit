@@ -110,7 +110,7 @@ def get_skip_mask(
         hidden_states=hidden_states, 
         classifier=classifier,
     )
-    mask = torch.where(conf <= threshold, 0., 1.)  # Directly use boolean values
+    mask = torch.where(conf <= threshold, False, True)  # Directly use boolean values
     if not return_conf:
         return mask  # Return the whole mask tensor
     else:
