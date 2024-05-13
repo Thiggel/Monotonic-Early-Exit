@@ -1031,7 +1031,7 @@ class DeployT5ForConditionalGeneration(T5ForConditionalGeneration):
 
         self.lm_head = nn.Linear(config.d_model, config.vocab_size, bias=False)
         self.decoder.lm_head = self.lm_head
-        if self.config.exit_conf_type == 'meta' or self.config.shallow2deep_conf_type == "meta":
+        if self.config.exit_conf_type == 'meta' or self.config.shallow2deep_conf_type == "meta" or self.config.exit_conf_type == "meta_n" or self.config.shallow2deep_conf_type == "meta_n":
             self.cm_head = nn.Sequential(
                 nn.Linear(config.d_model, config.d_model, bias=True),
                 nn.ReLU(),
