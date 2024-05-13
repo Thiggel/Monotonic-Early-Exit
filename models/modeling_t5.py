@@ -263,7 +263,7 @@ class EffT5LayerSelfAttention(T5LayerSelfAttention):
                 ids_restore = attention_output[-1]
                 attention_output = attention_output[:-1]
 
-                keep_hidden_states, hidden_states, _ = split_tensors_by_mask(hidden_states, skip_mask, ids_restore)
+                keep_hidden_states, hidden_states, ids_restore = split_tensors_by_mask(hidden_states, skip_mask, ids_restore)
                 keep_hidden_states = keep_hidden_states + self.dropout(attention_output[0])
                 hidden_states = restore_tensors_by_mask(keep_hidden_states, hidden_states, ids_restore)   
             outputs = (hidden_states,) + attention_output[1:]  # add attentions if we output them     
