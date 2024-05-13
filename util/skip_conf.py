@@ -60,6 +60,7 @@ def meta_n_confidence(
     preds = classifier(hidden_states[-3:])
     probs = torch.softmax(preds, dim=-1)
     return_value = probs[..., 1].squeeze()
+    print(return_value)
     return return_value
 
 
