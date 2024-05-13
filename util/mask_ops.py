@@ -13,7 +13,10 @@ def split_tensors_by_mask(
     0 and 1 values in skip_mask denote the index for tensors to keep and skip, respectively.
     """
     if ids_restore is None:
+        print(skip_mask.long())
         ids_shuffle = torch.argsort(skip_mask.long(), stable=True)
+        print("ids shuffle")
+        print(ids_shuffle)
         ids_restore = torch.argsort(ids_shuffle)
 
     keep_tensors = tensors[~skip_mask]
