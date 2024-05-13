@@ -14,6 +14,8 @@ def split_tensors_by_mask(
     """
     if ids_restore is None:
         ids_shuffle = torch.argsort(skip_mask.long(), stable=True)
+        print("ids shuffle")
+        print(ids_shuffle)
         ids_restore = torch.argsort(ids_shuffle)
         print("ids restore")
         print(ids_restore)
