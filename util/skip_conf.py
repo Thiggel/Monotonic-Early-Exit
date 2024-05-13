@@ -111,9 +111,9 @@ def get_skip_mask(
         classifier=classifier,
     )
     print(conf)
-    mask = torch.where(conf <= threshold, 0., 1.).bool()
+    mask = torch.where(conf <= threshold, False, True)  # Directly use boolean values
     print(mask)
     if not return_conf:
-        return mask.item()  # False (0) and True (1) denote keep and exit
+        return mask  # Return the whole mask tensor
     else:
-        return mask.item(), conf.item()
+        return mask, conf
