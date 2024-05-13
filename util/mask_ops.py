@@ -34,9 +34,7 @@ def restore_tensors_by_mask(
         skip_tensors = skip_tensors.reshape(-1,)
     tensors_ = torch.cat([keep_tensors, skip_tensors], dim=0)
     t_shape = tensors_.shape
-    print(ids_restore)
     ids_restore = ids_restore.to(torch.int64)
-    print(ids_restore)
 
     if len(t_shape) == 1:
         tensors = torch.gather(tensors_, 0, index=ids_restore)
