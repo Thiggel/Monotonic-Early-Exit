@@ -433,6 +433,7 @@ class EffLongT5Stack(LongT5Stack):
                             pos_time=past_key_value[0].shape[2] + 1 if past_key_value is not None else 1,
                         )
                         self.block_op[i] += (skip_mask.shape[0] - skip_mask.sum().item())
+                        print(self.block_op[i])
 
                         if self.skip_mask_cache is None:
                             self.skip_mask_cache = skip_mask
