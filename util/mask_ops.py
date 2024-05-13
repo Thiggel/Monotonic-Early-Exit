@@ -29,7 +29,7 @@ def split_tensors_by_mask(
 def restore_tensors_by_mask(
     keep_tensors: Optional[torch.FloatTensor] = None, 
     skip_tensors: Optional[torch.FloatTensor] = None, 
-    ids_restore: Optional[torch.LongTensor] = None,
+    ids_restore: Optional[torch.IntTensor] = None,
 ):  
     # when using this function with skip_mask for early-exit
     if not len(keep_tensors.shape):
@@ -38,6 +38,7 @@ def restore_tensors_by_mask(
         skip_tensors = skip_tensors.reshape(-1,)
     tensors_ = torch.cat([keep_tensors, skip_tensors], dim=0)
     t_shape = tensors_.shape
+    print("restore mask")
     print(ids_restore)
     ids_restore = ids_restore.to(torch.int64)
 
