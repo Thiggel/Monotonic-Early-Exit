@@ -97,6 +97,9 @@ class EffT5Attention(T5Attention):
 
         real_seq_length = seq_length
 
+        if skip_mask is None:
+            skip_mask = torch.zeros(batch_size, dtype=torch.bool, device=hidden_states.device)
+
         if past_key_value is not None:
             assert (
                 len(past_key_value) == 2
@@ -195,6 +198,12 @@ class EffT5Attention(T5Attention):
             else:
                 position_bias_masked = position_bias
 
+            if scores.shape != position_bias_masked.shape:
+                position_bias_masked = position_bias_masked.unsqueeze(1) \
+                        .unsqueeze(2) \
+                        .unsqueeze(3) \
+                        .expand_as(scores)
+
             scores += position_bias_masked
             attn_weights = nn.functional.softmax(scores.float(), dim=-1).type_as(
                 scores
@@ -221,8 +230,9 @@ class EffT5Attention(T5Attention):
 
         if output_attentions:
             outputs = outputs + (attn_weights,)
-        if skip_mask is not None and skip_mask.sum().item() != hidden_states.shape[0]:
+        if skip_mask is not None:
             outputs = outputs + (ids_restore,)
+            
         return outputs
 
 
@@ -681,7 +691,9 @@ class EffT5Stack(T5Stack):
                             config=self.config,
                             pos_time=past_key_value[0].shape[2] + 1 if past_key_value is not None else 1,
                         )
-                        self.block_op[i] += (skip_mask.shape[0] - skip_mask.sum().item())
+                        # check if shape is not empty
+                        if len(skip_mask.shape) > 0:
+                            self.block_op[i] += (skip_mask.shape[0] - skip_mask.sum().item())
 
                         if self.skip_mask_cache is None:
                             self.skip_mask_cache = skip_mask
