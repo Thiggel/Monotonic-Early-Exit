@@ -262,6 +262,8 @@ class EffT5LayerSelfAttention(T5LayerSelfAttention):
             if skip_mask.sum().item() != hidden_states.shape[0]:
                 ids_restore = attention_output[-1]
                 print(ids_restore)
+                print("mask")
+                print(skip_mask)
                 attention_output = attention_output[:-1]
 
                 keep_hidden_states, hidden_states, _ = split_tensors_by_mask(hidden_states, skip_mask, ids_restore)
