@@ -58,10 +58,15 @@ def meta_n_confidence(
     if hidden_states.shape[0] < 3:
         print(hidden_states.shape)
         return torch.tensor([0.0])
+    print("==============================")
+    print("hs shape")
+    print(hidden_states.shape)
+    print("hs")
+    print(hidden_states)
+    print("==============================")
     preds = classifier(hidden_states[-3:])
     probs = torch.softmax(preds, dim=-1)
     return_value = probs[..., 1].squeeze()
-    print(return_value)
     return return_value
 
 
