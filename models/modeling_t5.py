@@ -94,9 +94,9 @@ class EffT5Attention(T5Attention):
         # Mask is (batch_size, key_length) (non-causal) or (batch_size, key_length, key_length)
         # past_key_value[0] is (batch_size, n_heads, q_len - 1, dim_per_head)
         batch_size, seq_length = hidden_states.shape[:2]
+
         real_seq_length = seq_length
-        
-        ids_restore = None
+
         if skip_mask is None:
             skip_mask = torch.zeros(batch_size, dtype=torch.bool, device=hidden_states.device)
 
@@ -169,61 +169,59 @@ class EffT5Attention(T5Attention):
             if mask is not None:
                 position_bias = position_bias + mask  # (batch_size, n_heads, seq_length, key_length)
 
-        if skip_mask is not None and skip_mask.sum().item() == hidden_states.shape[0]:
-            attn_output = None
+        if skip_mask is not None:
+            print(skip_mask)
+            hidden_states, _, ids_restore = split_tensors_by_mask(hidden_states, skip_mask)
+            print(ids_restore)
+
+            # key and value
+            key_states, skip_key_states, _ = split_tensors_by_mask(key_states, skip_mask, ids_restore=ids_restore)
+            value_states, skip_value_states, _ = split_tensors_by_mask(value_states, skip_mask, ids_restore=ids_restore)
+
+        # get query states
+        query_states = shape(self.q(hidden_states))  # (batch_size, n_heads, seq_length, dim_per_head)
+
+        # compute scores
+        scores = torch.matmul(
+            query_states, key_states.transpose(3, 2)
+        )  # equivalent of torch.einsum("bnqd,bnkd->bnqk", query_states, key_states), compatible with onnx op>9
+
+        if skip_mask is not None:
+            position_bias, skip_position_bias, _ = split_tensors_by_mask(position_bias, skip_mask, ids_restore=ids_restore)
+
+        if self.pruned_heads:
+            mask = torch.ones(position_bias.shape[1])
+            mask[list(self.pruned_heads)] = 0
+            position_bias_masked = position_bias[:, mask.bool()]
         else:
-            if skip_mask is not None:
-                print(skip_mask)
-                hidden_states, _, ids_restore = split_tensors_by_mask(hidden_states, skip_mask)
-                print(ids_restore)
-                # key and value
-                key_states, skip_key_states, _ = split_tensors_by_mask(key_states, skip_mask, ids_restore=ids_restore)
-                value_states, skip_value_states, _ = split_tensors_by_mask(value_states, skip_mask, ids_restore=ids_restore)
+            position_bias_masked = position_bias
 
-            # get query states
-            query_states = shape(self.q(hidden_states))  # (batch_size, n_heads, seq_length, dim_per_head)
+        if scores.shape != position_bias_masked.shape:
+            position_bias_masked = position_bias_masked.unsqueeze(1) \
+                    .unsqueeze(2) \
+                    .unsqueeze(3) \
+                    .expand_as(scores)
 
-            # compute scores
-            scores = torch.matmul(
-                query_states, key_states.transpose(3, 2)
-            )  # equivalent of torch.einsum("bnqd,bnkd->bnqk", query_states, key_states), compatible with onnx op>9
+        scores += position_bias_masked
+        attn_weights = nn.functional.softmax(scores.float(), dim=-1).type_as(
+            scores
+        )  # (batch_size, n_heads, seq_length, key_length)
+        attn_weights = nn.functional.dropout(
+            attn_weights, p=self.dropout, training=self.training
+        )  # (batch_size, n_heads, seq_length, key_length)
 
-            if skip_mask is not None:
-                position_bias, skip_position_bias, _ = split_tensors_by_mask(position_bias, skip_mask, ids_restore=ids_restore)
+        # Mask heads if we want to
+        if layer_head_mask is not None:
+            attn_weights = attn_weights * layer_head_mask
 
-            if self.pruned_heads:
-                mask = torch.ones(position_bias.shape[1])
-                mask[list(self.pruned_heads)] = 0
-                position_bias_masked = position_bias[:, mask.bool()]
-            else:
-                position_bias_masked = position_bias
+        attn_output = unshape(torch.matmul(attn_weights, value_states))  # (batch_size, seq_length, dim)
+        attn_output = self.o(attn_output)
 
-            if scores.shape != position_bias_masked.shape:
-                position_bias_masked = position_bias_masked.unsqueeze(1) \
-                        .unsqueeze(2) \
-                        .unsqueeze(3) \
-                        .expand_as(scores)
-
-            scores += position_bias_masked
-            attn_weights = nn.functional.softmax(scores.float(), dim=-1).type_as(
-                scores
-            )  # (batch_size, n_heads, seq_length, key_length)
-            attn_weights = nn.functional.dropout(
-                attn_weights, p=self.dropout, training=self.training
-            )  # (batch_size, n_heads, seq_length, key_length)
-
-            # Mask heads if we want to
-            if layer_head_mask is not None:
-                attn_weights = attn_weights * layer_head_mask
-
-            attn_output = unshape(torch.matmul(attn_weights, value_states))  # (batch_size, seq_length, dim)
-            attn_output = self.o(attn_output)
-
-            # restore the skipped parts
-            if skip_mask is not None:
-                key_states = restore_tensors_by_mask(key_states, skip_key_states, ids_restore)
-                value_states = restore_tensors_by_mask(value_states, skip_value_states, ids_restore)
-                position_bias = restore_tensors_by_mask(position_bias, skip_position_bias, ids_restore)
+        # restore the skipped parts
+        if skip_mask is not None:
+            key_states = restore_tensors_by_mask(key_states, skip_key_states, ids_restore)
+            value_states = restore_tensors_by_mask(value_states, skip_value_states, ids_restore)
+            position_bias = restore_tensors_by_mask(position_bias, skip_position_bias, ids_restore)
 
         present_key_value_state = (key_states, value_states) if (self.is_decoder and use_cache) else None
         outputs = (attn_output,) + (present_key_value_state,) + (position_bias,)
@@ -793,7 +791,7 @@ class EffT5ForConditionalGeneration(T5ForConditionalGeneration):
 
         self.lm_head = nn.Linear(config.d_model, config.vocab_size, bias=False)
         
-        if self.config.exit_conf_type == 'meta' or self.config.shallow2deep_conf_type or self.config.exit_conf_type == "meta_n":
+        if if self.config.exit_conf_type == 'meta' or self.config.shallow2deep_conf_type or self.config.exit_conf_type == "meta_n"::
             self.cm_head = nn.Sequential(
                 nn.Linear(config.d_model, config.d_model, bias=False),
                 nn.ReLU(),
