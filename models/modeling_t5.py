@@ -94,9 +94,9 @@ class EffT5Attention(T5Attention):
         # Mask is (batch_size, key_length) (non-causal) or (batch_size, key_length, key_length)
         # past_key_value[0] is (batch_size, n_heads, q_len - 1, dim_per_head)
         batch_size, seq_length = hidden_states.shape[:2]
-
         real_seq_length = seq_length
-
+        
+        ids_restore = None
         if skip_mask is None:
             skip_mask = torch.zeros(batch_size, dtype=torch.bool, device=hidden_states.device)
 
