@@ -75,7 +75,7 @@ def get_confidence_class(key):
     _conf_class_map = {
         'softmax': softmax_confidence,
         'meta': meta_confidence,
-        'meta_n': meta_confidence,
+        'meta_n': meta_n_confidence,
         'mono': mono_confidence
     }
 
