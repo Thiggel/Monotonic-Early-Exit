@@ -14,11 +14,7 @@ def split_tensors_by_mask(
     """
     if ids_restore is None:
         ids_shuffle = torch.argsort(skip_mask.long(), stable=True)
-        print("ids shuffle")
-        print(ids_shuffle)
         ids_restore = torch.argsort(ids_shuffle)
-        print("ids restore")
-        print(ids_restore)
 
     keep_tensors = tensors[~skip_mask]
     skip_tensors = tensors[skip_mask]
@@ -38,8 +34,6 @@ def restore_tensors_by_mask(
         skip_tensors = skip_tensors.reshape(-1,)
     tensors_ = torch.cat([keep_tensors, skip_tensors], dim=0)
     t_shape = tensors_.shape
-    print("restore mask")
-    print(ids_restore)
     ids_restore = ids_restore.to(torch.int64)
 
     if len(t_shape) == 1:
