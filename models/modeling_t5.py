@@ -791,7 +791,7 @@ class EffT5ForConditionalGeneration(T5ForConditionalGeneration):
 
         self.lm_head = nn.Linear(config.d_model, config.vocab_size, bias=False)
         
-        if if self.config.exit_conf_type == 'meta' or self.config.shallow2deep_conf_type or self.config.exit_conf_type == "meta_n"::
+        if self.config.exit_conf_type == 'meta' or self.config.shallow2deep_conf_type or self.config.exit_conf_type == "meta_n":
             self.cm_head = nn.Sequential(
                 nn.Linear(config.d_model, config.d_model, bias=False),
                 nn.ReLU(),
