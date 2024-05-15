@@ -492,7 +492,7 @@ class EffT5Stack(T5Stack):
 
         self.block_op = [0] * config.num_layers  # to calculate the average number of forward block layers
 
-        self.all_hidden_states = None
+        self.config = config
         
     def forward(
         self,
@@ -594,6 +594,8 @@ class EffT5Stack(T5Stack):
         encoder_decoder_position_bias = None
 
         hidden_states = self.dropout(inputs_embeds)
+        
+        all_softmax_values = []
 
         skip_mask, self.skip_mask_cache = None, None
         for i, (layer_module, past_key_value) in enumerate(zip(self.block, past_key_values)):
@@ -625,6 +627,7 @@ class EffT5Stack(T5Stack):
                     all_hidden_states = all_hidden_states + (self.dropout(self.final_layer_norm(hidden_states)),)
                 else:
                     all_hidden_states = all_hidden_states + (hidden_states,)
+
 
             if self.gradient_checkpointing and self.training:
 
@@ -667,6 +670,7 @@ class EffT5Stack(T5Stack):
                         config=self.config,
                         pos_time=past_key_value[0].shape[2] + 1 if past_key_value is not None else 1,
                         all_hidden_states=all_hidden_states,
+                        all_softmax_values=all_softmax_values,
                         layer_index=i,
                     )
                     
@@ -684,6 +688,9 @@ class EffT5Stack(T5Stack):
                         logits = lm_head(hidden_) if not self.config.tie_word_embeddings \
                             else lm_head(hidden_ * (self.config.d_model ** -0.5))
 
+                        if self.config.exit_conf_type == 'last_three_top_prob_heuristic':
+                            all_softmax_values.append(F.softmax(logits, dim=-1))
+
                         skip_mask = get_skip_mask(
                             logits,
                             hidden_,
@@ -691,6 +698,7 @@ class EffT5Stack(T5Stack):
                             config=self.config,
                             pos_time=past_key_value[0].shape[2] + 1 if past_key_value is not None else 1,
                             all_hidden_states=all_hidden_states,
+                            all_softmax_values=all_softmax_values,
                             layer_index=i,
                         )
                         # check if shape is not empty

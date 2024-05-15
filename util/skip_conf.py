@@ -9,6 +9,7 @@ def recurrent_classifier(
     hidden_states: torch.Tensor = None,
     classifier: torch.nn.Linear = None,
     all_hidden_states: list[torch.Tensor] = None,
+    all_softmax_values: list[torch.Tensor] = None,
     layer_index: int = None,
 ):
     assert hidden_states is not None
@@ -26,6 +27,7 @@ def last_three_hiddens_classifier(
     hidden_states: torch.Tensor = None,
     classifier: torch.nn.Linear = None,
     all_hidden_states: list[torch.Tensor] = None,
+    all_softmax_values: list[torch.Tensor] = None,
     layer_index: int = None,
 ):
     assert classifier is not None
@@ -40,37 +42,42 @@ def last_three_hiddens_classifier(
     return probs[..., 1].squeeze()
 
 
-def mono_confidence(
+def last_three_top_prob_heuristic(
     logits: torch.Tensor = None,
     hidden_states: torch.Tensor = None,
     classifier: torch.nn.Linear = None,
     all_hidden_states: list[torch.Tensor] = None,
+    all_softmax_values: list[torch.Tensor] = None,
     layer_index: int = None,
 ):
-    print('mono all hidden states', all_hidden_states.__len__() if all_hidden_states is not None else 0)
+    if (
+        all_softmax_values is None 
+        or len(all_softmax_values) < 3
+        or layer_index < 3 # minimum exit is layer 4
+    ):
+        return torch.zeros(hidden_states.shape[0])
 
-    return torch.zeros_like(hidden_states)
+    all_softmax_values = torch.stack(all_softmax_values[:3], dim=1)
 
-    assert hidden_states is not None
-    print(hidden_states.shape)
-    if hidden_states.shape[0] < 3:
-        return torch.tensor([0.0])
-        
-    last_three_states = hidden_states[-3:]
+    top_probs = torch.max(all_softmax_values, dim=-1)[0].squeeze()
 
-    probs = [torch.softmax(classifier(state), dim=-1) for state in last_three_states]
+    # along dimension 1, is top_probs increasing?
+    increasing = torch.all(top_probs[:, 1:] > top_probs[:, :-1], dim=1)
 
-    top_probs = [torch.max(p, dim=-1)[0] for p in probs]
+    # last confidence must be above 0.9
+    above_threshold = top_probs[:, -1] > 0.9
 
-    increasing = all(top_probs[i] <= top_probs[i + 1] for i in range(2))
-
-    return torch.tensor([1.0 if increasing else 0.0])
+    confidence = increasing & above_threshold
+    confidence = confidence.float()
+    
+    return confidence
 
 def softmax_confidence(
     logits: torch.Tensor = None,
     hidden_states: torch.Tensor = None,
     classifier: torch.nn.Linear = None,
     all_hidden_states: list[torch.Tensor] = None,
+    all_softmax_values: list[torch.Tensor] = None,
     layer_index: int = None,
 ):
     assert logits is not None
@@ -87,6 +94,7 @@ def meta_confidence(
     hidden_states: torch.Tensor = None,
     classifier: torch.nn.Linear = None,
     all_hidden_states: list[torch.Tensor] = None,
+    all_softmax_values: list[torch.Tensor] = None,
     layer_index: int = None,
 ):
     assert hidden_states is not None
@@ -101,6 +109,7 @@ def meta_n_confidence(
     hidden_states: torch.Tensor = None,
     classifier: torch.nn.Linear = None,
     all_hidden_states: list[torch.Tensor] = None,
+    all_softmax_values: list[torch.Tensor] = None,
     layer_index: int = None,
 ):
     assert hidden_states is not None
@@ -127,6 +136,7 @@ def get_confidence_class(key):
         'meta': meta_confidence,
         'recurrent_classifier': recurrent_classifier,
         'last_three_hiddens_classifier': last_three_hiddens_classifier,
+        'last_three_top_prob_heuristic': last_three_top_prob_heuristic,
     }
 
     if key in _conf_class_map:
@@ -144,6 +154,7 @@ def get_skip_mask(
     adapt_threshold: float = None,
     return_conf=False,
     all_hidden_states: list[torch.Tensor] = None,
+    all_softmax_values: list[torch.Tensor] = None,
     layer_index: int = None,
 ):
     assert config.exit_conf_type is not None or config.shallow2deep_conf_type is not None
@@ -168,6 +179,7 @@ def get_skip_mask(
         hidden_states=hidden_states, 
         classifier=classifier,
         all_hidden_states=all_hidden_states,
+        all_softmax_values=all_softmax_values,
         layer_index=layer_index,
     )
     mask = torch.where(conf <= threshold, 0., 1.).bool()
