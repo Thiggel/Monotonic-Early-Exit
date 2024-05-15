@@ -170,9 +170,7 @@ class EffT5Attention(T5Attention):
                 position_bias = position_bias + mask  # (batch_size, n_heads, seq_length, key_length)
 
         if skip_mask is not None:
-            print(skip_mask)
             hidden_states, _, ids_restore = split_tensors_by_mask(hidden_states, skip_mask)
-            print(ids_restore)
 
             # key and value
             key_states, skip_key_states, _ = split_tensors_by_mask(key_states, skip_mask, ids_restore=ids_restore)
@@ -493,6 +491,8 @@ class EffT5Stack(T5Stack):
             assert config.shallow_exit_layer > 0 and config.shallow_exit_layer < len(self.block)
 
         self.block_op = [0] * config.num_layers  # to calculate the average number of forward block layers
+
+        self.all_hidden_states = None
         
     def forward(
         self,
@@ -666,6 +666,8 @@ class EffT5Stack(T5Stack):
                         cm_head,
                         config=self.config,
                         pos_time=past_key_value[0].shape[2] + 1 if past_key_value is not None else 1,
+                        all_hidden_states=all_hidden_states,
+                        layer_index=i,
                     )
                     
                     self.block_op[i] += (skip_mask.shape[0] - skip_mask.sum().item())
@@ -688,6 +690,8 @@ class EffT5Stack(T5Stack):
                             cm_head,
                             config=self.config,
                             pos_time=past_key_value[0].shape[2] + 1 if past_key_value is not None else 1,
+                            all_hidden_states=all_hidden_states,
+                            layer_index=i,
                         )
                         # check if shape is not empty
                         if len(skip_mask.shape) > 0:
@@ -740,6 +744,8 @@ class EffT5Stack(T5Stack):
                 for k, v in self.device_map.items():
                     if i == v[-1] and "cuda:" + str(k) != self.last_device:
                         hidden_states = hidden_states.to("cuda:" + str(k + 1))
+            
+
 
         hidden_states = self.final_layer_norm(hidden_states)
         hidden_states = self.dropout(hidden_states)
@@ -794,6 +800,21 @@ class EffT5ForConditionalGeneration(T5ForConditionalGeneration):
         if self.config.exit_conf_type == 'meta' or self.config.shallow2deep_conf_type or self.config.exit_conf_type == "meta_n":
             self.cm_head = nn.Sequential(
                 nn.Linear(config.d_model, config.d_model, bias=False),
+                nn.ReLU(),
+                nn.Linear(config.d_model, 2, bias=False),
+            )
+
+        elif self.config.exit_conf_type == 'recurrent_classifier':
+            self.cm_head = nn.LSTM(
+                input_size=config.d_model,
+                hidden_size=config.d_model, 
+                num_layers=2,
+                batch_first=True
+            )
+
+        elif self.config.exit_conf_type == 'last_three_hiddens_classifier':
+            self.cm_head = nn.Sequential(
+                nn.Linear(config.d_model * 3, config.d_model, bias=False),
                 nn.ReLU(),
                 nn.Linear(config.d_model, 2, bias=False),
             )

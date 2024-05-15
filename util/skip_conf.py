@@ -4,11 +4,53 @@ import torch
 from transformers import AutoConfig
 
 
+def recurrent_classifier(
+    logits: torch.Tensor = None,
+    hidden_states: torch.Tensor = None,
+    classifier: torch.nn.Linear = None,
+    all_hidden_states: list[torch.Tensor] = None,
+    layer_index: int = None,
+):
+    assert hidden_states is not None
+    assert classifier is not None
+    
+    preds, (h, c) = classifier(hidden_states) if layer_index > 0 \
+        else classifier(hidden_states, None)
+
+    probs = torch.softmax(preds, dim=-1)
+    return probs[..., 1].squeeze()
+
+
+def last_three_hiddens_classifier(
+    logits: torch.Tensor = None,
+    hidden_states: torch.Tensor = None,
+    classifier: torch.nn.Linear = None,
+    all_hidden_states: list[torch.Tensor] = None,
+    layer_index: int = None,
+):
+    assert classifier is not None
+
+    if all_hidden_states is None or len(all_hidden_states) < 3:
+        return torch.zeros(hidden_states.shape[0])
+
+    last_three_hiddens = torch.cat(all_hidden_states[-3:], dim=2)
+
+    preds = classifier(last_three_hiddens)
+    probs = torch.softmax(preds, dim=-1)
+    return probs[..., 1].squeeze()
+
+
 def mono_confidence(
     logits: torch.Tensor = None,
     hidden_states: torch.Tensor = None,
     classifier: torch.nn.Linear = None,
+    all_hidden_states: list[torch.Tensor] = None,
+    layer_index: int = None,
 ):
+    print('mono all hidden states', all_hidden_states.__len__() if all_hidden_states is not None else 0)
+
+    return torch.zeros_like(hidden_states)
+
     assert hidden_states is not None
     print(hidden_states.shape)
     if hidden_states.shape[0] < 3:
@@ -28,18 +70,24 @@ def softmax_confidence(
     logits: torch.Tensor = None,
     hidden_states: torch.Tensor = None,
     classifier: torch.nn.Linear = None,
+    all_hidden_states: list[torch.Tensor] = None,
+    layer_index: int = None,
 ):
     assert logits is not None
     probs = torch.softmax(logits, dim=-1)
     top_2 = torch.topk(probs, dim=-1, k=2)[0]
 
-    return (top_2[..., 0] - top_2[..., 1]).squeeze()
+    conf = (top_2[..., 0] - top_2[..., 1]).squeeze()
+
+    return conf
 
 
 def meta_confidence(
     logits: torch.Tensor = None,
     hidden_states: torch.Tensor = None,
     classifier: torch.nn.Linear = None,
+    all_hidden_states: list[torch.Tensor] = None,
+    layer_index: int = None,
 ):
     assert hidden_states is not None
     assert classifier is not None
@@ -52,6 +100,8 @@ def meta_n_confidence(
     logits: torch.Tensor = None,
     hidden_states: torch.Tensor = None,
     classifier: torch.nn.Linear = None,
+    all_hidden_states: list[torch.Tensor] = None,
+    layer_index: int = None,
 ):
     assert hidden_states is not None
     assert classifier is not None
@@ -75,8 +125,8 @@ def get_confidence_class(key):
     _conf_class_map = {
         'softmax': softmax_confidence,
         'meta': meta_confidence,
-        'meta_n': meta_n_confidence,
-        'mono': mono_confidence
+        'recurrent_classifier': recurrent_classifier,
+        'last_three_hiddens_classifier': last_three_hiddens_classifier,
     }
 
     if key in _conf_class_map:
@@ -93,6 +143,8 @@ def get_skip_mask(
     pos_time: int = 1,
     adapt_threshold: float = None,
     return_conf=False,
+    all_hidden_states: list[torch.Tensor] = None,
+    layer_index: int = None,
 ):
     assert config.exit_conf_type is not None or config.shallow2deep_conf_type is not None
 
@@ -115,10 +167,12 @@ def get_skip_mask(
         logits=logits, 
         hidden_states=hidden_states, 
         classifier=classifier,
+        all_hidden_states=all_hidden_states,
+        layer_index=layer_index,
     )
     mask = torch.where(conf <= threshold, 0., 1.).bool()
-    print(conf)
     if not return_conf:
+
         return mask  # Return the whole mask tensor
     else:
         return mask, conf
