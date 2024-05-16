@@ -41,7 +41,7 @@ def compute_intermediate_loss(config, lm_head, model_dim, lm_logits=None, labels
             
         else:
             raise NotImplementedError
-            
+    print("Loss: " + str(loss))        
     return loss  
 
 
@@ -155,5 +155,6 @@ def compute_cm_head_loss(config, lm_head, cm_head, model_dim, all_hidden_states=
     pos, neg = sum(meta_labels) / len(meta_labels), 1 - sum(meta_labels) / len(meta_labels)
     bal_prior = torch.log(torch.tensor([neg, pos])).view(1, -1).to(device)
     loss_fct = CrossEntropyLoss()
-    loss = loss_fct(meta_preds + bal_prior, meta_labels.long())  # Logit Adjustment
+    loss = loss_fct(meta_preds + bal_prior, meta_labels.long())
+    print("Classifier loss: " + str(loss))    # Logit Adjustment
     return loss

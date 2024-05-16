@@ -158,6 +158,8 @@ def get_skip_mask(
         layer_index=layer_index,
     )
     mask = torch.where(conf <= threshold, 0., 1.).bool()
+    print(mask)
+    print(conf)
     if not return_conf:
 
         return mask  # Return the whole mask tensor
