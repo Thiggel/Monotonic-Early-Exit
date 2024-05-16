@@ -12,11 +12,6 @@ def split_tensors_by_mask(
     """
     0 and 1 values in skip_mask denote the index for tensors to keep and skip, respectively.
     """
-    device = 'cuda' if 'cuda' in {keep_tensors.device.type, skip_tensors.device.type, ids_restore.device.type} else 'cpu'
-
-    keep_tensors = keep_tensors.to(device)
-    skip_tensors = skip_tensors.to(device)
-    ids_restore = ids_restore.to(device)
     if ids_restore is None:
         ids_shuffle = torch.argsort(skip_mask.long(), stable=True)
         ids_restore = torch.argsort(ids_shuffle)
