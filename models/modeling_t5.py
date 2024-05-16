@@ -97,6 +97,9 @@ class EffT5Attention(T5Attention):
 
         real_seq_length = seq_length
 
+        if skip_mask is None:
+            skip_mask = torch.zeros(batch_size, dtype=torch.bool, device=hidden_states.device)
+
         if past_key_value is not None:
             assert (
                 len(past_key_value) == 2
@@ -166,62 +169,66 @@ class EffT5Attention(T5Attention):
             if mask is not None:
                 position_bias = position_bias + mask  # (batch_size, n_heads, seq_length, key_length)
 
-        if skip_mask is not None and skip_mask.sum().item() == hidden_states.shape[0]:
-            attn_output = None
+        if skip_mask is not None:
+            hidden_states, _, ids_restore = split_tensors_by_mask(hidden_states, skip_mask)
+
+            # key and value
+            key_states, skip_key_states, _ = split_tensors_by_mask(key_states, skip_mask, ids_restore=ids_restore)
+            value_states, skip_value_states, _ = split_tensors_by_mask(value_states, skip_mask, ids_restore=ids_restore)
+
+        # get query states
+        query_states = shape(self.q(hidden_states))  # (batch_size, n_heads, seq_length, dim_per_head)
+
+        # compute scores
+        scores = torch.matmul(
+            query_states, key_states.transpose(3, 2)
+        )  # equivalent of torch.einsum("bnqd,bnkd->bnqk", query_states, key_states), compatible with onnx op>9
+
+        if skip_mask is not None:
+            position_bias, skip_position_bias, _ = split_tensors_by_mask(position_bias, skip_mask, ids_restore=ids_restore)
+
+        if self.pruned_heads:
+            mask = torch.ones(position_bias.shape[1])
+            mask[list(self.pruned_heads)] = 0
+            position_bias_masked = position_bias[:, mask.bool()]
         else:
-            if skip_mask is not None:
-                hidden_states, _, ids_restore = split_tensors_by_mask(hidden_states, skip_mask)
+            position_bias_masked = position_bias
 
-                # key and value
-                key_states, skip_key_states, _ = split_tensors_by_mask(key_states, skip_mask, ids_restore=ids_restore)
-                value_states, skip_value_states, _ = split_tensors_by_mask(value_states, skip_mask, ids_restore=ids_restore)
+        if scores.shape != position_bias_masked.shape:
+            position_bias_masked = position_bias_masked.unsqueeze(1) \
+                    .unsqueeze(2) \
+                    .unsqueeze(3) \
+                    .expand_as(scores)
 
-            # get query states
-            query_states = shape(self.q(hidden_states))  # (batch_size, n_heads, seq_length, dim_per_head)
+        scores += position_bias_masked
+        attn_weights = nn.functional.softmax(scores.float(), dim=-1).type_as(
+            scores
+        )  # (batch_size, n_heads, seq_length, key_length)
+        attn_weights = nn.functional.dropout(
+            attn_weights, p=self.dropout, training=self.training
+        )  # (batch_size, n_heads, seq_length, key_length)
 
-            # compute scores
-            scores = torch.matmul(
-                query_states, key_states.transpose(3, 2)
-            )  # equivalent of torch.einsum("bnqd,bnkd->bnqk", query_states, key_states), compatible with onnx op>9
+        # Mask heads if we want to
+        if layer_head_mask is not None:
+            attn_weights = attn_weights * layer_head_mask
 
-            if skip_mask is not None:
-                position_bias, skip_position_bias, _ = split_tensors_by_mask(position_bias, skip_mask, ids_restore=ids_restore)
+        attn_output = unshape(torch.matmul(attn_weights, value_states))  # (batch_size, seq_length, dim)
+        attn_output = self.o(attn_output)
 
-            if self.pruned_heads:
-                mask = torch.ones(position_bias.shape[1])
-                mask[list(self.pruned_heads)] = 0
-                position_bias_masked = position_bias[:, mask.bool()]
-            else:
-                position_bias_masked = position_bias
-
-            scores += position_bias_masked
-            attn_weights = nn.functional.softmax(scores.float(), dim=-1).type_as(
-                scores
-            )  # (batch_size, n_heads, seq_length, key_length)
-            attn_weights = nn.functional.dropout(
-                attn_weights, p=self.dropout, training=self.training
-            )  # (batch_size, n_heads, seq_length, key_length)
-
-            # Mask heads if we want to
-            if layer_head_mask is not None:
-                attn_weights = attn_weights * layer_head_mask
-
-            attn_output = unshape(torch.matmul(attn_weights, value_states))  # (batch_size, seq_length, dim)
-            attn_output = self.o(attn_output)
-
-            # restore the skipped parts
-            if skip_mask is not None:
-                key_states = restore_tensors_by_mask(key_states, skip_key_states, ids_restore)
-                value_states = restore_tensors_by_mask(value_states, skip_value_states, ids_restore)
-                position_bias = restore_tensors_by_mask(position_bias, skip_position_bias, ids_restore)
+        # restore the skipped parts
+        if skip_mask is not None:
+            key_states = restore_tensors_by_mask(key_states, skip_key_states, ids_restore)
+            value_states = restore_tensors_by_mask(value_states, skip_value_states, ids_restore)
+            position_bias = restore_tensors_by_mask(position_bias, skip_position_bias, ids_restore)
 
         present_key_value_state = (key_states, value_states) if (self.is_decoder and use_cache) else None
         outputs = (attn_output,) + (present_key_value_state,) + (position_bias,)
 
         if output_attentions:
             outputs = outputs + (attn_weights,)
-        if skip_mask is not None and skip_mask.sum().item() != hidden_states.shape[0]:
+        if skip_mask is not None:
             outputs = outputs + (ids_restore,)
+            
         return outputs
 
 
@@ -484,6 +491,8 @@ class EffT5Stack(T5Stack):
             assert config.shallow_exit_layer > 0 and config.shallow_exit_layer < len(self.block)
 
         self.block_op = [0] * config.num_layers  # to calculate the average number of forward block layers
+
+        self.config = config
         
     def forward(
         self,
@@ -585,6 +594,8 @@ class EffT5Stack(T5Stack):
         encoder_decoder_position_bias = None
 
         hidden_states = self.dropout(inputs_embeds)
+        
+        all_softmax_values = []
 
         skip_mask, self.skip_mask_cache = None, None
         for i, (layer_module, past_key_value) in enumerate(zip(self.block, past_key_values)):
@@ -616,6 +627,7 @@ class EffT5Stack(T5Stack):
                     all_hidden_states = all_hidden_states + (self.dropout(self.final_layer_norm(hidden_states)),)
                 else:
                     all_hidden_states = all_hidden_states + (hidden_states,)
+
 
             if self.gradient_checkpointing and self.training:
 
@@ -657,6 +669,9 @@ class EffT5Stack(T5Stack):
                         cm_head,
                         config=self.config,
                         pos_time=past_key_value[0].shape[2] + 1 if past_key_value is not None else 1,
+                        all_hidden_states=all_hidden_states,
+                        all_softmax_values=all_softmax_values,
+                        layer_index=i,
                     )
                     
                     self.block_op[i] += (skip_mask.shape[0] - skip_mask.sum().item())
@@ -673,14 +688,22 @@ class EffT5Stack(T5Stack):
                         logits = lm_head(hidden_) if not self.config.tie_word_embeddings \
                             else lm_head(hidden_ * (self.config.d_model ** -0.5))
 
+                        if self.config.exit_conf_type == 'last_three_top_prob_heuristic':
+                            all_softmax_values.append(F.softmax(logits, dim=-1))
+
                         skip_mask = get_skip_mask(
                             logits,
                             hidden_,
                             cm_head,
                             config=self.config,
                             pos_time=past_key_value[0].shape[2] + 1 if past_key_value is not None else 1,
+                            all_hidden_states=all_hidden_states,
+                            all_softmax_values=all_softmax_values,
+                            layer_index=i,
                         )
-                        self.block_op[i] += (skip_mask.shape[0] - skip_mask.sum().item())
+                        # check if shape is not empty
+                        if len(skip_mask.shape) > 0:
+                            self.block_op[i] += (skip_mask.shape[0] - skip_mask.sum().item())
 
                         if self.skip_mask_cache is None:
                             self.skip_mask_cache = skip_mask
@@ -729,6 +752,8 @@ class EffT5Stack(T5Stack):
                 for k, v in self.device_map.items():
                     if i == v[-1] and "cuda:" + str(k) != self.last_device:
                         hidden_states = hidden_states.to("cuda:" + str(k + 1))
+            
+
 
         hidden_states = self.final_layer_norm(hidden_states)
         hidden_states = self.dropout(hidden_states)
@@ -780,9 +805,24 @@ class EffT5ForConditionalGeneration(T5ForConditionalGeneration):
 
         self.lm_head = nn.Linear(config.d_model, config.vocab_size, bias=False)
         
-        if self.config.exit_conf_type == 'meta' or self.config.shallow2deep_conf_type:
+        if self.config.exit_conf_type == 'meta' or self.config.shallow2deep_conf_type or self.config.exit_conf_type == "meta_n":
             self.cm_head = nn.Sequential(
                 nn.Linear(config.d_model, config.d_model, bias=False),
+                nn.ReLU(),
+                nn.Linear(config.d_model, 2, bias=False),
+            )
+
+        elif self.config.exit_conf_type == 'recurrent_classifier':
+            self.cm_head = nn.LSTM(
+                input_size=config.d_model,
+                hidden_size=config.d_model, 
+                num_layers=2,
+                batch_first=True
+            )
+
+        elif self.config.exit_conf_type == 'last_three_hiddens_classifier':
+            self.cm_head = nn.Sequential(
+                nn.Linear(config.d_model * 3, config.d_model, bias=False),
                 nn.ReLU(),
                 nn.Linear(config.d_model, 2, bias=False),
             )
