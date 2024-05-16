@@ -749,11 +749,25 @@ class DeployLongT5ForConditionalGeneration(LongT5ForConditionalGeneration):
 
         self.lm_head = nn.Linear(config.d_model, config.vocab_size, bias=False)
         self.decoder.lm_head = self.lm_head
-        if self.config.exit_conf_type == 'meta' or self.config.shallow2deep_conf_type == "meta" or self.config.exit_conf_type == "meta_n" or self.config.shallow2deep_conf_type == "meta_n":
+        if self.config.exit_conf_type == 'meta' or self.config.shallow2deep_conf_type == "meta":
             self.cm_head = nn.Sequential(
                 nn.Linear(config.d_model, config.d_model, bias=True),
                 nn.ReLU(),
                 nn.Linear(config.d_model, 2, bias=True),
+            )
+        elif self.config.exit_conf_type == 'recurrent_classifier':
+            self.cm_head = nn.LSTM(
+                input_size=config.d_model,
+                hidden_size=config.d_model, 
+                num_layers=2,
+                batch_first=True
+            )
+
+        elif self.config.exit_conf_type == 'last_three_hiddens_classifier':
+            self.cm_head = nn.Sequential(
+                nn.Linear(config.d_model * 3, config.d_model, bias=False),
+                nn.ReLU(),
+                nn.Linear(config.d_model, 2, bias=False),
             )
         else:
             self.cm_head = None

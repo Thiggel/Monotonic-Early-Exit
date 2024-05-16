@@ -104,31 +104,6 @@ def meta_confidence(
     probs = torch.softmax(preds, dim=-1)
     return probs[..., 1].squeeze()
 
-def meta_n_confidence(
-    logits: torch.Tensor = None,
-    hidden_states: torch.Tensor = None,
-    classifier: torch.nn.Linear = None,
-    all_hidden_states: list[torch.Tensor] = None,
-    all_softmax_values: list[torch.Tensor] = None,
-    layer_index: int = None,
-):
-    assert hidden_states is not None
-    assert classifier is not None
-    if hidden_states.shape[0] < 3:
-        print(hidden_states.shape)
-        return torch.tensor([0.0])
-    print("==============================")
-    print("hs shape")
-    print(hidden_states.shape)
-    print("hs")
-    print(hidden_states)
-    print("==============================")
-    preds = classifier(hidden_states[-3:])
-    probs = torch.softmax(preds, dim=-1)
-    return_value = probs[..., 1].squeeze()
-    return return_value
-
-
 def get_confidence_class(key):
 
     _conf_class_map = {
