@@ -1,3 +1,4 @@
+import torch
 import html
 import numpy as np
 import re
@@ -6,6 +7,7 @@ from transformers import PreTrainedTokenizerBase
 import matplotlib.pyplot as plt
 import os
 from .SentenceSaver import SentenceSaver
+from .RecordMonotonicity import RecordMonotonicity
 
 
 class PlotMonotonicity:
@@ -14,19 +16,26 @@ class PlotMonotonicity:
         tokenizer: PreTrainedTokenizerBase,
         encoder_sentence_saver: SentenceSaver,
         decoder_sentence_saver: SentenceSaver,
+        record_monotonicity: RecordMonotonicity,
         model_name_or_path: str,
+        do_plot: bool = True
     ):
         """
         Args:
             tokenizer: The tokenizer
             encoder_sentence_saver: The SentenceSaver for the encoder
             decoder_sentence_saver: The SentenceSaver for the decoder
+            record_monotonicity: The RecordMonotonicity instance
             model_name_or_path: The model name or path
+            do_plot: Whether to plot the monotonicity using matplotlib or just
+            record the monotonicity for a table
         """
         self.tokenizer = tokenizer
         self.encoder_sentence_saver = encoder_sentence_saver
         self.decoder_sentence_saver = decoder_sentence_saver
+        self.record_monotonicity = record_monotonicity
         self.most_likely_tokens = []
+        self.do_plot = do_plot
 
         self.directory = 'monotonicity_plots/' + model_name_or_path
         self.create_dir_if_not_exists(self.directory)
@@ -40,7 +49,6 @@ class PlotMonotonicity:
 
     def remove_non_letters(self,input_string):
         return re.sub(r'[^a-zA-Z]', '', input_string)
-
 
     def plot_most_likely_tokens(self):
         # at each layer, take the three most likely tokens
@@ -70,7 +78,8 @@ class PlotMonotonicity:
                     decoder_tokens = self.decoder_sentence_saver.sentence[
                         sample_idx
                     ]
-                    tokens = encoder_tokens + decoder_tokens
+                    tokens = torch.cat([encoder_tokens, decoder_tokens]).tolist()
+
                     max_length = 20
                     prefix = '...' if len(tokens) > max_length else ''
                     sentence = prefix + self.tokenizer.decode(tokens[-max_length:])
@@ -79,6 +88,7 @@ class PlotMonotonicity:
                         re.sub(r'<[^>]*?>', '', sentence)
                     )
 
+                    prob = prob.item() if len(prob.shape) == 0 else prob[0].item()
                     # Append x, y, and label values
                     if prob > 0.1:
                         x_values[sample_idx].append(step)  # Layer index as x-value
@@ -88,6 +98,13 @@ class PlotMonotonicity:
         word_to_color = WordToColor()
 
         for x, y, labs, title in zip(x_values, y_values, labels, titles):
+            # Record the monotonicity of the tokens
+            # for a nice table later
+            self.record_monotonicity.record(x, y, labs)
+
+            if not self.do_plot:
+                continue
+
             plt.figure(figsize=(10, 6)) 
             # Annotate each point with its label
             for i, label in enumerate(labs):

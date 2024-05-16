@@ -32,6 +32,9 @@ class ModelArguments:
     check_monotonicity: Optional[bool] = field(
         default=False, metadata={"help": "Check if the model is monotonic or not"}
     )
+    plot_monotonicity: Optional[bool] = field(
+        default=False, metadata={"help": "Plot monotonicity or just record it for a table"}
+    )
     use_auth_token: bool = field(
         default=False,
         metadata={
