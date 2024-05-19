@@ -182,3 +182,42 @@ def find_sequence_types(results, tokenizer, topk=10):
         )
 
     return easy_sequences, hard_sequences
+
+
+def compute_sequence_metrics(sequences):
+    sequence_results = {}
+
+    first_similar_states = []
+    n_similar_states = []
+    sequence_length = []
+    strictly_monotonic = []
+    strictly_monotonic_after_4 = []
+    strictly_monotonic_after_8 = []
+
+    for sequence in sequences:
+        first_similar_states.append(sequence["first_similar_state"])
+        n_similar_states.append(sequence["n_similar_states"])
+        sequence_length.append(len(sequence["input_sequence"]))
+        strictly_monotonic.append(sequence["strictly_monotonic"])
+        strictly_monotonic_after_4.append(sequence["strictly_monotonic_after_4"])
+        strictly_monotonic_after_8.append(sequence["strictly_monotonic_after_8"])
+
+    sequence_results["mean_first_similar_state"] = np.mean(first_similar_states)
+    sequence_results["std_first_similar_state"] = np.std(first_similar_states)
+
+    sequence_results["mean_n_similar_states"] = np.mean(n_similar_states)
+    sequence_results["std_n_similar_states"] = np.std(n_similar_states)
+
+    sequence_results["mean_sequence_length"] = np.mean(sequence_length)
+    sequence_results["std_sequence_length"] = np.std(sequence_length)
+
+    sequence_results["mean_strictly_monotonic"] = np.mean(strictly_monotonic)
+    sequence_results["std_strictly_monotonic"] = np.std(strictly_monotonic)
+
+    sequence_results["mean_strictly_monotonic_after_4"] = np.mean(strictly_monotonic_after_4)
+    sequence_results["std_strictly_monotonic_after_4"] = np.std(strictly_monotonic_after_4)
+
+    sequence_results["mean_strictly_monotonic_after_8"] = np.mean(strictly_monotonic_after_8)
+    sequence_results["std_strictly_monotonic_after_8"] = np.std(strictly_monotonic_after_8)
+
+    return sequence_results
