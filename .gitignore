@@ -159,3 +159,5 @@ save
 *.sh
 checkpoints
 monotonicity_plots
+
+.DS_store
