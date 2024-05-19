@@ -1,0 +1,487 @@
+============================================================================================== 
+Warning! Mixing Conda and module environments may lead to corruption of the
+user environment. 
+We do not recommend users mixing those two environments unless absolutely
+necessary. Note that 
+SURF does not provide any support for Conda environment.
+For more information, please refer to our software policy page:
+https://servicedesk.surf.nl/wiki/display/WIKI/Software+policy+Snellius#SoftwarepolicySnellius-UseofAnacondaandMinicondaenvironmentsonSnellius 
+
+Remember that many packages have already been installed on the system and can
+be loaded using 
+the 'module load <package__name>' command. If you are uncertain if a package is
+already available 
+on the system, please use 'module avail' or 'module spider' to search for it.
+============================================================================================== 
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+
+
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: accelerate>=0.12.0 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from -r requirements.txt (line 1)) (0.29.3)
+Requirement already satisfied: torch>=1.13.0 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from -r requirements.txt (line 2)) (2.3.0)
+Requirement already satisfied: datasets>=1.8.0 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from -r requirements.txt (line 3)) (2.19.0)
+Requirement already satisfied: sentencepiece!=0.1.92 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from -r requirements.txt (line 4)) (0.2.0)
+Requirement already satisfied: protobuf in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from -r requirements.txt (line 5)) (3.19.1)
+Requirement already satisfied: evaluate in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from -r requirements.txt (line 6)) (0.4.1)
+Requirement already satisfied: scikit-learn in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from -r requirements.txt (line 7)) (1.0.2)
+Requirement already satisfied: rouge-score in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from -r requirements.txt (line 8)) (0.1.2)
+Requirement already satisfied: nltk in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from -r requirements.txt (line 9)) (3.7)
+Requirement already satisfied: py7zr in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from -r requirements.txt (line 10)) (0.21.0)
+Requirement already satisfied: sacrebleu>=1.4.12 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from -r requirements.txt (line 11)) (2.4.2)
+Requirement already satisfied: transformers==4.28.1 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from -r requirements.txt (line 12)) (4.28.1)
+Requirement already satisfied: matplotlib in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from -r requirements.txt (line 14)) (3.5.1)
+Requirement already satisfied: peft in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from -r requirements.txt (line 15)) (0.10.0)
+Requirement already satisfied: tqdm>=4.27 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from transformers==4.28.1->-r requirements.txt (line 12)) (4.64.0)
+Requirement already satisfied: requests in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from transformers==4.28.1->-r requirements.txt (line 12)) (2.27.1)
+Requirement already satisfied: packaging>=20.0 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from transformers==4.28.1->-r requirements.txt (line 12)) (21.3)
+Requirement already satisfied: huggingface-hub<1.0,>=0.11.0 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from transformers==4.28.1->-r requirements.txt (line 12)) (0.22.2)
+Requirement already satisfied: numpy>=1.17 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from transformers==4.28.1->-r requirements.txt (line 12)) (1.21.5)
+Requirement already satisfied: regex!=2019.12.17 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from transformers==4.28.1->-r requirements.txt (line 12)) (2022.3.15)
+Requirement already satisfied: tokenizers!=0.11.3,<0.14,>=0.11.1 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from transformers==4.28.1->-r requirements.txt (line 12)) (0.13.3)
+Requirement already satisfied: pyyaml>=5.1 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from transformers==4.28.1->-r requirements.txt (line 12)) (6.0)
+Requirement already satisfied: filelock in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from transformers==4.28.1->-r requirements.txt (line 12)) (3.6.0)
+Requirement already satisfied: safetensors>=0.3.1 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from accelerate>=0.12.0->-r requirements.txt (line 1)) (0.4.3)
+Requirement already satisfied: psutil in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from accelerate>=0.12.0->-r requirements.txt (line 1)) (5.8.0)
+Requirement already satisfied: typing-extensions>=4.8.0 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from torch>=1.13.0->-r requirements.txt (line 2)) (4.11.0)
+Requirement already satisfied: nvidia-cudnn-cu12==8.9.2.26 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from torch>=1.13.0->-r requirements.txt (line 2)) (8.9.2.26)
+Requirement already satisfied: nvidia-nvtx-cu12==12.1.105 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from torch>=1.13.0->-r requirements.txt (line 2)) (12.1.105)
+Requirement already satisfied: triton==2.3.0 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from torch>=1.13.0->-r requirements.txt (line 2)) (2.3.0)
+Requirement already satisfied: nvidia-cuda-runtime-cu12==12.1.105 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from torch>=1.13.0->-r requirements.txt (line 2)) (12.1.105)
+Requirement already satisfied: nvidia-cuda-cupti-cu12==12.1.105 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from torch>=1.13.0->-r requirements.txt (line 2)) (12.1.105)
+Requirement already satisfied: jinja2 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from torch>=1.13.0->-r requirements.txt (line 2)) (2.11.3)
+Requirement already satisfied: nvidia-cublas-cu12==12.1.3.1 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from torch>=1.13.0->-r requirements.txt (line 2)) (12.1.3.1)
+Requirement already satisfied: nvidia-cusolver-cu12==11.4.5.107 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from torch>=1.13.0->-r requirements.txt (line 2)) (11.4.5.107)
+Requirement already satisfied: nvidia-cufft-cu12==11.0.2.54 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from torch>=1.13.0->-r requirements.txt (line 2)) (11.0.2.54)
+Requirement already satisfied: nvidia-curand-cu12==10.3.2.106 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from torch>=1.13.0->-r requirements.txt (line 2)) (10.3.2.106)
+Requirement already satisfied: nvidia-cuda-nvrtc-cu12==12.1.105 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from torch>=1.13.0->-r requirements.txt (line 2)) (12.1.105)
+Requirement already satisfied: sympy in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from torch>=1.13.0->-r requirements.txt (line 2)) (1.10.1)
+Requirement already satisfied: nvidia-nccl-cu12==2.20.5 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from torch>=1.13.0->-r requirements.txt (line 2)) (2.20.5)
+Requirement already satisfied: networkx in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from torch>=1.13.0->-r requirements.txt (line 2)) (2.7.1)
+Requirement already satisfied: nvidia-cusparse-cu12==12.1.0.106 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from torch>=1.13.0->-r requirements.txt (line 2)) (12.1.0.106)
+Requirement already satisfied: fsspec in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from torch>=1.13.0->-r requirements.txt (line 2)) (2024.3.1)
+Requirement already satisfied: nvidia-nvjitlink-cu12 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from nvidia-cusolver-cu12==11.4.5.107->torch>=1.13.0->-r requirements.txt (line 2)) (12.4.127)
+Requirement already satisfied: pyarrow>=12.0.0 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from datasets>=1.8.0->-r requirements.txt (line 3)) (16.0.0)
+Requirement already satisfied: dill<0.3.9,>=0.3.0 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from datasets>=1.8.0->-r requirements.txt (line 3)) (0.3.8)
+Requirement already satisfied: pyarrow-hotfix in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from datasets>=1.8.0->-r requirements.txt (line 3)) (0.6)
+Requirement already satisfied: xxhash in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from datasets>=1.8.0->-r requirements.txt (line 3)) (3.4.1)
+Requirement already satisfied: aiohttp in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from datasets>=1.8.0->-r requirements.txt (line 3)) (3.8.1)
+Requirement already satisfied: pandas in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from datasets>=1.8.0->-r requirements.txt (line 3)) (1.4.2)
+Requirement already satisfied: multiprocess in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from datasets>=1.8.0->-r requirements.txt (line 3)) (0.70.16)
+Requirement already satisfied: responses<0.19 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from evaluate->-r requirements.txt (line 6)) (0.18.0)
+Requirement already satisfied: threadpoolctl>=2.0.0 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from scikit-learn->-r requirements.txt (line 7)) (2.2.0)
+Requirement already satisfied: scipy>=1.1.0 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from scikit-learn->-r requirements.txt (line 7)) (1.7.3)
+Requirement already satisfied: joblib>=0.11 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from scikit-learn->-r requirements.txt (line 7)) (1.1.0)
+Requirement already satisfied: six>=1.14.0 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from rouge-score->-r requirements.txt (line 8)) (1.16.0)
+Requirement already satisfied: absl-py in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from rouge-score->-r requirements.txt (line 8)) (2.1.0)
+Requirement already satisfied: click in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from nltk->-r requirements.txt (line 9)) (8.0.4)
+Requirement already satisfied: multivolumefile>=0.2.3 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from py7zr->-r requirements.txt (line 10)) (0.2.3)
+Requirement already satisfied: pyzstd>=0.15.9 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from py7zr->-r requirements.txt (line 10)) (0.15.10)
+Requirement already satisfied: pybcj<1.1.0,>=1.0.0 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from py7zr->-r requirements.txt (line 10)) (1.0.2)
+Requirement already satisfied: pyppmd<1.2.0,>=1.1.0 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from py7zr->-r requirements.txt (line 10)) (1.1.0)
+Requirement already satisfied: texttable in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from py7zr->-r requirements.txt (line 10)) (1.7.0)
+Requirement already satisfied: brotli>=1.1.0 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from py7zr->-r requirements.txt (line 10)) (1.1.0)
+Requirement already satisfied: inflate64<1.1.0,>=1.0.0 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from py7zr->-r requirements.txt (line 10)) (1.0.0)
+Requirement already satisfied: pycryptodomex>=3.16.0 in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from py7zr->-r requirements.txt (line 10)) (3.20.0)
+Requirement already satisfied: colorama in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from sacrebleu>=1.4.12->-r requirements.txt (line 11)) (0.4.4)
+Requirement already satisfied: tabulate>=0.8.9 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from sacrebleu>=1.4.12->-r requirements.txt (line 11)) (0.8.9)
+Requirement already satisfied: portalocker in /gpfs/home6/scur0408/.local/lib/python3.9/site-packages (from sacrebleu>=1.4.12->-r requirements.txt (line 11)) (2.8.2)
+Requirement already satisfied: lxml in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from sacrebleu>=1.4.12->-r requirements.txt (line 11)) (4.8.0)
+Requirement already satisfied: fonttools>=4.22.0 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from matplotlib->-r requirements.txt (line 14)) (4.25.0)
+Requirement already satisfied: cycler>=0.10 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from matplotlib->-r requirements.txt (line 14)) (0.11.0)
+Requirement already satisfied: pillow>=6.2.0 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from matplotlib->-r requirements.txt (line 14)) (9.0.1)
+Requirement already satisfied: pyparsing>=2.2.1 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from matplotlib->-r requirements.txt (line 14)) (3.0.4)
+Requirement already satisfied: kiwisolver>=1.0.1 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from matplotlib->-r requirements.txt (line 14)) (1.3.2)
+Requirement already satisfied: python-dateutil>=2.7 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from matplotlib->-r requirements.txt (line 14)) (2.8.2)
+Requirement already satisfied: yarl<2.0,>=1.0 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from aiohttp->datasets>=1.8.0->-r requirements.txt (line 3)) (1.6.3)
+Requirement already satisfied: frozenlist>=1.1.1 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from aiohttp->datasets>=1.8.0->-r requirements.txt (line 3)) (1.2.0)
+Requirement already satisfied: aiosignal>=1.1.2 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from aiohttp->datasets>=1.8.0->-r requirements.txt (line 3)) (1.2.0)
+Requirement already satisfied: charset-normalizer<3.0,>=2.0 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from aiohttp->datasets>=1.8.0->-r requirements.txt (line 3)) (2.0.4)
+Requirement already satisfied: async-timeout<5.0,>=4.0.0a3 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from aiohttp->datasets>=1.8.0->-r requirements.txt (line 3)) (4.0.1)
+Requirement already satisfied: multidict<7.0,>=4.5 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from aiohttp->datasets>=1.8.0->-r requirements.txt (line 3)) (5.2.0)
+Requirement already satisfied: attrs>=17.3.0 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from aiohttp->datasets>=1.8.0->-r requirements.txt (line 3)) (21.4.0)
+Requirement already satisfied: urllib3<1.27,>=1.21.1 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from requests->transformers==4.28.1->-r requirements.txt (line 12)) (1.26.9)
+Requirement already satisfied: idna<4,>=2.5 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from requests->transformers==4.28.1->-r requirements.txt (line 12)) (3.3)
+Requirement already satisfied: certifi>=2017.4.17 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from requests->transformers==4.28.1->-r requirements.txt (line 12)) (2021.10.8)
+Requirement already satisfied: MarkupSafe>=0.23 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from jinja2->torch>=1.13.0->-r requirements.txt (line 2)) (2.0.1)
+Requirement already satisfied: pytz>=2020.1 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from pandas->datasets>=1.8.0->-r requirements.txt (line 3)) (2021.3)
+Requirement already satisfied: mpmath>=0.19 in /gpfs/admin/_hpc/sw/arch/INTEL-AVX512/RHEL8/EB_production/2022/software/Anaconda3/2022.05/lib/python3.9/site-packages (from sympy->torch>=1.13.0->-r requirements.txt (line 2)) (1.2.1)
+Using the `WANDB_DISABLED` environment variable is deprecated and will be removed in v5. Use the --report_to flag to control the integrations used for logging result (for instance --report_to none).
+05/04/2024 19:07:05 - WARNING - __main__ - Process rank: 0, device: cuda:0, n_gpu: 1distributed training: True, 16-bits training: False
+05/04/2024 19:07:05 - INFO - __main__ - Training/evaluation parameters Seq2SeqTrainingArguments(
+_n_gpu=1,
+adafactor=False,
+adam_beta1=0.9,
+adam_beta2=0.999,
+adam_epsilon=1e-08,
+auto_find_batch_size=False,
+bf16=False,
+bf16_full_eval=False,
+data_seed=None,
+dataloader_drop_last=False,
+dataloader_num_workers=0,
+dataloader_pin_memory=True,
+ddp_bucket_cap_mb=None,
+ddp_find_unused_parameters=None,
+ddp_timeout=1800,
+debug=[],
+deepspeed=None,
+disable_tqdm=False,
+do_eval=True,
+do_predict=False,
+do_train=False,
+eval_accumulation_steps=None,
+eval_delay=0,
+eval_steps=None,
+evaluation_strategy=no,
+fp16=False,
+fp16_backend=auto,
+fp16_full_eval=False,
+fp16_opt_level=O1,
+fsdp=[],
+fsdp_config={'fsdp_min_num_params': 0, 'xla': False, 'xla_fsdp_grad_ckpt': False},
+fsdp_min_num_params=0,
+fsdp_transformer_layer_cls_to_wrap=None,
+full_determinism=False,
+generation_config=None,
+generation_max_length=None,
+generation_num_beams=None,
+gradient_accumulation_steps=1,
+gradient_checkpointing=False,
+greater_is_better=None,
+group_by_length=False,
+half_precision_backend=auto,
+hub_model_id=None,
+hub_private_repo=False,
+hub_strategy=every_save,
+hub_token=<HUB_TOKEN>,
+ignore_data_skip=False,
+include_inputs_for_metrics=False,
+jit_mode_eval=False,
+label_names=None,
+label_smoothing_factor=0.0,
+learning_rate=0.0001,
+length_column_name=length,
+load_best_model_at_end=False,
+local_rank=0,
+log_level=passive,
+log_level_replica=warning,
+log_on_each_node=True,
+logging_dir=./save/bigpatent_longt5_base/runs/May04_19-07-04_gcn42.local.snellius.surf.nl,
+logging_first_step=False,
+logging_nan_inf_filter=True,
+logging_steps=500,
+logging_strategy=steps,
+lr_scheduler_type=linear,
+max_grad_norm=1.0,
+max_steps=-1,
+metric_for_best_model=None,
+mp_parameters=,
+no_cuda=False,
+num_train_epochs=3.0,
+optim=adamw_hf,
+optim_args=None,
+output_dir=./save/bigpatent_longt5_base/,
+overwrite_output_dir=True,
+past_index=-1,
+per_device_eval_batch_size=16,
+per_device_train_batch_size=2,
+predict_with_generate=True,
+prediction_loss_only=False,
+push_to_hub=False,
+push_to_hub_model_id=None,
+push_to_hub_organization=None,
+push_to_hub_token=<PUSH_TO_HUB_TOKEN>,
+ray_scope=last,
+remove_unused_columns=True,
+report_to=[],
+resume_from_checkpoint=None,
+run_name=./save/bigpatent_longt5_base/,
+save_on_each_node=False,
+save_safetensors=False,
+save_steps=2583,
+save_strategy=steps,
+save_total_limit=None,
+seed=42,
+sharded_ddp=[],
+skip_memory_metrics=True,
+sortish_sampler=False,
+tf32=None,
+torch_compile=False,
+torch_compile_backend=None,
+torch_compile_mode=None,
+torchdynamo=None,
+tpu_metrics_debug=False,
+tpu_num_cores=None,
+use_ipex=False,
+use_legacy_prediction_loop=False,
+use_mps_device=False,
+warmup_ratio=0.0,
+warmup_steps=0,
+weight_decay=0.0,
+xpu_backend=None,
+)
+/home/scur0408/.local/lib/python3.9/site-packages/datasets/load.py:2547: FutureWarning: 'use_auth_token' was deprecated in favor of 'token' in version 2.14.0 and will be removed in 3.0.0.
+You can remove this warning by passing 'token=<use_auth_token>' instead.
+  warnings.warn(
+/home/scur0408/.local/lib/python3.9/site-packages/datasets/load.py:1486: FutureWarning: The repository for big_patent contains custom code which must be executed to correctly load the dataset. You can inspect the repository content at https://hf.co/datasets/big_patent
+You can avoid this message in future by passing the argument `trust_remote_code=True`.
+Passing `trust_remote_code=True` will be mandatory to load this dataset from the next major release of `datasets`.
+  warnings.warn(
+Loading Dataset Infos from /home/scur0408/.cache/huggingface/modules/datasets_modules/datasets/big_patent/bc8ec8bdf469c0da5fef04becd32bb3b0b34df0b0baa088ae1237628dd7a9caa
+05/04/2024 19:07:06 - INFO - datasets.info - Loading Dataset Infos from /home/scur0408/.cache/huggingface/modules/datasets_modules/datasets/big_patent/bc8ec8bdf469c0da5fef04becd32bb3b0b34df0b0baa088ae1237628dd7a9caa
+Overwrite dataset info from restored data version if exists.
+05/04/2024 19:07:06 - INFO - datasets.builder - Overwrite dataset info from restored data version if exists.
+Loading Dataset info from /home/scur0408/.cache/huggingface/datasets/big_patent/e/2.1.2/bc8ec8bdf469c0da5fef04becd32bb3b0b34df0b0baa088ae1237628dd7a9caa
+05/04/2024 19:07:06 - INFO - datasets.info - Loading Dataset info from /home/scur0408/.cache/huggingface/datasets/big_patent/e/2.1.2/bc8ec8bdf469c0da5fef04becd32bb3b0b34df0b0baa088ae1237628dd7a9caa
+Found cached dataset big_patent (/home/scur0408/.cache/huggingface/datasets/big_patent/e/2.1.2/bc8ec8bdf469c0da5fef04becd32bb3b0b34df0b0baa088ae1237628dd7a9caa)
+05/04/2024 19:07:06 - INFO - datasets.builder - Found cached dataset big_patent (/home/scur0408/.cache/huggingface/datasets/big_patent/e/2.1.2/bc8ec8bdf469c0da5fef04becd32bb3b0b34df0b0baa088ae1237628dd7a9caa)
+Loading Dataset info from /home/scur0408/.cache/huggingface/datasets/big_patent/e/2.1.2/bc8ec8bdf469c0da5fef04becd32bb3b0b34df0b0baa088ae1237628dd7a9caa
+05/04/2024 19:07:06 - INFO - datasets.info - Loading Dataset info from /home/scur0408/.cache/huggingface/datasets/big_patent/e/2.1.2/bc8ec8bdf469c0da5fef04becd32bb3b0b34df0b0baa088ae1237628dd7a9caa
+[INFO|configuration_utils.py:666] 2024-05-04 19:07:06,788 >> loading configuration file ./checkpoints/BIGPATENT/big_patent_longt5_base_weighted_ce/config.json
+[INFO|configuration_utils.py:720] 2024-05-04 19:07:06,789 >> Model config LongT5Config {
+  "_name_or_path": "./checkpoints/BIGPATENT/big_patent_longt5_base_weighted_ce",
+  "architectures": [
+    "EffLongT5ForConditionalGeneration"
+  ],
+  "copy_skipped_hidden_states": false,
+  "d_ff": 2048,
+  "d_kv": 64,
+  "d_model": 768,
+  "decoder_start_token_id": 0,
+  "dense_act_fn": "gelu_new",
+  "distill_layer_alpha": null,
+  "do_layer_transformation": false,
+  "dropout_rate": 0.1,
+  "encoder_attention_type": "transient-global",
+  "eos_token_id": 1,
+  "exit_conf_threshold": 1.0,
+  "exit_conf_type": null,
+  "exit_position_temp": null,
+  "feed_forward_proj": "gated-gelu",
+  "global_block_size": 16,
+  "initializer_factor": 1.0,
+  "intermediate_loss_fn": "weighted_ce",
+  "is_encoder_decoder": true,
+  "is_gated_act": true,
+  "layer_norm_epsilon": 1e-06,
+  "local_radius": 127,
+  "max_answer_length": 512,
+  "model_type": "longt5",
+  "n_positions": 4096,
+  "num_decoder_layers": 12,
+  "num_heads": 12,
+  "num_layers": 12,
+  "output_hidden_states_decoder": true,
+  "output_past": true,
+  "pad_token_id": 0,
+  "parallel_causal_mask": true,
+  "parallel_gen_token": true,
+  "relative_attention_max_distance": 128,
+  "relative_attention_num_buckets": 32,
+  "rollback_conf_threshold": null,
+  "shallow2deep_conf_threshold": 1.0,
+  "shallow2deep_conf_type": null,
+  "shallow_exit_layer": null,
+  "static_exit_layer": null,
+  "tie_word_embeddings": false,
+  "tome_combining_method": null,
+  "tome_matching_algo": null,
+  "tome_metric": null,
+  "tome_partition_method": null,
+  "tome_prop_attn": true,
+  "tome_threshold": null,
+  "tome_trace_source": false,
+  "torch_dtype": "float32",
+  "train_meta_cm_head": false,
+  "transformers_version": "4.28.1",
+  "use_cache": true,
+  "use_early_exit": false,
+  "use_shallow_deep": false,
+  "use_token_merging": false,
+  "vocab_size": 32128
+}
+
+[INFO|tokenization_auto.py:502] 2024-05-04 19:07:06,899 >> Could not locate the tokenizer configuration file, will try to use the model config instead.
+[INFO|configuration_utils.py:668] 2024-05-04 19:07:07,005 >> loading configuration file config.json from cache at /home/scur0408/.cache/huggingface/hub/models--google--long-t5-tglobal-base/snapshots/aecb1376e5bd78db32ebc5c9deb257449b9e2b21/config.json
+[INFO|configuration_utils.py:720] 2024-05-04 19:07:07,006 >> Model config LongT5Config {
+  "_name_or_path": "google/long-t5-tglobal-base",
+  "architectures": [
+    "LongT5ForConditionalGeneration"
+  ],
+  "d_ff": 2048,
+  "d_kv": 64,
+  "d_model": 768,
+  "decoder_start_token_id": 0,
+  "dense_act_fn": "gelu_new",
+  "dropout_rate": 0.1,
+  "encoder_attention_type": "transient-global",
+  "eos_token_id": 1,
+  "feed_forward_proj": "gated-gelu",
+  "global_block_size": 16,
+  "initializer_factor": 1.0,
+  "is_encoder_decoder": true,
+  "is_gated_act": true,
+  "layer_norm_epsilon": 1e-06,
+  "local_radius": 127,
+  "model_type": "longt5",
+  "n_positions": 4096,
+  "num_decoder_layers": 12,
+  "num_heads": 12,
+  "num_layers": 12,
+  "output_past": true,
+  "pad_token_id": 0,
+  "relative_attention_max_distance": 128,
+  "relative_attention_num_buckets": 32,
+  "tie_word_embeddings": false,
+  "torch_dtype": "float32",
+  "transformers_version": "4.28.1",
+  "use_cache": true,
+  "vocab_size": 32128
+}
+
+[INFO|tokenization_utils_base.py:1809] 2024-05-04 19:07:07,213 >> loading file spiece.model from cache at /home/scur0408/.cache/huggingface/hub/models--google--long-t5-tglobal-base/snapshots/aecb1376e5bd78db32ebc5c9deb257449b9e2b21/spiece.model
+[INFO|tokenization_utils_base.py:1809] 2024-05-04 19:07:07,213 >> loading file tokenizer.json from cache at /home/scur0408/.cache/huggingface/hub/models--google--long-t5-tglobal-base/snapshots/aecb1376e5bd78db32ebc5c9deb257449b9e2b21/tokenizer.json
+[INFO|tokenization_utils_base.py:1809] 2024-05-04 19:07:07,213 >> loading file added_tokens.json from cache at None
+[INFO|tokenization_utils_base.py:1809] 2024-05-04 19:07:07,213 >> loading file special_tokens_map.json from cache at None
+[INFO|tokenization_utils_base.py:1809] 2024-05-04 19:07:07,213 >> loading file tokenizer_config.json from cache at None
+[INFO|configuration_utils.py:668] 2024-05-04 19:07:07,213 >> loading configuration file config.json from cache at /home/scur0408/.cache/huggingface/hub/models--google--long-t5-tglobal-base/snapshots/aecb1376e5bd78db32ebc5c9deb257449b9e2b21/config.json
+[INFO|configuration_utils.py:720] 2024-05-04 19:07:07,214 >> Model config LongT5Config {
+  "_name_or_path": "google/long-t5-tglobal-base",
+  "architectures": [
+    "LongT5ForConditionalGeneration"
+  ],
+  "d_ff": 2048,
+  "d_kv": 64,
+  "d_model": 768,
+  "decoder_start_token_id": 0,
+  "dense_act_fn": "gelu_new",
+  "dropout_rate": 0.1,
+  "encoder_attention_type": "transient-global",
+  "eos_token_id": 1,
+  "feed_forward_proj": "gated-gelu",
+  "global_block_size": 16,
+  "initializer_factor": 1.0,
+  "is_encoder_decoder": true,
+  "is_gated_act": true,
+  "layer_norm_epsilon": 1e-06,
+  "local_radius": 127,
+  "model_type": "longt5",
+  "n_positions": 4096,
+  "num_decoder_layers": 12,
+  "num_heads": 12,
+  "num_layers": 12,
+  "output_past": true,
+  "pad_token_id": 0,
+  "relative_attention_max_distance": 128,
+  "relative_attention_num_buckets": 32,
+  "tie_word_embeddings": false,
+  "torch_dtype": "float32",
+  "transformers_version": "4.28.1",
+  "use_cache": true,
+  "vocab_size": 32128
+}
+
+[INFO|modeling_utils.py:2531] 2024-05-04 19:07:07,268 >> loading weights file ./checkpoints/BIGPATENT/big_patent_longt5_base_weighted_ce/pytorch_model.bin
+[INFO|configuration_utils.py:575] 2024-05-04 19:07:07,989 >> Generate config GenerationConfig {
+  "_from_model_config": true,
+  "decoder_start_token_id": 0,
+  "eos_token_id": 1,
+  "pad_token_id": 0,
+  "transformers_version": "4.28.1"
+}
+
+[INFO|modeling_utils.py:3190] 2024-05-04 19:07:15,833 >> All model checkpoint weights were used when initializing EffLongT5ForConditionalGeneration.
+
+[INFO|modeling_utils.py:3198] 2024-05-04 19:07:15,833 >> All the weights of EffLongT5ForConditionalGeneration were initialized from the model checkpoint at ./checkpoints/BIGPATENT/big_patent_longt5_base_weighted_ce.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use EffLongT5ForConditionalGeneration for predictions without further training.
+[INFO|modeling_utils.py:2839] 2024-05-04 19:07:15,837 >> Generation config file not found, using a generation config created from the model config.
+Loading cached shuffled indices for dataset at /home/scur0408/.cache/huggingface/datasets/big_patent/e/2.1.2/bc8ec8bdf469c0da5fef04becd32bb3b0b34df0b0baa088ae1237628dd7a9caa/cache-22d872d98177c9ac.arrow
+05/04/2024 19:07:15 - INFO - datasets.arrow_dataset - Loading cached shuffled indices for dataset at /home/scur0408/.cache/huggingface/datasets/big_patent/e/2.1.2/bc8ec8bdf469c0da5fef04becd32bb3b0b34df0b0baa088ae1237628dd7a9caa/cache-22d872d98177c9ac.arrow
+Loading cached processed dataset at /home/scur0408/.cache/huggingface/datasets/big_patent/e/2.1.2/bc8ec8bdf469c0da5fef04becd32bb3b0b34df0b0baa088ae1237628dd7a9caa/cache-e84f157abee23d7e.arrow
+05/04/2024 19:07:15 - INFO - datasets.arrow_dataset - Loading cached processed dataset at /home/scur0408/.cache/huggingface/datasets/big_patent/e/2.1.2/bc8ec8bdf469c0da5fef04becd32bb3b0b34df0b0baa088ae1237628dd7a9caa/cache-e84f157abee23d7e.arrow
+05/04/2024 19:07:19 - INFO - __main__ - *** Evaluate ***
+[WARNING|logging.py:280] 2024-05-04 19:07:19,607 >> You're using a T5TokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
+[INFO|configuration_utils.py:575] 2024-05-04 19:07:19,625 >> Generate config GenerationConfig {
+  "_from_model_config": true,
+  "decoder_start_token_id": 0,
+  "eos_token_id": 1,
+  "pad_token_id": 0,
+  "transformers_version": "4.28.1"
+}
+
+/home/scur0408/.local/lib/python3.9/site-packages/transformers/modeling_utils.py:816: FutureWarning: The `device` argument is deprecated and will be removed in v5 of Transformers.
+  warnings.warn(
+  0%|          | 0/120 [00:00<?, ?it/s]  2%|▏         | 2/120 [00:47<46:48, 23.80s/it]  2%|▎         | 3/120 [02:26<1:47:44, 55.25s/it]  3%|▎         | 4/120 [03:38<1:58:52, 61.49s/it]  4%|▍         | 5/120 [04:29<1:50:57, 57.89s/it]  5%|▌         | 6/120 [05:20<1:45:15, 55.40s/it]  6%|▌         | 7/120 [06:55<2:08:31, 68.24s/it]  7%|▋         | 8/120 [08:05<2:08:00, 68.57s/it]  8%|▊         | 9/120 [09:03<2:00:52, 65.34s/it]  8%|▊         | 10/120 [10:36<2:15:32, 73.94s/it]  9%|▉         | 11/120 [11:46<2:12:07, 72.73s/it] 10%|█         | 12/120 [13:20<2:22:19, 79.07s/it] 11%|█         | 13/120 [14:52<2:28:01, 83.01s/it] 12%|█▏        | 14/120 [16:25<2:32:04, 86.08s/it] 12%|█▎        | 15/120 [17:24<2:16:20, 77.91s/it] 13%|█▎        | 16/120 [18:20<2:03:31, 71.26s/it] 14%|█▍        | 17/120 [19:27<2:00:05, 69.96s/it] 15%|█▌        | 18/120 [20:43<2:02:01, 71.78s/it] 16%|█▌        | 19/120 [21:48<1:57:40, 69.91s/it] 17%|█▋        | 20/120 [23:22<2:08:35, 77.16s/it] 18%|█▊        | 21/120 [24:58<2:16:42, 82.85s/it] 18%|█▊        | 22/120 [26:33<2:21:06, 86.40s/it] 19%|█▉        | 23/120 [28:15<2:27:21, 91.15s/it] 20%|██        | 24/120 [29:39<2:22:26, 89.03s/it] 21%|██        | 25/120 [31:15<2:24:09, 91.05s/it] 22%|██▏       | 26/120 [32:48<2:23:22, 91.52s/it] 22%|██▎       | 27/120 [34:29<2:26:14, 94.34s/it] 23%|██▎       | 28/120 [35:22<2:05:50, 82.07s/it] 24%|██▍       | 29/120 [36:22<1:54:26, 75.46s/it] 25%|██▌       | 30/120 [37:16<1:43:30, 69.00s/it] 26%|██▌       | 31/120 [38:49<1:52:57, 76.15s/it] 27%|██▋       | 32/120 [40:01<1:49:46, 74.84s/it] 28%|██▊       | 33/120 [41:34<1:56:30, 80.35s/it] 28%|██▊       | 34/120 [42:43<1:50:23, 77.02s/it] 29%|██▉       | 35/120 [43:29<1:35:44, 67.58s/it] 30%|███       | 36/120 [44:42<1:36:50, 69.17s/it] 31%|███       | 37/120 [45:54<1:37:05, 70.18s/it] 32%|███▏      | 38/120 [47:27<1:45:21, 77.10s/it] 32%|███▎      | 39/120 [49:02<1:51:01, 82.24s/it] 33%|███▎      | 40/120 [50:05<1:42:16, 76.71s/it] 34%|███▍      | 41/120 [51:25<1:42:10, 77.60s/it] 35%|███▌      | 42/120 [52:36<1:38:18, 75.62s/it] 36%|███▌      | 43/120 [53:37<1:31:35, 71.38s/it] 37%|███▋      | 44/120 [55:19<1:41:51, 80.41s/it] 38%|███▊      | 45/120 [56:52<1:45:12, 84.17s/it] 38%|███▊      | 46/120 [58:26<1:47:33, 87.21s/it] 39%|███▉      | 47/120 [59:53<1:45:49, 86.98s/it] 40%|████      | 48/120 [1:01:25<1:46:23, 88.66s/it] 41%|████      | 49/120 [1:02:33<1:37:34, 82.46s/it] 42%|████▏     | 50/120 [1:04:13<1:42:07, 87.54s/it] 42%|████▎     | 51/120 [1:05:08<1:29:42, 78.01s/it] 43%|████▎     | 52/120 [1:05:53<1:16:59, 67.93s/it] 44%|████▍     | 53/120 [1:06:43<1:09:48, 62.51s/it] 45%|████▌     | 54/120 [1:08:14<1:18:22, 71.24s/it] 46%|████▌     | 55/120 [1:09:03<1:09:51, 64.48s/it] 47%|████▋     | 56/120 [1:09:49<1:02:45, 58.83s/it] 48%|████▊     | 57/120 [1:11:08<1:08:21, 65.10s/it] 48%|████▊     | 58/120 [1:12:23<1:10:20, 68.07s/it] 49%|████▉     | 59/120 [1:13:39<1:11:31, 70.36s/it] 50%|█████     | 60/120 [1:15:17<1:18:31, 78.53s/it] 51%|█████     | 61/120 [1:16:22<1:13:17, 74.53s/it] 52%|█████▏    | 62/120 [1:17:12<1:04:56, 67.17s/it] 52%|█████▎    | 63/120 [1:18:01<58:40, 61.76s/it]   53%|█████▎    | 64/120 [1:19:24<1:03:35, 68.14s/it] 54%|█████▍    | 65/120 [1:20:24<1:00:08, 65.61s/it] 55%|█████▌    | 66/120 [1:22:01<1:07:30, 75.01s/it] 56%|█████▌    | 67/120 [1:23:14<1:05:44, 74.43s/it] 57%|█████▋    | 68/120 [1:24:07<58:57, 68.03s/it]   57%|█████▊    | 69/120 [1:24:58<53:24, 62.84s/it] 58%|█████▊    | 70/120 [1:25:50<49:52, 59.85s/it] 59%|█████▉    | 71/120 [1:26:57<50:31, 61.86s/it] 60%|██████    | 72/120 [1:28:31<57:07, 71.41s/it] 61%|██████    | 73/120 [1:29:40<55:30, 70.87s/it] 62%|██████▏   | 74/120 [1:30:46<53:13, 69.43s/it] 62%|██████▎   | 75/120 [1:31:48<50:16, 67.02s/it] 63%|██████▎   | 76/120 [1:32:39<45:41, 62.30s/it] 64%|██████▍   | 77/120 [1:33:40<44:15, 61.76s/it] 65%|██████▌   | 78/120 [1:34:29<40:40, 58.11s/it] 66%|██████▌   | 79/120 [1:35:52<44:46, 65.53s/it] 67%|██████▋   | 80/120 [1:37:11<46:17, 69.44s/it] 68%|██████▊   | 81/120 [1:38:13<43:45, 67.32s/it] 68%|██████▊   | 82/120 [1:39:10<40:36, 64.11s/it] 69%|██████▉   | 83/120 [1:40:41<44:39, 72.42s/it] 70%|███████   | 84/120 [1:42:15<47:20, 78.90s/it] 71%|███████   | 85/120 [1:43:50<48:49, 83.71s/it] 72%|███████▏  | 86/120 [1:45:22<48:44, 86.01s/it] 72%|███████▎  | 87/120 [1:46:49<47:27, 86.28s/it] 73%|███████▎  | 88/120 [1:47:55<42:50, 80.34s/it] 74%|███████▍  | 89/120 [1:49:03<39:38, 76.72s/it] 75%|███████▌  | 90/120 [1:50:01<35:33, 71.12s/it] 76%|███████▌  | 91/120 [1:51:34<37:28, 77.53s/it] 77%|███████▋  | 92/120 [1:52:45<35:15, 75.57s/it] 78%|███████▊  | 93/120 [1:53:47<32:13, 71.62s/it] 78%|███████▊  | 94/120 [1:54:46<29:18, 67.62s/it] 79%|███████▉  | 95/120 [1:56:02<29:14, 70.16s/it] 80%|████████  | 96/120 [1:57:08<27:33, 68.88s/it] 81%|████████  | 97/120 [1:58:10<25:37, 66.83s/it] 82%|████████▏ | 98/120 [1:59:03<22:59, 62.71s/it] 82%|████████▎ | 99/120 [2:00:22<23:39, 67.59s/it] 83%|████████▎ | 100/120 [2:01:54<25:01, 75.10s/it] 84%|████████▍ | 101/120 [2:03:26<25:21, 80.08s/it] 85%|████████▌ | 102/120 [2:04:27<22:18, 74.34s/it] 86%|████████▌ | 103/120 [2:05:26<19:45, 69.75s/it] 87%|████████▋ | 104/120 [2:06:48<19:32, 73.31s/it] 88%|████████▊ | 105/120 [2:08:25<20:06, 80.42s/it] 88%|████████▊ | 106/120 [2:10:00<19:50, 85.03s/it] 89%|████████▉ | 107/120 [2:11:31<18:46, 86.68s/it] 90%|█████████ | 108/120 [2:12:57<17:18, 86.54s/it] 91%|█████████ | 109/120 [2:14:34<16:27, 89.75s/it] 92%|█████████▏| 110/120 [2:15:45<13:59, 83.97s/it] 92%|█████████▎| 111/120 [2:16:25<10:36, 70.67s/it] 93%|█████████▎| 112/120 [2:17:20<08:48, 66.05s/it] 94%|█████████▍| 113/120 [2:18:30<07:50, 67.16s/it] 95%|█████████▌| 114/120 [2:20:06<07:35, 75.84s/it] 96%|█████████▌| 115/120 [2:21:01<05:48, 69.63s/it] 97%|█████████▋| 116/120 [2:22:33<05:05, 76.38s/it] 98%|█████████▊| 117/120 [2:24:14<04:10, 83.67s/it] 98%|█████████▊| 118/120 [2:25:00<02:25, 72.53s/it] 99%|█████████▉| 119/120 [2:25:47<01:04, 64.87s/it]100%|██████████| 120/120 [2:26:27<00:00, 57.45s/it]100%|██████████| 120/120 [2:26:57<00:00, 73.48s/it]
+***** eval metrics *****
+  eval_block_avg          =        0.0
+  eval_gen_len            =   164.3109
+  eval_loss               =     1.4959
+  eval_rouge1             =    54.4476
+  eval_rouge2             =    34.5364
+  eval_rougeL             =    42.9378
+  eval_rougeLsum          =    49.5553
+  eval_runtime            = 2:28:02.94
+  eval_samples            =       1914
+  eval_samples_per_second =      0.215
+  eval_steps_per_second   =      0.014
+Fraction of tokens that do not change in probability after each layer:
+Layer 0: 2.91
+Layer 1: 2.86
+Layer 2: 2.97
+Layer 3: 3.04
+Layer 4: 3.00
+Layer 5: 3.18
+Layer 6: 3.30
+Layer 7: 3.55
+Layer 8: 3.46
+Layer 9: 3.64
+Layer 10: 4.10
+Layer 11: 5.01
+
+Fraction of tokens that decrease in probability after being at their maximum: 4.85
+
+Fraction of switches between first and second position at each layer:
+Layer 0: 0.00
+Layer 1: 0.15
+Layer 2: 0.10
+Layer 3: 0.07
+Layer 4: 0.03
+Layer 5: 0.02
+Layer 6: 0.02
+Layer 7: 0.02
+Layer 8: 0.06
+Layer 9: 0.04
+Layer 10: 0.03
+Layer 11: 0.03
+[INFO|modelcard.py:451] 2024-05-04 21:35:22,525 >> Dropping the following result as it does not have all the necessary fields:
+{'task': {'name': 'Summarization', 'type': 'summarization'}, 'dataset': {'name': 'big_patent e', 'type': 'big_patent', 'config': 'e', 'split': 'validation', 'args': 'e'}}
+
+JOB STATISTICS
+==============
+Job ID: 6151786
+Cluster: snellius
+User/Group: scur0408/scur0408
+State: COMPLETED (exit code 0)
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 03:13:01
+CPU Efficiency: 7.20% of 1-20:39:36 core-walltime
+Job Wall-clock time: 02:28:52
+Memory Utilized: 3.58 GB
+Memory Efficiency: 2.98% of 120.00 GB

@@ -1,0 +1,39 @@
+#!/bin/bash
+
+#SBATCH --partition=gpu
+#SBATCH --gpus=1
+#SBATCH --job-name=RecordMonotonicityFree
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=18
+#SBATCH --time=04:00:00
+#SBATCH --output=record_monotonicity_free_%A.out
+
+module purge
+module load 2022
+module load Anaconda3/2022.05
+
+export CUBLAS_WORKSPACE_CONFIG=:4096:8
+
+cd $HOME/fast_robust_early_exit
+conda activate dl2
+pip install -r requirements.txt
+
+CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
+    run_summarization.py \
+    --check_monotonicity \
+    --model_name_or_path ./checkpoints/BIGPATENT/big_patent_longt5_base_shallowdeep_kd_dyna \
+    --tokenizer_name google/long-t5-tglobal-base \
+    --do_eval \
+    --dataset_name big_patent \
+    --dataset_config_name e \
+    --output_dir ./save/bigpatent_longt5_base/ \
+    --per_device_train_batch_size 2 \
+    --per_device_eval_batch_size 16 \
+    --overwrite_output_dir \
+    --predict_with_generate \
+    --source_prefix "summarize: " \
+    --save_steps 2583 \
+    --learning_rate 1e-4 \
+    --max_source_length 2048 \
+    --max_target_length 512 \
+    --max_eval_samples 10000
