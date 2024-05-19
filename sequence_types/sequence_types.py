@@ -104,3 +104,81 @@ def check_strict_monotonicity(hidden_state_similarities, start_layer=0):
     first_order_diff = torch.diff(h, prepend=torch.zeros(h.shape[0], 1))
     strictly_monotonic = (first_order_diff > 0).count_nonzero(dim=1) == h.shape[-1]
     return strictly_monotonic
+
+
+def find_sequence_types(results, tokenizer, topk=10):
+    """Find the easy and hard sequences."""
+    
+    easy_sequences = []
+    hard_sequences = []
+
+    # Find the examples with the highest and lowest mean similarity
+    max_means = torch.tensor([results[i]["mean_similarity"].max().item() for i in results])
+    argmax_means = torch.tensor([results[i]["mean_similarity"].argmax().item() for i in results])
+    min_means = torch.tensor([results[i]["mean_similarity"].min().item() for i in results])
+    argmin_means = torch.tensor([results[i]["mean_similarity"].argmin().item() for i in results])
+
+    # Find the examples the highest and lowest mean similarity
+    easy_token_examples = torch.argsort(max_means, descending=True)[:topk]
+    hard_token_examples = torch.argsort(min_means)[:topk]
+
+    easy_token_tuples = [(i, argmax_means[i].item()) for i in easy_token_examples.tolist()]
+    hard_token_tuples = [(i, argmin_means[i].item()) for i in hard_token_examples.tolist()]
+
+    # Easy and hard tokens
+    easy_tokens = [
+        tokenizer.decode(results[e]["decoder_input_ids"][i+1])
+        for e, i in easy_token_tuples
+    ]
+    hard_tokens = [
+        tokenizer.decode(results[e]["decoder_input_ids"][i+1])
+        for e, i in hard_token_tuples
+    ]
+
+    # Find the sequences with the highest and lowest number of similar states
+    easy_seq = tokenizer.batch_decode(
+        [
+            results[e]["decoder_input_ids"][:i+1]
+            for e, i in easy_token_tuples
+        ]
+    )
+    hard_seq = tokenizer.batch_decode(
+        [
+            results[e]["decoder_input_ids"][:i+1]
+            for e, i in hard_token_tuples
+        ]
+    )
+
+    for n, (e, i) in enumerate(easy_token_tuples):
+        easy_sequences.append(
+            {
+                "example_id": e,
+                "token_id": i,
+                "hidden_state_similarities": results[e]['hidden_satate_similaritites'][i],
+                "n_similar_states": results[e]["n_similar_states"][i].item(),
+                "first_similar_state": results[e]["first_similar_state"][i].item(),
+                "token_to_predict": easy_tokens[n],
+                "input_sequence": easy_seq[n],
+                "strictly_monotonic": results[e]["strictly_monotonic"][i].item(),
+                "strictly_monotonic_after_4": results[e]["strictly_monotonic_after_4"][i].item(),
+                "strictly_monotonic_after_8": results[e]["strictly_monotonic_after_8"][i].item(),
+            }
+        )
+
+    for n, (e, i) in enumerate(hard_token_tuples):
+        hard_sequences.append(
+            {
+                "example_id": e,
+                "token_id": i,
+                "hidden_state_similarities": results[e]['hidden_satate_similaritites'][i],
+                "n_similar_states": results[e]["n_similar_states"][i].item(),
+                "first_similar_state": results[e]["first_similar_state"][i].item(),
+                "token_to_predict": hard_tokens[n],
+                "input_sequence": hard_seq[n],
+                "strictly_monotonic": results[e]["strictly_monotonic"][i].item(),
+                "strictly_monotonic_after_4": results[e]["strictly_monotonic_after_4"][i].item(),
+                "strictly_monotonic_after_8": results[e]["strictly_monotonic_after_8"][i].item(),
+            }
+        )
+
+    return easy_sequences, hard_sequences
