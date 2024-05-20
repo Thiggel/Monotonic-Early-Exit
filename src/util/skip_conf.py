@@ -41,6 +41,24 @@ def last_three_hiddens_classifier(
     probs = torch.softmax(preds, dim=-1)
     return probs[..., 1].squeeze()
 
+def hidden_state_saturation(
+    logits: torch.Tensor = None,
+    hidden_states: torch.Tensor = None,
+    classifier: torch.nn.Linear = None,
+    all_hidden_states: list[torch.Tensor] = None,
+    all_softmax_values: list[torch.Tensor] = None,
+    layer_index: int = None,
+):
+    if all_hidden_states is None or len(all_hidden_states) < 2:
+        return torch.zeros(hidden_states.shape[0])
+
+    last_hidden = all_hidden_states[-1]
+    second_last_hidden = all_hidden_states[-2]
+
+    similarity = torch.nn.functional.cosine_similarity(last_hidden, second_last_hidden, dim=2).squeeze()
+
+    return similarity
+
 
 def last_three_top_prob_heuristic(
     logits: torch.Tensor = None,
@@ -137,6 +155,7 @@ def get_confidence_class(key):
         'recurrent_classifier': recurrent_classifier,
         'last_three_hiddens_classifier': last_three_hiddens_classifier,
         'last_three_top_prob_heuristic': last_three_top_prob_heuristic,
+        'hidden_state_saturation': hidden_state_saturation,
     }
 
     if key in _conf_class_map:
