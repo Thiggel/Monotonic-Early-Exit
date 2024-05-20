@@ -1,0 +1,23 @@
+python run_question_answering.py \
+    --model_name_or_path ./checkpoints/SQuAD/squad_t5_large_weighted_ce \
+    --tokenizer_name google-t5/t5-large \
+    --do_eval \
+    --dataset_name squad \
+    --context_column context \
+    --question_column question \
+    --answer_column answers \
+    --output_dir ./save/squad_t5_large/ \
+    --per_device_train_batch_size 4 \
+    --per_device_eval_batch_size 32 \
+    --overwrite_output_dir \
+    --predict_with_generate \
+    --save_steps 5475 \
+    --learning_rate 1e-4 \
+    --num_train_epochs 10 \
+    --max_seq_length 512 \
+    --output_hidden_states_decoder True \
+    --use_early_exit True \
+    --exit_conf_type meta \
+    --exit_conf_threshold 0.6 \
+    --exit_min_layer 4 \
+    --intermediate_loss_fn weighted_ce 
