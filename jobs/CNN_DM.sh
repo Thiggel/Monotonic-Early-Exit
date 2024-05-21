@@ -17,8 +17,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --num_train_epochs 10 \
     --output_hidden_states_decoder True \
     --use_early_exit False \
-    --deploy_scenario False \
-    --max_eval_samples 32
+    --deploy_scenario False
 
 # last_three_hiddens_classifier
 python -m torch.distributed.run --nproc_per_node=1 \
@@ -44,8 +43,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --do_train \
     --train_meta_cm_head \
     --num_train_epochs 5 \
-    --deploy_scenario False \
-    --exit_conf_threshold 0.5
+    --deploy_scenario False
     
     
 # meta
@@ -72,10 +70,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --do_train \
     --train_meta_cm_head \
     --num_train_epochs 5 \
-    --deploy_scenario False \
-    --max_train_samples 32 \
-    --max_eval_samples 32 \
-    --exit_conf_threshold 0.5
+    --deploy_scenario False
 
 
 # softmax
@@ -99,9 +94,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --use_early_exit True \
     --exit_conf_type softmax \
     --exit_position_temp 4 \
-    --deploy_scenario False \
-    --max_eval_samples 32 \
-    --exit_conf_threshold 0.5
+    --deploy_scenario False
 
 # hidden_state_saturation
 python -m torch.distributed.run --nproc_per_node=1 \
@@ -124,8 +117,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --use_early_exit True \
     --exit_conf_type hidden_state_saturation \
     --exit_position_temp 4 \
-    --deploy_scenario False \
-    --max_eval_samples 32
+    --deploy_scenario False
 
 # last_three_top_prob_heuristic
 python -m torch.distributed.run --nproc_per_node=1 \
@@ -148,6 +140,5 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --use_early_exit True \
     --exit_conf_type last_three_top_prob_heuristic \
     --exit_position_temp 4 \
-    --deploy_scenario False \
-    --max_eval_samples 32
+    --deploy_scenario False
 
