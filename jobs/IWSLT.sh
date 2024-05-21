@@ -1,5 +1,25 @@
 . environment.sh
 
+# No Early Exit
+python -m torch.distributed.run --nproc_per_node=1 \
+    src/run_translation.py \
+    --model_name_or_path ../checkpoints/IWSLT \
+    --do_eval \
+    --dataset_name iwslt2017 \
+    --dataset_config_name iwslt2017-de-en \
+    --output_dir ./save/iwslt_t5_large/ \
+    --per_device_eval_batch_size 1 \
+    --per_device_train_batch_size 32 \
+    --deploy_scenario False \
+    --use_synchronize True \
+    --overwrite_output_dir \
+    --predict_with_generate \
+    --source_prefix "translate German to English: " \
+    --output_hidden_states_decoder True \
+    --use_early_exit False \
+    --source_lang "de" \
+    --target_lang "en" \
+
 # Normal Classifier
 python -m torch.distributed.run --nproc_per_node=1 \
     src/run_translation.py \
