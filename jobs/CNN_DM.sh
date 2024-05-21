@@ -1,7 +1,7 @@
 # no early exit
 python -m torch.distributed.run --nproc_per_node=1 \
     ../src/run_summarization.py \
-    --model_name_or_path ../src/model_checkpoints/t5-large \
+    --model_name_or_path ../checkpoints/CNNDM \
     --tokenizer_name t5-large \
     --do_eval \
     --dataset_name cnn_dailymail \
@@ -22,7 +22,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
 # last_three_hiddens_classifier
 python -m torch.distributed.run --nproc_per_node=1 \
     ../src/run_summarization.py \
-    --model_name_or_path ../src/model_checkpoints/t5-large \
+    --model_name_or_path ../checkpoints/CNNDM \
     --tokenizer_name t5-large \
     --do_eval \
     --dataset_name cnn_dailymail \
@@ -49,7 +49,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
 # meta
 python -m torch.distributed.run --nproc_per_node=1 \
     ../src/run_summarization.py \
-    --model_name_or_path ../src/model_checkpoints/t5-large \
+    --model_name_or_path ../checkpoints/CNNDM \
     --tokenizer_name t5-large \
     --do_eval \
     --dataset_name cnn_dailymail \
@@ -75,7 +75,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
 # recurrent classifier
 python -m torch.distributed.run --nproc_per_node=1 \
     ../src/run_summarization.py \
-    --model_name_or_path ../src/model_checkpoints/t5-large \
+    --model_name_or_path ../checkpoints/CNNDM \
     --tokenizer_name t5-large \
     --do_eval \
     --dataset_name cnn_dailymail \
@@ -102,7 +102,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
 # softmax
 python -m torch.distributed.run --nproc_per_node=1 \
     ../src/run_summarization.py \
-    --model_name_or_path ../src/model_checkpoints/t5-large \
+    --model_name_or_path ../checkpoints/CNNDM \
     --tokenizer_name t5-large \
     --do_eval \
     --dataset_name cnn_dailymail \
@@ -125,7 +125,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
 # hidden_state_saturation
 python -m torch.distributed.run --nproc_per_node=1 \
     ../src/run_summarization.py \
-    --model_name_or_path ../src/model_checkpoints/t5-large \
+    --model_name_or_path ../checkpoints/CNNDM \
     --tokenizer_name t5-large \
     --do_eval \
     --dataset_name cnn_dailymail \
@@ -148,7 +148,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
 # last_three_top_prob_heuristic
 python -m torch.distributed.run --nproc_per_node=1 \
     ../src/run_summarization.py \
-    --model_name_or_path ../src/model_checkpoints/t5-large \
+    --model_name_or_path ../checkpoints/CNNDM \
     --tokenizer_name t5-large \
     --do_eval \
     --dataset_name cnn_dailymail \

@@ -806,7 +806,10 @@ class LSTMClassifier(nn.Module):
             device = x.device
             self.reset_hidden_state(batch_size, device)
 
-        out, self.h_c = self.lstm(x.unsqueeze(1), self.h_c)
+        if len(x.shape) == 2:
+          x = x.unsqueeze(1)
+
+        out, self.h_c = self.lstm(x, self.h_c)
         
         out = self.linear(out)
         
