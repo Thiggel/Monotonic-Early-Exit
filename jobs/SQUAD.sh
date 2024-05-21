@@ -122,7 +122,7 @@ CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
     --deploy_scenario False 
     
 # three hidden states classifier
-!CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
+CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
     ../src/run_question_answering.py \
     --model_name_or_path ../src/model_checkpoints/t5-large \
     --tokenizer_name t5-large \
