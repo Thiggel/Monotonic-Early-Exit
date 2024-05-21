@@ -146,10 +146,19 @@ def compute_cm_head_loss(config, lm_head, cm_head, model_dim, all_hidden_states=
     
     device = all_lm_argmax[-1].device
     meta_labels, meta_preds = torch.empty(0).to(device), torch.empty(0).to(device)
-    for idx, h in enumerate(all_hidden_states[:-1]):
-        labels_ = (all_lm_logits[idx].argmax(-1) == all_lm_argmax).view(-1)  # (bsz, len) -> (bsz * len)
-        meta_labels = torch.cat([meta_labels, labels_], dim=0)  # (bsz * len)
-        meta_preds = torch.cat([meta_preds, cm_head(h.reshape(-1, h.size(-1)))], dim=0)  # (bsz * len, 2)
+
+    if config.exit_conf_type == 'last_three_hiddens_classifier':
+        for idx in range(3, len(all_hidden_states)):
+            last_three_hidden_states = torch.cat(all_hidden_states[idx-3:idx], dim=2)
+            labels_ = (all_lm_logits[idx].argmax(-1) == all_lm_argmax).view(-1)  # (bsz, len) -> (bsz * len)
+            meta_labels = torch.cat([meta_labels, labels_], dim=0)  # (bsz * len)
+            meta_preds = torch.cat([meta_preds, cm_head(last_three_hidden_states.reshape(-1, last_three_hidden_states.size(-1)))], dim=0)  # (bsz * len, 2)
+    else:
+        for idx, h in enumerate(all_hidden_states[:-1]):
+            labels_ = (all_lm_logits[idx].argmax(-1) == all_lm_argmax).view(-1)  # (bsz, len) -> (bsz * len)
+            meta_labels = torch.cat([meta_labels, labels_], dim=0)  # (bsz * len)
+            meta_preds = torch.cat([meta_preds, cm_head(h.reshape(-1, h.size(-1)))], dim=0)  # (bsz * len, 2)
+
 
     # balanced loss
     pos, neg = sum(meta_labels) / len(meta_labels), 1 - sum(meta_labels) / len(meta_labels)
