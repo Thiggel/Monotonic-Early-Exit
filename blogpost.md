@@ -41,7 +41,7 @@ $$
     \ \ \ 
     \text{where }
     \ \ \ 
-    \alpha_i = \frac{i}{\sum _{j=1}^{L} j }
+    \alpha_i = i \bigg({\sum _{j=1}^{L} j }\bigg)^{-1}
 $$
 
 where $\mathcal{L}_i$ is the cross entropy loss using each layer's hidden state, and $\alpha_i$ favors higher layers according to the equation above.\\
