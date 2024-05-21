@@ -918,17 +918,28 @@ class DeployT5Stack(T5Stack):
                         lm_logits = lm_head(_hidden_states) if not self.config.tie_word_embeddings \
                             else lm_head(_hidden_states * (self.config.d_model ** -0.5))
                             
-                        skip_mask = get_skip_mask(
+                        skip_mask, conf = get_skip_mask(
                             lm_logits,
                             _hidden_states,
                             cm_head,
                             config=self.config,
-                            pos_time=past_key_values[i][0].shape[2] + 1 if past_key_values[i] is not None else 1
+                            adapt_threshold=self.bmm_threshold,
+                            pos_time=past_key_values[i][0].shape[2] + 1 if past_key_values[i] is not None else 1,
+                            return_conf=True
                         )
                         if not skip_mask: self.block_op[i] += 1                    
                         if skip_mask: self.lm_logits = lm_logits
                         if self.config.use_synchronize: torch.cuda.synchronize()
                         self.deploy_time['time_confidence'] += (datetime.datetime.now() - start)
+                        if self.config.use_adapt_threshold:
+                            # Calibration Set Update
+                            self.lm_logits = self.lm_head(self.dropout(self.final_layer_norm(hidden_states)))
+                            deep_pred = self.lm_logits.argmax(-1)
+                            shallow_pred = torch.cat(self.stack_pred).argmax(-1).view(-1)
+
+                            self.stack_conf_all += self.stack_conf
+                            self.stack_ident_all += ((deep_pred.view(-1) == shallow_pred.view(-1)).long().cpu().numpy(),)
+                            self.stack_conf, self.stack_pred = (), ()
                     
                 # Normal framework
                 elif (not self.use_shallow_deep and not self.use_early_exit):
