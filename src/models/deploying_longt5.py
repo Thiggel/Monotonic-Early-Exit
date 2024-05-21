@@ -654,7 +654,7 @@ class DeployLongT5Stack(LongT5Stack):
                         if skip_mask: self.lm_logits = lm_logits
                         if self.config.use_synchronize: torch.cuda.synchronize()
                         self.deploy_time['time_confidence'] += (datetime.datetime.now() - start)
-                        if not skip_mask and self.config.use_adapt_threshold:
+                        if self.config.use_adapt_threshold:
                             # Calibration Set Update
                             self.lm_logits = self.lm_head(self.dropout(self.final_layer_norm(hidden_states)))
                             deep_pred = self.lm_logits.argmax(-1)
