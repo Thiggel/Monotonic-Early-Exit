@@ -420,9 +420,6 @@ def main(model_args, data_args, training_args, additional_args, model_cls, train
             raise ValueError("--do_eval requires a validation dataset")
         eval_examples = raw_datasets["validation"]
         
-        # TODO: reset this!
-        eval_examples = eval_examples.select(range(160))
-        
         
         if data_args.max_eval_samples is not None:
             # We will select sample from whole data

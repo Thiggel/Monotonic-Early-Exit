@@ -14,7 +14,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --overwrite_output_dir \
     --predict_with_generate \
     --source_prefix "summarize: " \
-    --num_train_epochs 10 \
+    --num_train_epochs 5 \
     --output_hidden_states_decoder True \
     --use_early_exit False \
     --deploy_scenario False
@@ -35,7 +35,6 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --overwrite_output_dir \
     --predict_with_generate \
     --source_prefix "summarize: " \
-    --num_train_epochs 10 \
     --output_hidden_states_decoder True \
     --use_early_exit True \
     --exit_conf_type last_three_hiddens_classifier \
@@ -62,7 +61,6 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --overwrite_output_dir \
     --predict_with_generate \
     --source_prefix "summarize: " \
-    --num_train_epochs 10 \
     --output_hidden_states_decoder True \
     --use_early_exit True \
     --exit_conf_type meta \
@@ -88,7 +86,6 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --overwrite_output_dir \
     --predict_with_generate \
     --source_prefix "summarize: " \
-    --num_train_epochs 10 \
     --output_hidden_states_decoder True \
     --use_early_exit True \
     --exit_conf_type recurrent_classifier \
@@ -115,7 +112,6 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --overwrite_output_dir \
     --predict_with_generate \
     --source_prefix "summarize: " \
-    --num_train_epochs 10 \
     --output_hidden_states_decoder True \
     --use_early_exit True \
     --exit_conf_type softmax \
@@ -138,7 +134,6 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --overwrite_output_dir \
     --predict_with_generate \
     --source_prefix "summarize: " \
-    --num_train_epochs 10 \
     --output_hidden_states_decoder True \
     --use_early_exit True \
     --exit_conf_type hidden_state_saturation \
@@ -161,7 +156,6 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --overwrite_output_dir \
     --predict_with_generate \
     --source_prefix "summarize: " \
-    --num_train_epochs 10 \
     --output_hidden_states_decoder True \
     --use_early_exit True \
     --exit_conf_type last_three_top_prob_heuristic \
