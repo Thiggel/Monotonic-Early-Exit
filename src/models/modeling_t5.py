@@ -813,7 +813,7 @@ class LSTMClassifier(nn.Module):
         return out.squeeze()
 
     def detach_hidden_state(self):
-        self.h_c = (self.h_c[0].detach(), self.h_c[1].detach()
+        self.h_c = (self.h_c[0].detach(), self.h_c[1].detach())
 
 
 class EffT5ForConditionalGeneration(T5ForConditionalGeneration):
