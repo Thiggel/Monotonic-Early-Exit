@@ -807,6 +807,17 @@ class EffT5ForConditionalGeneration(T5ForConditionalGeneration):
         self.decoder = EffT5Stack(decoder_config, self.shared)
 
         self.lm_head = nn.Linear(config.d_model, config.vocab_size, bias=False)
+
+        if self.config.train_meta_cm_head:
+            for param in self.encoder.parameters():
+                param.requires_grad = False
+
+            for param in self.decoder.parameters():
+                param.requires_grad = False
+
+            for param in self.lm_head.parameters():
+                param.requires_grad = False
+        
         
         if self.config.exit_conf_type == 'meta' or self.config.shallow2deep_conf_type or self.config.exit_conf_type == "meta_n":
             self.cm_head = nn.Sequential(
