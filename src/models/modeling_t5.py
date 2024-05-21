@@ -859,7 +859,7 @@ class EffT5ForConditionalGeneration(T5ForConditionalGeneration):
         elif self.config.exit_conf_type == 'recurrent_classifier':
             self.cm_head = LSTMClassifier(
                 input_size=config.d_model,
-                hidden_size=config.d_model,
+                hidden_size=250,
                 output_size=2
             )
 
