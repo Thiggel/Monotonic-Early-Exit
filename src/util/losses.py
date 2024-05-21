@@ -147,6 +147,9 @@ def compute_cm_head_loss(config, lm_head, cm_head, model_dim, all_hidden_states=
     device = all_lm_argmax[-1].device
     meta_labels, meta_preds = torch.empty(0).to(device), torch.empty(0).to(device)
 
+    if config.exit_conf_type == 'recurrent_classifier':
+        cm_head.reset()
+
     if config.exit_conf_type == 'last_three_hiddens_classifier':
         for idx in range(3, len(all_hidden_states)):
             last_three_hidden_states = torch.cat(all_hidden_states[idx-3:idx], dim=2)

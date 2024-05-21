@@ -15,8 +15,10 @@ def recurrent_classifier(
     assert hidden_states is not None
     assert classifier is not None
     
-    preds, (h, c) = classifier(hidden_states) if layer_index > 0 \
-        else classifier(hidden_states, None)
+    if layer_index == 0:
+        classifier.reset()
+
+    preds = classifier(hidden_states)
 
     probs = torch.softmax(preds, dim=-1)
     return probs[..., 1].squeeze()

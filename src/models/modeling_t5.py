@@ -785,6 +785,36 @@ class EffT5Stack(T5Stack):
             cross_attentions=all_cross_attentions,
         )
 
+class LSTMClassifier(nn.Module):
+    def __init__(self, input_size, hidden_size, output_size):
+        super(LSTMClassifier, self).__init__()
+        self.hidden_size = hidden_size
+        self.lstm = nn.LSTM(input_size, hidden_size, 1, batch_first=True)
+        self.linear = nn.Linear(hidden_size, output_size)
+        self.h_c = None
+
+    def reset(self):
+      self.h_c = None
+
+    def reset_hidden_state(self, batch_size, device):
+        self.h_c = (torch.zeros(1, batch_size, self.hidden_size).to(device),
+                    torch.zeros(1, batch_size, self.hidden_size).to(device))
+
+    def forward(self, x):
+        if self.h_c is None:
+            batch_size = x.size(0)
+            device = x.device
+            self.reset_hidden_state(batch_size, device)
+
+        out, self.h_c = self.lstm(x.unsqueeze(1), self.h_c)
+        
+        out = self.linear(out)
+        
+        return out.squeeze()
+
+    def detach_hidden_state(self):
+        self.h_c = (self.h_c[0].detach(), self.h_c[1].detach()
+
 
 class EffT5ForConditionalGeneration(T5ForConditionalGeneration):
     def __init__(self, config):
@@ -827,11 +857,10 @@ class EffT5ForConditionalGeneration(T5ForConditionalGeneration):
             )
 
         elif self.config.exit_conf_type == 'recurrent_classifier':
-            self.cm_head = nn.LSTM(
+            self.cm_head = LSTMClassifier(
                 input_size=config.d_model,
-                hidden_size=config.d_model, 
-                num_layers=2,
-                batch_first=True
+                hidden_size=config.d_model,
+                output_size=2
             )
 
         elif self.config.exit_conf_type == 'last_three_hiddens_classifier':
