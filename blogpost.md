@@ -16,9 +16,7 @@ Based on these two findings, we (2) propose a new early exiting mechanism that e
 ## The Transformer Architecture
 Transformer neural networks \parencite{vaswani2017attention} rely on the attention mechanism \parencite{bahdanau2014neural} for modeling dependencies between tokens in a sequence, e.g. words or image patches. For two tokens A and B, attention is computed as
 
-\[
-\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
-\]
+$$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
 
 where $Q$ is a learned linear projection of A, $K$ and $V$ are projections of B, and $d_k$ is the number of dimensions in $K$.
 
@@ -38,15 +36,13 @@ We specifically look at two works that aim to model the confidence or uncertaint
 ### CALM
 \parencite{schuster2022confident} fine-tunes an LLM with a weighted cross-entropy objective that optimizes each layer to output the correct output probabilities given a shared LM-head:
 
-\[
-\begin{array}{c@{\quad}c@{\quad}l}
+$$
     \mathcal{L} = \sum^L_{i=1} \alpha_i \mathcal{L}_i
-\end{array}
-\text{where }
-\begin{array}{l}
-   \alpha_i = \frac{i}{\sum^L_{j=1} j}
-\end{array}
-\]
+    \ \ \ 
+    \text{where }
+    \ \ \ 
+    \alpha_i = \frac{i}{\sum _{j=1}^{L} j }
+$$
 
 where $\mathcal{L}_i$ is the cross entropy loss using each layer's hidden state, and $\alpha_i$ favors higher layers according to the equation above.\\
 \cite{schuster2022confident} further experiment with three different confidence measures: (1) computing the word probabilities from the current hidden state after each Transformer layer and exiting if the difference between the top two probabilities exceeds a calibrated threshold. (2) computing the closing similarity between the current and last hidden state, and exiting if the similarity surpasses a calibrated threshold. (3) using a classifier that predicts the exit probability based on the current hidden state.\\
@@ -55,9 +51,9 @@ However, when computing attention between already generated tokens that were exi
 ### FREE
 \parencite{bae2023fast} extends CALM, trading compute adaptability for decreased overhead. Specifically, it reduces the number of exit points to two compared to every layer so that the model can either exit at, e.g., the fourth layer or use the entire network. Accordingly,  FREE can copy missing hidden states in parallel to reduce overhead. Lastly, FREE replaces the expensively calibrated confidence thresholds used in CALM by learned ones. In addition to the weighted cross-entropy objective, FREE uses a layerwise knowledge distillation loss 
 
-$$\mathcal{L}_{\mathrm{KD}}=\frac{1}{\left|L_S\right|} \sum_{i=1}^{L_S} \operatorname{MSE}\left(\mathbf{H}_S^i, \mathbf{H}_D^{m(i)}\right)$$
+$$ \mathcal{L}_{\mathrm{KD}}= \frac{1}{\left|L_S\right|} \sum _{i=1}^{L_S} \text{MSE}\left(\mathbf{H}_S^i, \mathbf{H}_D^{m(i)}\right) $$
 
-where $\mathbf{H}_S^i$ refers to a layer in the shallow module, i.e., the layers before the early exit point, and $\mathbf{H}_D^{m(i)}$ refers to a layer in the deep module, i.e., the layers after the early exit point. $m(i)$ either (1) maps the last layer, (2) is a uniform mapping from shallow to deep layers, or (3) maps to the closest hidden state in the deep module, i.e., $m(i)=\underset{j}{\arg \min } \operatorname{MSE}\left(\mathbf{H}_S^i, \mathbf{H}_D^j\right)$.
+where $\mathbf{H}_S^i$ refers to a layer in the shallow module, i.e., the layers before the early exit point, and $\mathbf{H}_D^{m(i)}$ refers to a layer in the deep module, i.e., the layers after the early exit point. $m(i)$ either (1) maps the last layer, (2) is a uniform mapping from shallow to deep layers, or (3) maps to the closest hidden state in the deep module, i.e., $m(i)=\underset{j}{\arg \min } \text{MSE}\left(\mathbf{H}_S^i, \mathbf{H}_D^j\right)$.
 
 # Do Early-Exiting Networks Behave Monotonically?
 All the methods discussed assume that confidence evolves monotonically, i.e., that the model will be more certain of a prediction the more computation it performs on a token. This assumption is central to the functioning of early exit methods regarding the decision when to exit and whether it is sensible to exit early in the first place - it could be that the evolvement of hidden states is utterly unpredictable and does not resemble any meaningful connection to the eventual word probabilities at the final layer, i.e., the network might be a black box whose intermediate representations are meaningful to itself but not to the outside world. On the other hand, it might be that intermediate hidden states can be seen as "contemplation" of the model, or that the model even tries to decide on a prediction as early as possible in its contemplation process.
