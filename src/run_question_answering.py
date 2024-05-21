@@ -416,8 +416,6 @@ def main(model_args, data_args, training_args, additional_args, model_cls, train
             train_dataset = train_dataset.select(range(max_train_samples))
 
     if training_args.do_eval:
-        t1 = time.time()
-
         if "validation" not in raw_datasets:
             raise ValueError("--do_eval requires a validation dataset")
         eval_examples = raw_datasets["validation"]
@@ -444,12 +442,6 @@ def main(model_args, data_args, training_args, additional_args, model_cls, train
             # During Feature creation dataset samples might increase, we will select required samples again
             max_eval_samples = min(len(eval_dataset), data_args.max_eval_samples)
             eval_dataset = eval_dataset.select(range(max_eval_samples))
-
-        seconds_to_hours = 3600
-        total_time = time.time() - t1
-        total_time_per_datapoint = total_time / len(eval_dataset)
-
-        print('---- Total time for evaluation preprocessing per datapoint: {:.2f} seconds'.format(total_time))
 
     if training_args.do_predict:
         if "test" not in raw_datasets:
