@@ -818,7 +818,7 @@ class DeployT5Stack(T5Stack):
         self.lm_logits = None  # to prevent calculating logits twice
 
         for i, layer_module in enumerate(self.block):
-                
+            print("layer " + str(i))    
             # Static framework
             if self.is_decoder and self.config.static_exit_layer is not None:
                 if i == self.config.static_exit_layer: break
@@ -831,7 +831,7 @@ class DeployT5Stack(T5Stack):
             if self.is_decoder and auto_reg and i == 0: self.block_op[i] += 1
                             
             if self.is_decoder and auto_reg and i > 0:
-                
+                print("conditions done")
                 # Shallow-Deep framework 
                 if self.use_shallow_deep and i == self.shallow_exit_layer:
                     if self.config.use_synchronize: torch.cuda.synchronize()
