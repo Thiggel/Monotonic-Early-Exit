@@ -2,7 +2,7 @@
 
 # no early exit
 CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
-    run_question_answering.py \
+    src/run_question_answering.py \
     --model_name_or_path checkpoints/SQUAD \
     --tokenizer_name t5-large \
     --do_eval \
@@ -11,8 +11,7 @@ CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
     --question_column question \
     --answer_column answers \
     --output_dir ./save/squad_t5_large/ \
-    --per_device_train_batch_size 16 \
-    --per_device_eval_batch_size 16 \
+    --per_device_eval_batch_size 32 \
     --overwrite_output_dir \
     --predict_with_generate \
     --save_steps 5475 \
@@ -23,7 +22,7 @@ CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
 
 # softmax
 CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
-    run_question_answering.py \
+    src/run_question_answering.py \
     --model_name_or_path checkpoints/SQUAD \
     --tokenizer_name t5-large \
     --do_eval \
@@ -32,8 +31,7 @@ CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
     --question_column question \
     --answer_column answers \
     --output_dir ./save/squad_t5_large/ \
-    --per_device_train_batch_size 16 \
-    --per_device_eval_batch_size 16 \
+    --per_device_eval_batch_size 32 \
     --overwrite_output_dir \
     --predict_with_generate \
     --save_steps 5475 \
@@ -48,7 +46,7 @@ CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
 
 # hidden_state_saturation
 CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
-    run_question_answering.py \
+    src/run_question_answering.py \
     --model_name_or_path checkpoints/SQUAD \
     --tokenizer_name t5-large \
     --do_eval \
@@ -57,8 +55,7 @@ CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
     --question_column question \
     --answer_column answers \
     --output_dir ./save/squad_t5_large/ \
-    --per_device_train_batch_size 16 \
-    --per_device_eval_batch_size 16 \
+    --per_device_eval_batch_size 32 \
     --overwrite_output_dir \
     --predict_with_generate \
     --save_steps 5475 \
@@ -73,7 +70,7 @@ CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
 
 #last_three_prob_heuristic
 CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
-    run_question_answering.py \
+    src/run_question_answering.py \
     --model_name_or_path checkpoints/SQUAD \
     --tokenizer_name t5-large \
     --do_eval \
@@ -82,8 +79,7 @@ CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
     --question_column question \
     --answer_column answers \
     --output_dir ./save/squad_t5_large/ \
-    --per_device_train_batch_size 16 \
-    --per_device_eval_batch_size 16 \
+    --per_device_eval_batch_size 32 \
     --overwrite_output_dir \
     --predict_with_generate \
     --save_steps 5475 \
@@ -107,8 +103,8 @@ CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
     --question_column question \
     --answer_column answers \
     --output_dir src/save/squad_t5_large/ \
-    --per_device_train_batch_size 16 \
-    --per_device_eval_batch_size 16 \
+    --per_device_train_batch_size 32 \
+    --per_device_eval_batch_size 32 \
     --overwrite_output_dir \
     --predict_with_generate \
     --save_steps 5475 \
@@ -121,7 +117,8 @@ CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
     --do_train \
     --train_meta_cm_head \
     --num_train_epochs 5 \
-    --deploy_scenario False 
+    --deploy_scenario False \
+    --max_train_samples 10000
     
 # three hidden states classifier
 CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
@@ -148,7 +145,8 @@ CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
     --train_meta_cm_head \
     --num_train_epochs 5 \
     --exit_conf_type last_three_hiddens_classifier \
-    --deploy_scenario False 
+    --deploy_scenario False \
+    --max_train_samples 10000
     
 # recurrent classifier
 CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
@@ -175,4 +173,5 @@ CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
     --do_train \
     --train_meta_cm_head \
     --num_train_epochs 5 \
-    --deploy_scenario False 
+    --deploy_scenario False \
+    --max_train_samples 10000

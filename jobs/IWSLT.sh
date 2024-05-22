@@ -1,6 +1,6 @@
-. environment.sh
+. jobs/environment.sh
 
-# No Early Exit
+# no early exit
 python -m torch.distributed.run --nproc_per_node=1 \
     src/run_translation.py \
     --model_name_or_path checkpoints/IWSLT \
@@ -9,19 +9,18 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --dataset_name iwslt2017 \
     --dataset_config_name iwslt2017-de-en \
     --output_dir ./save/iwslt_t5_large/ \
-    --per_device_eval_batch_size 1 \
-    --per_device_train_batch_size 32 \
-    --deploy_scenario False \
-    --use_synchronize True \
+    --per_device_eval_batch_size 32 \
+    --deploy_scenario false \
+    --use_synchronize true \
     --overwrite_output_dir \
     --predict_with_generate \
-    --source_prefix "translate German to English: " \
-    --output_hidden_states_decoder True \
-    --use_early_exit False \
+    --source_prefix "translate german to english: " \
+    --output_hidden_states_decoder true \
+    --use_early_exit false \
     --source_lang "de" \
     --target_lang "en"
 
-# Normal Classifier
+# normal classifier
 python -m torch.distributed.run --nproc_per_node=1 \
     src/run_translation.py \
     --model_name_or_path checkpoints/IWSLT \
@@ -31,15 +30,15 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --dataset_name iwslt2017 \
     --dataset_config_name iwslt2017-de-en \
     --output_dir ./save/iwslt_t5_large/ \
-    --per_device_eval_batch_size 1 \
-    --per_device_train_batch_size 32 \
-    --deploy_scenario False \
-    --use_synchronize True \
+    --per_device_eval_batch_size 32 \
+    --per_device_train_batch_size 4 \
+    --deploy_scenario false \
+    --use_synchronize true \
     --overwrite_output_dir \
     --predict_with_generate \
-    --source_prefix "translate German to English: " \
-    --output_hidden_states_decoder True \
-    --use_early_exit True \
+    --source_prefix "translate german to english: " \
+    --output_hidden_states_decoder true \
+    --use_early_exit true \
     --source_lang "de" \
     --target_lang "en" \
     --exit_conf_type meta \
@@ -58,8 +57,8 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --dataset_name iwslt2017 \
     --dataset_config_name iwslt2017-de-en \
     --output_dir ./save/iwslt_t5_large/ \
-    --per_device_eval_batch_size 1 \
-    --per_device_train_batch_size 32 \
+    --per_device_eval_batch_size 32 \
+    --per_device_train_batch_size 4 \
     --deploy_scenario False \
     --use_synchronize True \
     --overwrite_output_dir \
@@ -85,8 +84,8 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --dataset_name iwslt2017 \
     --dataset_config_name iwslt2017-de-en \
     --output_dir ./save/iwslt_t5_large/ \
-    --per_device_eval_batch_size 1 \
-    --per_device_train_batch_size 32 \
+    --per_device_eval_batch_size 32 \
+    --per_device_train_batch_size 4 \
     --deploy_scenario False \
     --use_synchronize True \
     --overwrite_output_dir \
@@ -111,8 +110,8 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --dataset_name iwslt2017 \
     --dataset_config_name iwslt2017-de-en \
     --output_dir ./save/iwslt_t5_large/ \
-    --per_device_eval_batch_size 1 \
-    --per_device_train_batch_size 32 \
+    --per_device_eval_batch_size 32 \
+    --per_device_train_batch_size 4 \
     --deploy_scenario False \
     --use_synchronize True \
     --overwrite_output_dir \
@@ -135,8 +134,8 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --dataset_name iwslt2017 \
     --dataset_config_name iwslt2017-de-en \
     --output_dir ./save/iwslt_t5_large/ \
-    --per_device_eval_batch_size 1 \
-    --per_device_train_batch_size 32 \
+    --per_device_eval_batch_size 32 \
+    --per_device_train_batch_size 4 \
     --deploy_scenario False \
     --use_synchronize True \
     --overwrite_output_dir \
@@ -159,8 +158,8 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --dataset_name iwslt2017 \
     --dataset_config_name iwslt2017-de-en \
     --output_dir ./save/iwslt_t5_large/ \
-    --per_device_eval_batch_size 1 \
-    --per_device_train_batch_size 32 \
+    --per_device_eval_batch_size 32 \
+    --per_device_train_batch_size 4 \
     --deploy_scenario False \
     --use_synchronize True \
     --overwrite_output_dir \
