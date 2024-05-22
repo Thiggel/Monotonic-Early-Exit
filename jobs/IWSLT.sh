@@ -4,6 +4,7 @@
 python -m torch.distributed.run --nproc_per_node=1 \
     src/run_translation.py \
     --model_name_or_path ../checkpoints/IWSLT \
+    --tokenizer_name t5-large \
     --do_eval \
     --dataset_name iwslt2017 \
     --dataset_config_name iwslt2017-de-en \
@@ -18,12 +19,13 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --output_hidden_states_decoder True \
     --use_early_exit False \
     --source_lang "de" \
-    --target_lang "en" \
+    --target_lang "en"
 
 # Normal Classifier
 python -m torch.distributed.run --nproc_per_node=1 \
     src/run_translation.py \
     --model_name_or_path ../checkpoints/IWSLT \
+    --tokenizer_name t5-large \
     --do_eval \
     --do_train \
     --dataset_name iwslt2017 \
@@ -49,6 +51,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
 python -m torch.distributed.run --nproc_per_node=1 \
     src/run_translation.py \
     --model_name_or_path ../checkpoints/IWSLT \
+    --tokenizer_name t5-large \
     --do_eval \
     --do_train \
     --dataset_name iwslt2017 \
@@ -74,6 +77,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
 python -m torch.distributed.run --nproc_per_node=1 \
     src/run_translation.py \
     --model_name_or_path ../checkpoints/IWSLT \
+    --tokenizer_name t5-large \
     --do_eval \
     --do_train \
     --dataset_name iwslt2017 \
@@ -99,6 +103,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
 python -m torch.distributed.run --nproc_per_node=1 \
     src/run_translation.py \
     --model_name_or_path ../checkpoints/IWSLT \
+    --tokenizer_name t5-large \
     --do_eval \
     --dataset_name iwslt2017 \
     --dataset_config_name iwslt2017-de-en \
@@ -121,6 +126,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
 python -m torch.distributed.run --nproc_per_node=1 \
     src/run_translation.py \
     --model_name_or_path ../checkpoints/IWSLT \
+    --tokenizer_name t5-large \
     --do_eval \
     --dataset_name iwslt2017 \
     --dataset_config_name iwslt2017-de-en \
@@ -143,6 +149,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
 python -m torch.distributed.run --nproc_per_node=1 \
     src/run_translation.py \
     --model_name_or_path ../checkpoints/IWSLT \
+    --tokenizer_name t5-large \
     --do_eval \
     --dataset_name iwslt2017 \
     --dataset_config_name iwslt2017-de-en \
