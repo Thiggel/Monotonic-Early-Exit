@@ -1,1906 +1,0 @@
-nohup: ignoring input
-./jobs/SQUAD.sh: line 1: environment.sh: No such file or directory
-Using the `WANDB_DISABLED` environment variable is deprecated and will be removed in v5. Use the --report_to flag to control the integrations used for logging result (for instance --report_to none).
-05/22/2024 10:27:40 - WARNING - __main__ - Process rank: 0, device: cuda:0, n_gpu: 1distributed training: True, 16-bits training: False
-05/22/2024 10:27:40 - INFO - __main__ - Training/evaluation parameters Seq2SeqTrainingArguments(
-_n_gpu=1,
-adafactor=False,
-adam_beta1=0.9,
-adam_beta2=0.999,
-adam_epsilon=1e-08,
-auto_find_batch_size=False,
-bf16=False,
-bf16_full_eval=False,
-data_seed=None,
-dataloader_drop_last=False,
-dataloader_num_workers=0,
-dataloader_pin_memory=True,
-ddp_bucket_cap_mb=None,
-ddp_find_unused_parameters=None,
-ddp_timeout=1800,
-debug=[],
-deepspeed=None,
-disable_tqdm=False,
-do_eval=True,
-do_predict=False,
-do_train=False,
-eval_accumulation_steps=None,
-eval_delay=0,
-eval_steps=None,
-evaluation_strategy=no,
-fp16=False,
-fp16_backend=auto,
-fp16_full_eval=False,
-fp16_opt_level=O1,
-fsdp=[],
-fsdp_config={'fsdp_min_num_params': 0, 'xla': False, 'xla_fsdp_grad_ckpt': False},
-fsdp_min_num_params=0,
-fsdp_transformer_layer_cls_to_wrap=None,
-full_determinism=False,
-generation_config=None,
-generation_max_length=None,
-generation_num_beams=None,
-gradient_accumulation_steps=1,
-gradient_checkpointing=False,
-greater_is_better=None,
-group_by_length=False,
-half_precision_backend=auto,
-hub_model_id=None,
-hub_private_repo=False,
-hub_strategy=every_save,
-hub_token=<HUB_TOKEN>,
-ignore_data_skip=False,
-include_inputs_for_metrics=False,
-jit_mode_eval=False,
-label_names=None,
-label_smoothing_factor=0.0,
-learning_rate=0.0001,
-length_column_name=length,
-load_best_model_at_end=False,
-local_rank=0,
-log_level=passive,
-log_level_replica=warning,
-log_on_each_node=True,
-logging_dir=./save/squad_t5_large/runs/May22_10-27-40_c96132b362d4,
-logging_first_step=False,
-logging_nan_inf_filter=True,
-logging_steps=500,
-logging_strategy=steps,
-lr_scheduler_type=linear,
-max_grad_norm=1.0,
-max_steps=-1,
-metric_for_best_model=None,
-mp_parameters=,
-no_cuda=False,
-num_train_epochs=5.0,
-optim=adamw_hf,
-optim_args=None,
-output_dir=./save/squad_t5_large/,
-overwrite_output_dir=True,
-past_index=-1,
-per_device_eval_batch_size=32,
-per_device_train_batch_size=8,
-predict_with_generate=True,
-prediction_loss_only=False,
-push_to_hub=False,
-push_to_hub_model_id=None,
-push_to_hub_organization=None,
-push_to_hub_token=<PUSH_TO_HUB_TOKEN>,
-ray_scope=last,
-remove_unused_columns=True,
-report_to=[],
-resume_from_checkpoint=None,
-run_name=./save/squad_t5_large/,
-save_on_each_node=False,
-save_safetensors=False,
-save_steps=5475,
-save_strategy=steps,
-save_total_limit=None,
-seed=42,
-sharded_ddp=[],
-skip_memory_metrics=True,
-sortish_sampler=False,
-tf32=None,
-torch_compile=False,
-torch_compile_backend=None,
-torch_compile_mode=None,
-torchdynamo=None,
-tpu_metrics_debug=False,
-tpu_num_cores=None,
-use_ipex=False,
-use_legacy_prediction_loop=False,
-use_mps_device=False,
-warmup_ratio=0.0,
-warmup_steps=0,
-weight_decay=0.0,
-xpu_backend=None,
-)
-/opt/conda/lib/python3.10/site-packages/datasets/load.py:2547: FutureWarning: 'use_auth_token' was deprecated in favor of 'token' in version 2.14.0 and will be removed in 3.0.0.
-You can remove this warning by passing 'token=<use_auth_token>' instead.
-  warnings.warn(
-Overwrite dataset info from restored data version if exists.
-05/22/2024 10:27:46 - INFO - datasets.builder - Overwrite dataset info from restored data version if exists.
-Loading Dataset info from /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f
-05/22/2024 10:27:46 - INFO - datasets.info - Loading Dataset info from /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f
-Found cached dataset squad (/root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f)
-05/22/2024 10:27:46 - INFO - datasets.builder - Found cached dataset squad (/root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f)
-Loading Dataset info from /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f
-05/22/2024 10:27:46 - INFO - datasets.info - Loading Dataset info from /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f
-[INFO|configuration_utils.py:666] 2024-05-22 10:27:46,147 >> loading configuration file checkpoints/SQUAD/config.json
-[INFO|configuration_utils.py:720] 2024-05-22 10:27:46,148 >> Model config T5Config {
-  "_name_or_path": "checkpoints/SQUAD",
-  "architectures": [
-    "EffT5ForConditionalGeneration"
-  ],
-  "copy_skipped_hidden_states": true,
-  "d_ff": 4096,
-  "d_kv": 64,
-  "d_model": 1024,
-  "decoder_start_token_id": 0,
-  "dense_act_fn": "relu",
-  "distill_alpha": null,
-  "distill_layer_alpha": null,
-  "distill_layer_map": "dyna",
-  "distill_temp": null,
-  "do_layer_distill": false,
-  "do_layer_transformation": false,
-  "dropout_rate": 0.1,
-  "eos_token_id": 1,
-  "exit_conf_threshold": 1.0,
-  "exit_conf_type": null,
-  "exit_position_temp": null,
-  "fallback_conf_threshold": 1.0,
-  "fallback_conf_type": null,
-  "feed_forward_proj": "relu",
-  "initializer_factor": 1.0,
-  "intermediate_loss_fn": "weighted_ce",
-  "is_encoder_decoder": true,
-  "is_gated_act": false,
-  "layer_norm_epsilon": 1e-06,
-  "max_answer_length": 30,
-  "model_type": "t5",
-  "n_positions": 512,
-  "num_decoder_layers": 24,
-  "num_heads": 16,
-  "num_layers": 24,
-  "output_hidden_states_decoder": true,
-  "output_past": true,
-  "pad_token_id": 0,
-  "parallel_gen_token": false,
-  "relative_attention_max_distance": 128,
-  "relative_attention_num_buckets": 32,
-  "rollback_conf_threshold": null,
-  "small_exit_layer": null,
-  "static_exit_layer": null,
-  "task_specific_params": {
-    "summarization": {
-      "early_stopping": true,
-      "length_penalty": 2.0,
-      "max_length": 200,
-      "min_length": 30,
-      "no_repeat_ngram_size": 3,
-      "num_beams": 4,
-      "prefix": "summarize: "
-    },
-    "translation_en_to_de": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to German: "
-    },
-    "translation_en_to_fr": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to French: "
-    },
-    "translation_en_to_ro": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to Romanian: "
-    }
-  },
-  "torch_dtype": "float32",
-  "train_meta_cm_head": false,
-  "transformers_version": "4.28.1",
-  "use_big_small": false,
-  "use_cache": true,
-  "vocab_size": 32128
-}
-
-/opt/conda/lib/python3.10/site-packages/huggingface_hub/file_download.py:1132: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
-  warnings.warn(
-[INFO|tokenization_auto.py:502] 2024-05-22 10:27:46,295 >> Could not locate the tokenizer configuration file, will try to use the model config instead.
-[INFO|configuration_utils.py:668] 2024-05-22 10:27:46,424 >> loading configuration file config.json from cache at /root/.cache/huggingface/hub/models--t5-large/snapshots/150ebc2c4b72291e770f58e6057481c8d2ed331a/config.json
-[INFO|configuration_utils.py:720] 2024-05-22 10:27:46,425 >> Model config T5Config {
-  "_name_or_path": "t5-large",
-  "architectures": [
-    "T5ForConditionalGeneration"
-  ],
-  "d_ff": 4096,
-  "d_kv": 64,
-  "d_model": 1024,
-  "decoder_start_token_id": 0,
-  "dense_act_fn": "relu",
-  "dropout_rate": 0.1,
-  "eos_token_id": 1,
-  "feed_forward_proj": "relu",
-  "initializer_factor": 1.0,
-  "is_encoder_decoder": true,
-  "is_gated_act": false,
-  "layer_norm_epsilon": 1e-06,
-  "model_type": "t5",
-  "n_positions": 512,
-  "num_decoder_layers": 24,
-  "num_heads": 16,
-  "num_layers": 24,
-  "output_past": true,
-  "pad_token_id": 0,
-  "relative_attention_max_distance": 128,
-  "relative_attention_num_buckets": 32,
-  "task_specific_params": {
-    "summarization": {
-      "early_stopping": true,
-      "length_penalty": 2.0,
-      "max_length": 200,
-      "min_length": 30,
-      "no_repeat_ngram_size": 3,
-      "num_beams": 4,
-      "prefix": "summarize: "
-    },
-    "translation_en_to_de": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to German: "
-    },
-    "translation_en_to_fr": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to French: "
-    },
-    "translation_en_to_ro": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to Romanian: "
-    }
-  },
-  "transformers_version": "4.28.1",
-  "use_cache": true,
-  "vocab_size": 32128
-}
-
-[INFO|tokenization_utils_base.py:1809] 2024-05-22 10:27:46,748 >> loading file spiece.model from cache at /root/.cache/huggingface/hub/models--t5-large/snapshots/150ebc2c4b72291e770f58e6057481c8d2ed331a/spiece.model
-[INFO|tokenization_utils_base.py:1809] 2024-05-22 10:27:46,748 >> loading file tokenizer.json from cache at /root/.cache/huggingface/hub/models--t5-large/snapshots/150ebc2c4b72291e770f58e6057481c8d2ed331a/tokenizer.json
-[INFO|tokenization_utils_base.py:1809] 2024-05-22 10:27:46,748 >> loading file added_tokens.json from cache at None
-[INFO|tokenization_utils_base.py:1809] 2024-05-22 10:27:46,748 >> loading file special_tokens_map.json from cache at None
-[INFO|tokenization_utils_base.py:1809] 2024-05-22 10:27:46,748 >> loading file tokenizer_config.json from cache at None
-[INFO|configuration_utils.py:668] 2024-05-22 10:27:46,749 >> loading configuration file config.json from cache at /root/.cache/huggingface/hub/models--t5-large/snapshots/150ebc2c4b72291e770f58e6057481c8d2ed331a/config.json
-[INFO|configuration_utils.py:720] 2024-05-22 10:27:46,750 >> Model config T5Config {
-  "_name_or_path": "t5-large",
-  "architectures": [
-    "T5ForConditionalGeneration"
-  ],
-  "d_ff": 4096,
-  "d_kv": 64,
-  "d_model": 1024,
-  "decoder_start_token_id": 0,
-  "dense_act_fn": "relu",
-  "dropout_rate": 0.1,
-  "eos_token_id": 1,
-  "feed_forward_proj": "relu",
-  "initializer_factor": 1.0,
-  "is_encoder_decoder": true,
-  "is_gated_act": false,
-  "layer_norm_epsilon": 1e-06,
-  "model_type": "t5",
-  "n_positions": 512,
-  "num_decoder_layers": 24,
-  "num_heads": 16,
-  "num_layers": 24,
-  "output_past": true,
-  "pad_token_id": 0,
-  "relative_attention_max_distance": 128,
-  "relative_attention_num_buckets": 32,
-  "task_specific_params": {
-    "summarization": {
-      "early_stopping": true,
-      "length_penalty": 2.0,
-      "max_length": 200,
-      "min_length": 30,
-      "no_repeat_ngram_size": 3,
-      "num_beams": 4,
-      "prefix": "summarize: "
-    },
-    "translation_en_to_de": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to German: "
-    },
-    "translation_en_to_fr": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to French: "
-    },
-    "translation_en_to_ro": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to Romanian: "
-    }
-  },
-  "transformers_version": "4.28.1",
-  "use_cache": true,
-  "vocab_size": 32128
-}
-
-/opt/conda/lib/python3.10/site-packages/transformers/models/t5/tokenization_t5_fast.py:155: FutureWarning: This tokenizer was incorrectly instantiated with a model max length of 512 which will be corrected in Transformers v5.
-For now, this behavior is kept to avoid breaking backwards compatibility when padding/encoding with `truncation is True`.
-- Be aware that you SHOULD NOT rely on t5-large automatically truncating your input to 512 when padding/encoding.
-- If you want to encode/pad to sequences longer than 512 you can either instantiate this tokenizer with `model_max_length` or pass `max_length` when encoding/padding.
-- To avoid this warning, please instantiate this tokenizer with `model_max_length` set to your preferred value.
-  warnings.warn(
-[INFO|modeling_utils.py:2531] 2024-05-22 10:27:46,796 >> loading weights file checkpoints/SQUAD/pytorch_model.bin
-[INFO|configuration_utils.py:575] 2024-05-22 10:27:47,898 >> Generate config GenerationConfig {
-  "_from_model_config": true,
-  "decoder_start_token_id": 0,
-  "eos_token_id": 1,
-  "pad_token_id": 0,
-  "transformers_version": "4.28.1"
-}
-
-[INFO|modeling_utils.py:3190] 2024-05-22 10:28:46,511 >> All model checkpoint weights were used when initializing EffT5ForConditionalGeneration.
-
-[INFO|modeling_utils.py:3198] 2024-05-22 10:28:46,511 >> All the weights of EffT5ForConditionalGeneration were initialized from the model checkpoint at checkpoints/SQUAD.
-If your task is similar to the task the model of the checkpoint was trained on, you can already use EffT5ForConditionalGeneration for predictions without further training.
-[INFO|modeling_utils.py:2839] 2024-05-22 10:28:46,608 >> Generation config file not found, using a generation config created from the model config.
-Loading cached processed dataset at /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f/cache-57ecd0bc42e999ad.arrow
-05/22/2024 10:28:46 - INFO - datasets.arrow_dataset - Loading cached processed dataset at /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f/cache-57ecd0bc42e999ad.arrow
-05/22/2024 10:28:48 - INFO - __main__ - *** Evaluate ***
-[INFO|trainer.py:762] 2024-05-22 10:28:48,968 >> The following columns in the evaluation set don't have a corresponding argument in `EffT5ForConditionalGeneration.forward` and have been ignored: offset_mapping, example_id. If offset_mapping, example_id are not expected by `EffT5ForConditionalGeneration.forward`,  you can safely ignore this message.
-[WARNING|logging.py:280] 2024-05-22 10:28:48,986 >> You're using a T5TokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
-[INFO|configuration_utils.py:575] 2024-05-22 10:28:48,995 >> Generate config GenerationConfig {
-  "_from_model_config": true,
-  "decoder_start_token_id": 0,
-  "eos_token_id": 1,
-  "pad_token_id": 0,
-  "transformers_version": "4.28.1"
-}
-
-  0%|          | 0/340 [00:00<?, ?it/s]  1%|          | 2/340 [00:01<04:34,  1.23it/s]  1%|          | 3/340 [00:03<07:11,  1.28s/it]  1%|          | 4/340 [00:07<12:42,  2.27s/it]  1%|▏         | 5/340 [00:09<12:16,  2.20s/it]  2%|▏         | 6/340 [00:12<13:31,  2.43s/it]  2%|▏         | 7/340 [00:14<12:13,  2.20s/it]  2%|▏         | 8/340 [00:15<11:09,  2.02s/it]  3%|▎         | 9/340 [00:18<11:55,  2.16s/it]  3%|▎         | 10/340 [00:19<10:56,  1.99s/it]  3%|▎         | 11/340 [00:21<10:38,  1.94s/it]  4%|▎         | 12/340 [00:23<10:24,  1.90s/it]  4%|▍         | 13/340 [00:25<10:14,  1.88s/it]  4%|▍         | 14/340 [00:27<11:21,  2.09s/it]  4%|▍         | 15/340 [00:29<10:32,  1.95s/it]  5%|▍         | 16/340 [00:31<10:38,  1.97s/it]  5%|▌         | 17/340 [00:35<13:17,  2.47s/it]  5%|▌         | 18/340 [00:39<15:48,  2.94s/it]  6%|▌         | 19/340 [00:42<16:01,  3.00s/it]  6%|▌         | 20/340 [00:44<15:17,  2.87s/it]  6%|▌         | 21/340 [00:47<14:45,  2.78s/it]  6%|▋         | 22/340 [00:49<13:10,  2.49s/it]  7%|▋         | 23/340 [00:51<12:14,  2.32s/it]  7%|▋         | 24/340 [00:52<11:14,  2.14s/it]  7%|▋         | 25/340 [00:54<10:21,  1.97s/it]  8%|▊         | 26/340 [00:55<09:27,  1.81s/it]  8%|▊         | 27/340 [00:58<10:24,  2.00s/it]  8%|▊         | 28/340 [01:01<11:34,  2.23s/it]  9%|▊         | 29/340 [01:03<12:03,  2.33s/it]  9%|▉         | 30/340 [01:07<14:45,  2.86s/it]  9%|▉         | 31/340 [01:09<13:35,  2.64s/it]  9%|▉         | 32/340 [01:12<13:54,  2.71s/it] 10%|▉         | 33/340 [01:15<14:17,  2.79s/it] 10%|█         | 34/340 [01:18<14:12,  2.78s/it] 10%|█         | 35/340 [01:21<15:05,  2.97s/it] 11%|█         | 36/340 [01:24<14:52,  2.94s/it] 11%|█         | 37/340 [01:26<13:35,  2.69s/it] 11%|█         | 38/340 [01:29<12:51,  2.55s/it] 11%|█▏        | 39/340 [01:32<13:45,  2.74s/it] 12%|█▏        | 40/340 [01:34<13:06,  2.62s/it] 12%|█▏        | 41/340 [01:38<14:07,  2.83s/it] 12%|█▏        | 42/340 [01:40<12:52,  2.59s/it] 13%|█▎        | 43/340 [01:43<14:01,  2.83s/it] 13%|█▎        | 44/340 [01:46<14:39,  2.97s/it] 13%|█▎        | 45/340 [01:49<14:09,  2.88s/it] 14%|█▎        | 46/340 [01:52<13:56,  2.85s/it] 14%|█▍        | 47/340 [01:55<14:04,  2.88s/it] 14%|█▍        | 48/340 [01:58<15:06,  3.10s/it] 14%|█▍        | 49/340 [02:01<14:34,  3.01s/it] 15%|█▍        | 50/340 [02:04<14:11,  2.94s/it] 15%|█▌        | 51/340 [02:07<15:06,  3.14s/it] 15%|█▌        | 52/340 [02:11<14:59,  3.12s/it] 16%|█▌        | 53/340 [02:12<12:54,  2.70s/it] 16%|█▌        | 54/340 [02:16<13:42,  2.88s/it] 16%|█▌        | 55/340 [02:18<12:44,  2.68s/it] 16%|█▋        | 56/340 [02:20<12:12,  2.58s/it] 17%|█▋        | 57/340 [02:22<11:23,  2.41s/it] 17%|█▋        | 58/340 [02:25<11:23,  2.42s/it] 17%|█▋        | 59/340 [02:27<11:31,  2.46s/it] 18%|█▊        | 60/340 [02:30<11:45,  2.52s/it] 18%|█▊        | 61/340 [02:32<10:44,  2.31s/it] 18%|█▊        | 62/340 [02:35<12:24,  2.68s/it] 19%|█▊        | 63/340 [02:39<13:30,  2.93s/it] 19%|█▉        | 64/340 [02:41<12:13,  2.66s/it] 19%|█▉        | 65/340 [02:44<12:36,  2.75s/it] 19%|█▉        | 66/340 [02:46<11:51,  2.60s/it] 20%|█▉        | 67/340 [02:48<11:10,  2.46s/it] 20%|██        | 68/340 [02:52<13:16,  2.93s/it] 20%|██        | 69/340 [02:55<13:26,  2.97s/it] 21%|██        | 70/340 [02:57<12:15,  2.72s/it] 21%|██        | 71/340 [02:59<11:24,  2.54s/it] 21%|██        | 72/340 [03:02<11:22,  2.55s/it] 21%|██▏       | 73/340 [03:06<13:09,  2.96s/it] 22%|██▏       | 74/340 [03:08<12:00,  2.71s/it] 22%|██▏       | 75/340 [03:10<11:39,  2.64s/it] 22%|██▏       | 76/340 [03:13<11:30,  2.62s/it] 23%|██▎       | 77/340 [03:16<12:22,  2.82s/it] 23%|██▎       | 78/340 [03:20<13:22,  3.06s/it] 23%|██▎       | 79/340 [03:22<12:07,  2.79s/it] 24%|██▎       | 80/340 [03:26<13:42,  3.16s/it] 24%|██▍       | 81/340 [03:30<14:47,  3.43s/it] 24%|██▍       | 82/340 [03:33<13:27,  3.13s/it] 24%|██▍       | 83/340 [03:36<14:09,  3.30s/it] 25%|██▍       | 84/340 [03:40<15:00,  3.52s/it] 25%|██▌       | 85/340 [03:42<13:02,  3.07s/it] 25%|██▌       | 86/340 [03:44<11:31,  2.72s/it] 26%|██▌       | 87/340 [03:46<10:03,  2.39s/it] 26%|██▌       | 88/340 [03:48<09:33,  2.28s/it] 26%|██▌       | 89/340 [03:49<08:40,  2.07s/it] 26%|██▋       | 90/340 [03:53<10:41,  2.57s/it] 27%|██▋       | 91/340 [03:56<11:02,  2.66s/it] 27%|██▋       | 92/340 [04:00<12:41,  3.07s/it] 27%|██▋       | 93/340 [04:03<11:52,  2.88s/it] 28%|██▊       | 94/340 [04:07<13:13,  3.23s/it] 28%|██▊       | 95/340 [04:09<12:13,  3.00s/it] 28%|██▊       | 96/340 [04:12<12:01,  2.96s/it] 29%|██▊       | 97/340 [04:15<12:07,  2.99s/it] 29%|██▉       | 98/340 [04:18<11:40,  2.89s/it] 29%|██▉       | 99/340 [04:20<11:19,  2.82s/it] 29%|██▉       | 100/340 [04:24<12:05,  3.02s/it] 30%|██▉       | 101/340 [04:27<12:14,  3.07s/it] 30%|███       | 102/340 [04:30<12:35,  3.17s/it] 30%|███       | 103/340 [04:33<11:32,  2.92s/it] 31%|███       | 104/340 [04:36<11:48,  3.00s/it] 31%|███       | 105/340 [04:38<10:37,  2.71s/it] 31%|███       | 106/340 [04:40<10:15,  2.63s/it] 31%|███▏      | 107/340 [04:42<09:21,  2.41s/it] 32%|███▏      | 108/340 [04:45<09:21,  2.42s/it] 32%|███▏      | 109/340 [04:47<08:52,  2.30s/it] 32%|███▏      | 110/340 [04:49<08:59,  2.35s/it] 33%|███▎      | 111/340 [04:51<08:28,  2.22s/it] 33%|███▎      | 112/340 [04:55<10:03,  2.65s/it] 33%|███▎      | 113/340 [04:57<09:39,  2.55s/it] 34%|███▎      | 114/340 [05:00<10:26,  2.77s/it] 34%|███▍      | 115/340 [05:04<11:06,  2.96s/it] 34%|███▍      | 116/340 [05:06<10:07,  2.71s/it] 34%|███▍      | 117/340 [05:08<09:53,  2.66s/it] 35%|███▍      | 118/340 [05:11<09:36,  2.59s/it] 35%|███▌      | 119/340 [05:14<09:44,  2.65s/it] 35%|███▌      | 120/340 [05:16<09:21,  2.55s/it] 36%|███▌      | 121/340 [05:20<10:55,  2.99s/it] 36%|███▌      | 122/340 [05:23<10:36,  2.92s/it] 36%|███▌      | 123/340 [05:25<09:49,  2.71s/it] 36%|███▋      | 124/340 [05:28<09:56,  2.76s/it] 37%|███▋      | 125/340 [05:30<09:12,  2.57s/it] 37%|███▋      | 126/340 [05:32<08:48,  2.47s/it] 37%|███▋      | 127/340 [05:34<08:24,  2.37s/it] 38%|███▊      | 128/340 [05:36<07:59,  2.26s/it] 38%|███▊      | 129/340 [05:39<08:02,  2.28s/it] 38%|███▊      | 130/340 [05:43<09:51,  2.82s/it] 39%|███▊      | 131/340 [05:47<11:05,  3.18s/it] 39%|███▉      | 132/340 [05:51<11:56,  3.44s/it] 39%|███▉      | 133/340 [05:55<12:28,  3.62s/it] 39%|███▉      | 134/340 [05:59<12:50,  3.74s/it] 40%|███▉      | 135/340 [06:03<13:08,  3.84s/it] 40%|████      | 136/340 [06:06<12:38,  3.72s/it] 40%|████      | 137/340 [06:11<12:56,  3.82s/it] 41%|████      | 138/340 [06:15<13:06,  3.89s/it] 41%|████      | 139/340 [06:19<13:11,  3.94s/it] 41%|████      | 140/340 [06:22<12:17,  3.69s/it] 41%|████▏     | 141/340 [06:24<10:59,  3.31s/it] 42%|████▏     | 142/340 [06:27<10:36,  3.21s/it] 42%|████▏     | 143/340 [06:30<10:18,  3.14s/it] 42%|████▏     | 144/340 [06:32<09:22,  2.87s/it] 43%|████▎     | 145/340 [06:34<08:30,  2.62s/it] 43%|████▎     | 146/340 [06:37<08:48,  2.73s/it] 43%|████▎     | 147/340 [06:40<08:36,  2.68s/it] 44%|████▎     | 148/340 [06:43<09:15,  2.90s/it] 44%|████▍     | 149/340 [06:47<10:18,  3.24s/it] 44%|████▍     | 150/340 [06:51<10:55,  3.45s/it] 44%|████▍     | 151/340 [06:55<11:25,  3.63s/it] 45%|████▍     | 152/340 [06:58<10:09,  3.24s/it] 45%|████▌     | 153/340 [07:01<10:33,  3.39s/it] 45%|████▌     | 154/340 [07:04<09:19,  3.01s/it] 46%|████▌     | 155/340 [07:08<10:14,  3.32s/it] 46%|████▌     | 156/340 [07:12<10:50,  3.54s/it] 46%|████▌     | 157/340 [07:16<11:14,  3.68s/it] 46%|████▋     | 158/340 [07:20<11:29,  3.79s/it] 47%|████▋     | 159/340 [07:24<11:38,  3.86s/it] 47%|████▋     | 160/340 [07:28<11:43,  3.91s/it] 47%|████▋     | 161/340 [07:30<10:05,  3.38s/it] 48%|████▊     | 162/340 [07:34<10:19,  3.48s/it] 48%|████▊     | 163/340 [07:37<10:33,  3.58s/it] 48%|████▊     | 164/340 [07:40<09:29,  3.24s/it] 49%|████▊     | 165/340 [07:42<08:28,  2.91s/it] 49%|████▉     | 166/340 [07:45<08:34,  2.95s/it] 49%|████▉     | 167/340 [07:49<09:05,  3.15s/it] 49%|████▉     | 168/340 [07:51<08:03,  2.81s/it] 50%|████▉     | 169/340 [07:54<08:09,  2.86s/it] 50%|█████     | 170/340 [07:56<07:30,  2.65s/it] 50%|█████     | 171/340 [07:59<08:16,  2.94s/it] 51%|█████     | 172/340 [08:02<07:48,  2.79s/it] 51%|█████     | 173/340 [08:04<06:56,  2.49s/it] 51%|█████     | 174/340 [08:06<06:46,  2.45s/it] 51%|█████▏    | 175/340 [08:08<06:28,  2.35s/it] 52%|█████▏    | 176/340 [08:11<06:30,  2.38s/it] 52%|█████▏    | 177/340 [08:15<07:48,  2.87s/it] 52%|█████▏    | 178/340 [08:19<08:41,  3.22s/it] 53%|█████▎    | 179/340 [08:23<09:16,  3.46s/it] 53%|█████▎    | 180/340 [08:25<08:19,  3.12s/it] 53%|█████▎    | 181/340 [08:28<08:05,  3.05s/it] 54%|█████▎    | 182/340 [08:31<08:13,  3.12s/it] 54%|█████▍    | 183/340 [08:34<08:12,  3.14s/it] 54%|█████▍    | 184/340 [08:38<08:50,  3.40s/it] 54%|█████▍    | 185/340 [08:40<07:38,  2.96s/it] 55%|█████▍    | 186/340 [08:42<06:57,  2.71s/it] 55%|█████▌    | 187/340 [08:44<06:17,  2.47s/it] 55%|█████▌    | 188/340 [08:47<06:14,  2.46s/it] 56%|█████▌    | 189/340 [08:49<06:05,  2.42s/it] 56%|█████▌    | 190/340 [08:52<06:32,  2.62s/it] 56%|█████▌    | 191/340 [08:54<05:49,  2.34s/it] 56%|█████▋    | 192/340 [08:56<05:32,  2.25s/it] 57%|█████▋    | 193/340 [08:58<05:25,  2.21s/it] 57%|█████▋    | 194/340 [09:00<05:00,  2.06s/it] 57%|█████▋    | 195/340 [09:02<05:10,  2.14s/it] 58%|█████▊    | 196/340 [09:04<04:59,  2.08s/it] 58%|█████▊    | 197/340 [09:06<05:03,  2.12s/it] 58%|█████▊    | 198/340 [09:10<06:22,  2.69s/it] 59%|█████▊    | 199/340 [09:13<06:04,  2.58s/it] 59%|█████▉    | 200/340 [09:15<06:00,  2.57s/it] 59%|█████▉    | 201/340 [09:17<05:39,  2.44s/it] 59%|█████▉    | 202/340 [09:21<06:42,  2.92s/it] 60%|█████▉    | 203/340 [09:24<06:41,  2.93s/it] 60%|██████    | 204/340 [09:27<06:14,  2.75s/it] 60%|██████    | 205/340 [09:29<05:54,  2.63s/it] 61%|██████    | 206/340 [09:32<06:18,  2.82s/it] 61%|██████    | 207/340 [09:36<06:46,  3.06s/it] 61%|██████    | 208/340 [09:40<07:21,  3.35s/it] 61%|██████▏   | 209/340 [09:43<07:03,  3.23s/it] 62%|██████▏   | 210/340 [09:46<07:18,  3.37s/it] 62%|██████▏   | 211/340 [09:51<07:41,  3.58s/it] 62%|██████▏   | 212/340 [09:53<07:02,  3.30s/it] 63%|██████▎   | 213/340 [09:56<06:38,  3.14s/it] 63%|██████▎   | 214/340 [09:58<06:13,  2.96s/it] 63%|██████▎   | 215/340 [10:01<05:46,  2.77s/it] 64%|██████▎   | 216/340 [10:04<05:51,  2.83s/it] 64%|██████▍   | 217/340 [10:07<05:49,  2.84s/it] 64%|██████▍   | 218/340 [10:11<06:30,  3.20s/it] 64%|██████▍   | 219/340 [10:14<06:45,  3.35s/it] 65%|██████▍   | 220/340 [10:18<06:51,  3.43s/it] 65%|██████▌   | 221/340 [10:21<06:20,  3.20s/it] 65%|██████▌   | 222/340 [10:24<06:20,  3.23s/it] 66%|██████▌   | 223/340 [10:28<06:45,  3.47s/it] 66%|██████▌   | 224/340 [10:31<06:24,  3.32s/it] 66%|██████▌   | 225/340 [10:34<05:58,  3.12s/it] 66%|██████▋   | 226/340 [10:36<05:42,  3.01s/it] 67%|██████▋   | 227/340 [10:39<05:20,  2.84s/it] 67%|██████▋   | 228/340 [10:41<05:07,  2.75s/it] 67%|██████▋   | 229/340 [10:43<04:37,  2.50s/it] 68%|██████▊   | 230/340 [10:45<04:26,  2.42s/it] 68%|██████▊   | 231/340 [10:48<04:27,  2.46s/it] 68%|██████▊   | 232/340 [10:51<04:51,  2.70s/it] 69%|██████▊   | 233/340 [10:54<04:43,  2.65s/it] 69%|██████▉   | 234/340 [10:56<04:38,  2.62s/it] 69%|██████▉   | 235/340 [10:59<04:49,  2.76s/it] 69%|██████▉   | 236/340 [11:02<04:27,  2.57s/it] 70%|██████▉   | 237/340 [11:05<04:56,  2.87s/it] 70%|███████   | 238/340 [11:08<04:58,  2.93s/it] 70%|███████   | 239/340 [11:10<04:28,  2.66s/it] 71%|███████   | 240/340 [11:14<04:50,  2.90s/it] 71%|███████   | 241/340 [11:16<04:27,  2.70s/it] 71%|███████   | 242/340 [11:19<04:25,  2.71s/it] 71%|███████▏  | 243/340 [11:21<04:02,  2.50s/it] 72%|███████▏  | 244/340 [11:23<03:58,  2.48s/it] 72%|███████▏  | 245/340 [11:25<03:51,  2.44s/it] 72%|███████▏  | 246/340 [11:28<03:57,  2.53s/it] 73%|███████▎  | 247/340 [11:31<04:01,  2.59s/it] 73%|███████▎  | 248/340 [11:34<04:05,  2.67s/it] 73%|███████▎  | 249/340 [11:36<03:44,  2.47s/it] 74%|███████▎  | 250/340 [11:39<03:55,  2.61s/it] 74%|███████▍  | 251/340 [11:42<04:07,  2.78s/it] 74%|███████▍  | 252/340 [11:44<03:52,  2.64s/it] 74%|███████▍  | 253/340 [11:47<03:52,  2.68s/it] 75%|███████▍  | 254/340 [11:49<03:38,  2.54s/it] 75%|███████▌  | 255/340 [11:51<03:27,  2.45s/it] 75%|███████▌  | 256/340 [11:55<04:04,  2.91s/it] 76%|███████▌  | 257/340 [11:59<04:05,  2.96s/it] 76%|███████▌  | 258/340 [12:02<04:10,  3.06s/it] 76%|███████▌  | 259/340 [12:04<03:39,  2.71s/it] 76%|███████▋  | 260/340 [12:07<03:55,  2.94s/it] 77%|███████▋  | 261/340 [12:09<03:32,  2.69s/it] 77%|███████▋  | 262/340 [12:12<03:19,  2.55s/it] 77%|███████▋  | 263/340 [12:16<03:50,  2.99s/it] 78%|███████▊  | 264/340 [12:20<04:10,  3.29s/it] 78%|███████▊  | 265/340 [12:24<04:23,  3.51s/it] 78%|███████▊  | 266/340 [12:28<04:30,  3.66s/it] 79%|███████▊  | 267/340 [12:31<04:13,  3.48s/it] 79%|███████▉  | 268/340 [12:33<03:45,  3.13s/it] 79%|███████▉  | 269/340 [12:37<03:51,  3.27s/it] 79%|███████▉  | 270/340 [12:39<03:39,  3.14s/it] 80%|███████▉  | 271/340 [12:42<03:32,  3.08s/it] 80%|████████  | 272/340 [12:45<03:26,  3.04s/it] 80%|████████  | 273/340 [12:49<03:28,  3.11s/it] 81%|████████  | 274/340 [12:52<03:32,  3.22s/it] 81%|████████  | 275/340 [12:56<03:36,  3.33s/it] 81%|████████  | 276/340 [12:59<03:42,  3.47s/it] 81%|████████▏ | 277/340 [13:03<03:49,  3.64s/it] 82%|████████▏ | 278/340 [13:07<03:36,  3.49s/it] 82%|████████▏ | 279/340 [13:11<03:42,  3.65s/it] 82%|████████▏ | 280/340 [13:14<03:33,  3.57s/it] 83%|████████▎ | 281/340 [13:17<03:15,  3.32s/it] 83%|████████▎ | 282/340 [13:21<03:24,  3.53s/it] 83%|████████▎ | 283/340 [13:24<03:13,  3.39s/it] 84%|████████▎ | 284/340 [13:27<02:58,  3.19s/it] 84%|████████▍ | 285/340 [13:31<03:09,  3.44s/it] 84%|████████▍ | 286/340 [13:35<03:14,  3.61s/it] 84%|████████▍ | 287/340 [13:39<03:17,  3.73s/it] 85%|████████▍ | 288/340 [13:42<03:14,  3.75s/it] 85%|████████▌ | 289/340 [13:46<03:07,  3.67s/it] 85%|████████▌ | 290/340 [13:49<02:49,  3.39s/it] 86%|████████▌ | 291/340 [13:51<02:36,  3.20s/it] 86%|████████▌ | 292/340 [13:55<02:37,  3.28s/it] 86%|████████▌ | 293/340 [13:57<02:20,  3.00s/it] 86%|████████▋ | 294/340 [14:01<02:31,  3.30s/it] 87%|████████▋ | 295/340 [14:04<02:25,  3.22s/it] 87%|████████▋ | 296/340 [14:07<02:15,  3.08s/it] 87%|████████▋ | 297/340 [14:09<02:05,  2.91s/it] 88%|████████▊ | 298/340 [14:12<01:58,  2.83s/it] 88%|████████▊ | 299/340 [14:14<01:44,  2.56s/it] 88%|████████▊ | 300/340 [14:17<01:50,  2.77s/it] 89%|████████▊ | 301/340 [14:20<01:48,  2.79s/it] 89%|████████▉ | 302/340 [14:23<01:44,  2.74s/it] 89%|████████▉ | 303/340 [14:25<01:34,  2.56s/it] 89%|████████▉ | 304/340 [14:27<01:32,  2.58s/it] 90%|████████▉ | 305/340 [14:30<01:31,  2.60s/it] 90%|█████████ | 306/340 [14:34<01:42,  3.02s/it] 90%|█████████ | 307/340 [14:36<01:30,  2.76s/it] 91%|█████████ | 308/340 [14:40<01:40,  3.13s/it] 91%|█████████ | 309/340 [14:44<01:41,  3.26s/it] 91%|█████████ | 310/340 [14:47<01:36,  3.23s/it] 91%|█████████▏| 311/340 [14:50<01:27,  3.02s/it] 92%|█████████▏| 312/340 [14:52<01:17,  2.78s/it] 92%|█████████▏| 313/340 [14:54<01:13,  2.71s/it] 92%|█████████▏| 314/340 [14:57<01:08,  2.65s/it] 93%|█████████▎| 315/340 [15:00<01:08,  2.74s/it] 93%|█████████▎| 316/340 [15:04<01:14,  3.12s/it] 93%|█████████▎| 317/340 [15:08<01:17,  3.38s/it] 94%|█████████▎| 318/340 [15:11<01:14,  3.38s/it] 94%|█████████▍| 319/340 [15:15<01:10,  3.38s/it] 94%|█████████▍| 320/340 [15:17<01:00,  3.03s/it] 94%|█████████▍| 321/340 [15:19<00:52,  2.76s/it] 95%|█████████▍| 322/340 [15:22<00:51,  2.85s/it] 95%|█████████▌| 323/340 [15:25<00:48,  2.88s/it] 95%|█████████▌| 324/340 [15:29<00:50,  3.15s/it] 96%|█████████▌| 325/340 [15:31<00:43,  2.93s/it] 96%|█████████▌| 326/340 [15:33<00:38,  2.75s/it] 96%|█████████▌| 327/340 [15:37<00:40,  3.13s/it] 96%|█████████▋| 328/340 [15:41<00:38,  3.23s/it] 97%|█████████▋| 329/340 [15:45<00:37,  3.37s/it] 97%|█████████▋| 330/340 [15:49<00:35,  3.57s/it] 97%|█████████▋| 331/340 [15:53<00:33,  3.70s/it] 98%|█████████▊| 332/340 [15:56<00:28,  3.51s/it] 98%|█████████▊| 333/340 [16:00<00:25,  3.66s/it] 98%|█████████▊| 334/340 [16:02<00:20,  3.38s/it] 99%|█████████▊| 335/340 [16:04<00:14,  2.94s/it] 99%|█████████▉| 336/340 [16:07<00:10,  2.73s/it] 99%|█████████▉| 337/340 [16:09<00:07,  2.51s/it] 99%|█████████▉| 338/340 [16:11<00:05,  2.55s/it]100%|█████████▉| 339/340 [16:13<00:02,  2.45s/it]100%|██████████| 340/340 [16:15<00:00,  2.20s/it]100%|██████████| 340/340 [16:31<00:00,  2.92s/it]
-***** eval metrics *****
-  eval_block_avg          =        0.0
-  eval_exact_match        =    81.7597
-  eval_f1                 =    88.8409
-  eval_loss               =     1.0116
-  eval_runtime            = 0:16:18.70
-  eval_samples            =      10873
-  eval_samples_per_second =      11.11
-  eval_steps_per_second   =      0.347
-Using the `WANDB_DISABLED` environment variable is deprecated and will be removed in v5. Use the --report_to flag to control the integrations used for logging result (for instance --report_to none).
-05/22/2024 10:45:33 - WARNING - __main__ - Process rank: 0, device: cuda:0, n_gpu: 1distributed training: True, 16-bits training: False
-05/22/2024 10:45:33 - INFO - __main__ - Training/evaluation parameters Seq2SeqTrainingArguments(
-_n_gpu=1,
-adafactor=False,
-adam_beta1=0.9,
-adam_beta2=0.999,
-adam_epsilon=1e-08,
-auto_find_batch_size=False,
-bf16=False,
-bf16_full_eval=False,
-data_seed=None,
-dataloader_drop_last=False,
-dataloader_num_workers=0,
-dataloader_pin_memory=True,
-ddp_bucket_cap_mb=None,
-ddp_find_unused_parameters=None,
-ddp_timeout=1800,
-debug=[],
-deepspeed=None,
-disable_tqdm=False,
-do_eval=True,
-do_predict=False,
-do_train=False,
-eval_accumulation_steps=None,
-eval_delay=0,
-eval_steps=None,
-evaluation_strategy=no,
-fp16=False,
-fp16_backend=auto,
-fp16_full_eval=False,
-fp16_opt_level=O1,
-fsdp=[],
-fsdp_config={'fsdp_min_num_params': 0, 'xla': False, 'xla_fsdp_grad_ckpt': False},
-fsdp_min_num_params=0,
-fsdp_transformer_layer_cls_to_wrap=None,
-full_determinism=False,
-generation_config=None,
-generation_max_length=None,
-generation_num_beams=None,
-gradient_accumulation_steps=1,
-gradient_checkpointing=False,
-greater_is_better=None,
-group_by_length=False,
-half_precision_backend=auto,
-hub_model_id=None,
-hub_private_repo=False,
-hub_strategy=every_save,
-hub_token=<HUB_TOKEN>,
-ignore_data_skip=False,
-include_inputs_for_metrics=False,
-jit_mode_eval=False,
-label_names=None,
-label_smoothing_factor=0.0,
-learning_rate=0.0001,
-length_column_name=length,
-load_best_model_at_end=False,
-local_rank=0,
-log_level=passive,
-log_level_replica=warning,
-log_on_each_node=True,
-logging_dir=./save/squad_t5_large/runs/May22_10-45-32_c96132b362d4,
-logging_first_step=False,
-logging_nan_inf_filter=True,
-logging_steps=500,
-logging_strategy=steps,
-lr_scheduler_type=linear,
-max_grad_norm=1.0,
-max_steps=-1,
-metric_for_best_model=None,
-mp_parameters=,
-no_cuda=False,
-num_train_epochs=5.0,
-optim=adamw_hf,
-optim_args=None,
-output_dir=./save/squad_t5_large/,
-overwrite_output_dir=True,
-past_index=-1,
-per_device_eval_batch_size=32,
-per_device_train_batch_size=8,
-predict_with_generate=True,
-prediction_loss_only=False,
-push_to_hub=False,
-push_to_hub_model_id=None,
-push_to_hub_organization=None,
-push_to_hub_token=<PUSH_TO_HUB_TOKEN>,
-ray_scope=last,
-remove_unused_columns=True,
-report_to=[],
-resume_from_checkpoint=None,
-run_name=./save/squad_t5_large/,
-save_on_each_node=False,
-save_safetensors=False,
-save_steps=5475,
-save_strategy=steps,
-save_total_limit=None,
-seed=42,
-sharded_ddp=[],
-skip_memory_metrics=True,
-sortish_sampler=False,
-tf32=None,
-torch_compile=False,
-torch_compile_backend=None,
-torch_compile_mode=None,
-torchdynamo=None,
-tpu_metrics_debug=False,
-tpu_num_cores=None,
-use_ipex=False,
-use_legacy_prediction_loop=False,
-use_mps_device=False,
-warmup_ratio=0.0,
-warmup_steps=0,
-weight_decay=0.0,
-xpu_backend=None,
-)
-/opt/conda/lib/python3.10/site-packages/datasets/load.py:2547: FutureWarning: 'use_auth_token' was deprecated in favor of 'token' in version 2.14.0 and will be removed in 3.0.0.
-You can remove this warning by passing 'token=<use_auth_token>' instead.
-  warnings.warn(
-Overwrite dataset info from restored data version if exists.
-05/22/2024 10:45:38 - INFO - datasets.builder - Overwrite dataset info from restored data version if exists.
-Loading Dataset info from /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f
-05/22/2024 10:45:38 - INFO - datasets.info - Loading Dataset info from /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f
-Found cached dataset squad (/root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f)
-05/22/2024 10:45:38 - INFO - datasets.builder - Found cached dataset squad (/root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f)
-Loading Dataset info from /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f
-05/22/2024 10:45:38 - INFO - datasets.info - Loading Dataset info from /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f
-[INFO|configuration_utils.py:666] 2024-05-22 10:45:38,985 >> loading configuration file checkpoints/SQUAD/config.json
-[INFO|configuration_utils.py:720] 2024-05-22 10:45:38,986 >> Model config T5Config {
-  "_name_or_path": "checkpoints/SQUAD",
-  "architectures": [
-    "EffT5ForConditionalGeneration"
-  ],
-  "copy_skipped_hidden_states": true,
-  "d_ff": 4096,
-  "d_kv": 64,
-  "d_model": 1024,
-  "decoder_start_token_id": 0,
-  "dense_act_fn": "relu",
-  "distill_alpha": null,
-  "distill_layer_alpha": null,
-  "distill_layer_map": "dyna",
-  "distill_temp": null,
-  "do_layer_distill": false,
-  "do_layer_transformation": false,
-  "dropout_rate": 0.1,
-  "eos_token_id": 1,
-  "exit_conf_threshold": 1.0,
-  "exit_conf_type": null,
-  "exit_position_temp": null,
-  "fallback_conf_threshold": 1.0,
-  "fallback_conf_type": null,
-  "feed_forward_proj": "relu",
-  "initializer_factor": 1.0,
-  "intermediate_loss_fn": "weighted_ce",
-  "is_encoder_decoder": true,
-  "is_gated_act": false,
-  "layer_norm_epsilon": 1e-06,
-  "max_answer_length": 30,
-  "model_type": "t5",
-  "n_positions": 512,
-  "num_decoder_layers": 24,
-  "num_heads": 16,
-  "num_layers": 24,
-  "output_hidden_states_decoder": true,
-  "output_past": true,
-  "pad_token_id": 0,
-  "parallel_gen_token": false,
-  "relative_attention_max_distance": 128,
-  "relative_attention_num_buckets": 32,
-  "rollback_conf_threshold": null,
-  "small_exit_layer": null,
-  "static_exit_layer": null,
-  "task_specific_params": {
-    "summarization": {
-      "early_stopping": true,
-      "length_penalty": 2.0,
-      "max_length": 200,
-      "min_length": 30,
-      "no_repeat_ngram_size": 3,
-      "num_beams": 4,
-      "prefix": "summarize: "
-    },
-    "translation_en_to_de": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to German: "
-    },
-    "translation_en_to_fr": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to French: "
-    },
-    "translation_en_to_ro": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to Romanian: "
-    }
-  },
-  "torch_dtype": "float32",
-  "train_meta_cm_head": false,
-  "transformers_version": "4.28.1",
-  "use_big_small": false,
-  "use_cache": true,
-  "vocab_size": 32128
-}
-
-/opt/conda/lib/python3.10/site-packages/huggingface_hub/file_download.py:1132: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
-  warnings.warn(
-[INFO|tokenization_auto.py:502] 2024-05-22 10:45:39,115 >> Could not locate the tokenizer configuration file, will try to use the model config instead.
-[INFO|configuration_utils.py:668] 2024-05-22 10:45:39,242 >> loading configuration file config.json from cache at /root/.cache/huggingface/hub/models--t5-large/snapshots/150ebc2c4b72291e770f58e6057481c8d2ed331a/config.json
-[INFO|configuration_utils.py:720] 2024-05-22 10:45:39,244 >> Model config T5Config {
-  "_name_or_path": "t5-large",
-  "architectures": [
-    "T5ForConditionalGeneration"
-  ],
-  "d_ff": 4096,
-  "d_kv": 64,
-  "d_model": 1024,
-  "decoder_start_token_id": 0,
-  "dense_act_fn": "relu",
-  "dropout_rate": 0.1,
-  "eos_token_id": 1,
-  "feed_forward_proj": "relu",
-  "initializer_factor": 1.0,
-  "is_encoder_decoder": true,
-  "is_gated_act": false,
-  "layer_norm_epsilon": 1e-06,
-  "model_type": "t5",
-  "n_positions": 512,
-  "num_decoder_layers": 24,
-  "num_heads": 16,
-  "num_layers": 24,
-  "output_past": true,
-  "pad_token_id": 0,
-  "relative_attention_max_distance": 128,
-  "relative_attention_num_buckets": 32,
-  "task_specific_params": {
-    "summarization": {
-      "early_stopping": true,
-      "length_penalty": 2.0,
-      "max_length": 200,
-      "min_length": 30,
-      "no_repeat_ngram_size": 3,
-      "num_beams": 4,
-      "prefix": "summarize: "
-    },
-    "translation_en_to_de": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to German: "
-    },
-    "translation_en_to_fr": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to French: "
-    },
-    "translation_en_to_ro": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to Romanian: "
-    }
-  },
-  "transformers_version": "4.28.1",
-  "use_cache": true,
-  "vocab_size": 32128
-}
-
-[INFO|tokenization_utils_base.py:1809] 2024-05-22 10:45:39,503 >> loading file spiece.model from cache at /root/.cache/huggingface/hub/models--t5-large/snapshots/150ebc2c4b72291e770f58e6057481c8d2ed331a/spiece.model
-[INFO|tokenization_utils_base.py:1809] 2024-05-22 10:45:39,503 >> loading file tokenizer.json from cache at /root/.cache/huggingface/hub/models--t5-large/snapshots/150ebc2c4b72291e770f58e6057481c8d2ed331a/tokenizer.json
-[INFO|tokenization_utils_base.py:1809] 2024-05-22 10:45:39,503 >> loading file added_tokens.json from cache at None
-[INFO|tokenization_utils_base.py:1809] 2024-05-22 10:45:39,504 >> loading file special_tokens_map.json from cache at None
-[INFO|tokenization_utils_base.py:1809] 2024-05-22 10:45:39,504 >> loading file tokenizer_config.json from cache at None
-[INFO|configuration_utils.py:668] 2024-05-22 10:45:39,504 >> loading configuration file config.json from cache at /root/.cache/huggingface/hub/models--t5-large/snapshots/150ebc2c4b72291e770f58e6057481c8d2ed331a/config.json
-[INFO|configuration_utils.py:720] 2024-05-22 10:45:39,506 >> Model config T5Config {
-  "_name_or_path": "t5-large",
-  "architectures": [
-    "T5ForConditionalGeneration"
-  ],
-  "d_ff": 4096,
-  "d_kv": 64,
-  "d_model": 1024,
-  "decoder_start_token_id": 0,
-  "dense_act_fn": "relu",
-  "dropout_rate": 0.1,
-  "eos_token_id": 1,
-  "feed_forward_proj": "relu",
-  "initializer_factor": 1.0,
-  "is_encoder_decoder": true,
-  "is_gated_act": false,
-  "layer_norm_epsilon": 1e-06,
-  "model_type": "t5",
-  "n_positions": 512,
-  "num_decoder_layers": 24,
-  "num_heads": 16,
-  "num_layers": 24,
-  "output_past": true,
-  "pad_token_id": 0,
-  "relative_attention_max_distance": 128,
-  "relative_attention_num_buckets": 32,
-  "task_specific_params": {
-    "summarization": {
-      "early_stopping": true,
-      "length_penalty": 2.0,
-      "max_length": 200,
-      "min_length": 30,
-      "no_repeat_ngram_size": 3,
-      "num_beams": 4,
-      "prefix": "summarize: "
-    },
-    "translation_en_to_de": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to German: "
-    },
-    "translation_en_to_fr": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to French: "
-    },
-    "translation_en_to_ro": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to Romanian: "
-    }
-  },
-  "transformers_version": "4.28.1",
-  "use_cache": true,
-  "vocab_size": 32128
-}
-
-/opt/conda/lib/python3.10/site-packages/transformers/models/t5/tokenization_t5_fast.py:155: FutureWarning: This tokenizer was incorrectly instantiated with a model max length of 512 which will be corrected in Transformers v5.
-For now, this behavior is kept to avoid breaking backwards compatibility when padding/encoding with `truncation is True`.
-- Be aware that you SHOULD NOT rely on t5-large automatically truncating your input to 512 when padding/encoding.
-- If you want to encode/pad to sequences longer than 512 you can either instantiate this tokenizer with `model_max_length` or pass `max_length` when encoding/padding.
-- To avoid this warning, please instantiate this tokenizer with `model_max_length` set to your preferred value.
-  warnings.warn(
-[INFO|modeling_utils.py:2531] 2024-05-22 10:45:39,551 >> loading weights file checkpoints/SQUAD/pytorch_model.bin
-[INFO|configuration_utils.py:575] 2024-05-22 10:45:40,647 >> Generate config GenerationConfig {
-  "_from_model_config": true,
-  "decoder_start_token_id": 0,
-  "eos_token_id": 1,
-  "pad_token_id": 0,
-  "transformers_version": "4.28.1"
-}
-
-[INFO|modeling_utils.py:3190] 2024-05-22 10:47:08,510 >> All model checkpoint weights were used when initializing EffT5ForConditionalGeneration.
-
-[INFO|modeling_utils.py:3198] 2024-05-22 10:47:08,511 >> All the weights of EffT5ForConditionalGeneration were initialized from the model checkpoint at checkpoints/SQUAD.
-If your task is similar to the task the model of the checkpoint was trained on, you can already use EffT5ForConditionalGeneration for predictions without further training.
-[INFO|modeling_utils.py:2839] 2024-05-22 10:47:08,609 >> Generation config file not found, using a generation config created from the model config.
-Loading cached processed dataset at /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f/cache-57ecd0bc42e999ad.arrow
-05/22/2024 10:47:08 - INFO - datasets.arrow_dataset - Loading cached processed dataset at /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f/cache-57ecd0bc42e999ad.arrow
-05/22/2024 10:47:11 - INFO - __main__ - *** Evaluate ***
-[INFO|trainer.py:762] 2024-05-22 10:47:11,263 >> The following columns in the evaluation set don't have a corresponding argument in `EffT5ForConditionalGeneration.forward` and have been ignored: example_id, offset_mapping. If example_id, offset_mapping are not expected by `EffT5ForConditionalGeneration.forward`,  you can safely ignore this message.
-[WARNING|logging.py:280] 2024-05-22 10:47:11,281 >> You're using a T5TokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
-[INFO|configuration_utils.py:575] 2024-05-22 10:47:11,291 >> Generate config GenerationConfig {
-  "_from_model_config": true,
-  "decoder_start_token_id": 0,
-  "eos_token_id": 1,
-  "pad_token_id": 0,
-  "transformers_version": "4.28.1"
-}
-
-  0%|          | 0/340 [00:00<?, ?it/s]  1%|          | 2/340 [00:01<03:49,  1.47it/s]  1%|          | 3/340 [00:02<05:37,  1.00s/it]  1%|          | 4/340 [00:04<07:07,  1.27s/it]  1%|▏         | 5/340 [00:05<07:19,  1.31s/it]  2%|▏         | 6/340 [00:07<08:04,  1.45s/it]  2%|▏         | 7/340 [00:08<07:33,  1.36s/it]  2%|▏         | 8/340 [00:10<08:12,  1.48s/it]  3%|▎         | 9/340 [00:16<15:37,  2.83s/it]  3%|▎         | 10/340 [00:17<12:52,  2.34s/it]  3%|▎         | 11/340 [00:18<11:00,  2.01s/it]  4%|▎         | 12/340 [00:20<09:51,  1.80s/it]  4%|▍         | 13/340 [00:21<09:41,  1.78s/it]  4%|▍         | 14/340 [00:23<09:28,  1.74s/it]  4%|▍         | 15/340 [00:25<09:20,  1.72s/it]  5%|▍         | 16/340 [00:27<09:28,  1.75s/it]  5%|▌         | 17/340 [00:28<09:38,  1.79s/it]  5%|▌         | 18/340 [00:30<08:31,  1.59s/it]  6%|▌         | 19/340 [00:31<08:22,  1.56s/it]  6%|▌         | 20/340 [00:33<08:15,  1.55s/it]  6%|▌         | 21/340 [00:34<08:30,  1.60s/it]  6%|▋         | 22/340 [00:36<08:32,  1.61s/it]  7%|▋         | 23/340 [00:38<08:36,  1.63s/it]  7%|▋         | 24/340 [00:39<08:40,  1.65s/it]  7%|▋         | 25/340 [00:41<07:59,  1.52s/it]  8%|▊         | 26/340 [00:42<08:04,  1.54s/it]  8%|▊         | 27/340 [00:48<14:37,  2.80s/it]  8%|▊         | 28/340 [00:50<12:52,  2.48s/it]  9%|▊         | 29/340 [00:51<11:35,  2.24s/it]  9%|▉         | 30/340 [00:57<16:59,  3.29s/it]  9%|▉         | 31/340 [00:59<14:34,  2.83s/it]  9%|▉         | 32/340 [01:00<12:43,  2.48s/it] 10%|▉         | 33/340 [01:02<11:13,  2.19s/it] 10%|█         | 34/340 [01:04<10:25,  2.04s/it] 10%|█         | 35/340 [01:06<10:28,  2.06s/it] 11%|█         | 36/340 [01:07<09:53,  1.95s/it] 11%|█         | 37/340 [01:09<09:26,  1.87s/it] 11%|█         | 38/340 [01:11<08:37,  1.71s/it] 11%|█▏        | 39/340 [01:12<08:24,  1.68s/it] 12%|█▏        | 40/340 [01:14<08:08,  1.63s/it] 12%|█▏        | 41/340 [01:15<08:06,  1.63s/it] 12%|█▏        | 42/340 [01:17<08:11,  1.65s/it] 13%|█▎        | 43/340 [01:19<08:17,  1.68s/it] 13%|█▎        | 44/340 [01:20<08:03,  1.63s/it] 13%|█▎        | 45/340 [01:22<07:36,  1.55s/it] 14%|█▎        | 46/340 [01:23<07:34,  1.55s/it] 14%|█▍        | 47/340 [01:25<07:47,  1.60s/it] 14%|█▍        | 48/340 [01:27<08:10,  1.68s/it] 14%|█▍        | 49/340 [01:28<08:01,  1.65s/it] 15%|█▍        | 50/340 [01:30<08:01,  1.66s/it] 15%|█▌        | 51/340 [01:32<08:36,  1.79s/it] 15%|█▌        | 52/340 [01:33<07:55,  1.65s/it] 16%|█▌        | 53/340 [01:35<08:13,  1.72s/it] 16%|█▌        | 54/340 [01:37<08:24,  1.76s/it] 16%|█▌        | 55/340 [01:39<08:37,  1.82s/it] 16%|█▋        | 56/340 [01:41<08:40,  1.83s/it] 17%|█▋        | 57/340 [01:43<08:41,  1.84s/it] 17%|█▋        | 58/340 [01:44<08:27,  1.80s/it] 17%|█▋        | 59/340 [01:47<09:03,  1.93s/it] 18%|█▊        | 60/340 [01:48<08:40,  1.86s/it] 18%|█▊        | 61/340 [01:50<07:53,  1.70s/it] 18%|█▊        | 62/340 [01:52<08:04,  1.74s/it] 19%|█▊        | 63/340 [01:53<08:00,  1.73s/it] 19%|█▉        | 64/340 [01:55<07:14,  1.57s/it] 19%|█▉        | 65/340 [01:56<07:20,  1.60s/it] 19%|█▉        | 66/340 [01:58<07:56,  1.74s/it] 20%|█▉        | 67/340 [02:00<07:44,  1.70s/it] 20%|██        | 68/340 [02:06<13:07,  2.90s/it] 20%|██        | 69/340 [02:07<11:26,  2.53s/it] 21%|██        | 70/340 [02:09<10:36,  2.36s/it] 21%|██        | 71/340 [02:11<09:41,  2.16s/it] 21%|██        | 72/340 [02:13<09:20,  2.09s/it] 21%|██▏       | 73/340 [02:14<08:10,  1.84s/it] 22%|██▏       | 74/340 [02:16<07:50,  1.77s/it] 22%|██▏       | 75/340 [02:17<07:27,  1.69s/it] 22%|██▏       | 76/340 [02:19<07:21,  1.67s/it] 23%|██▎       | 77/340 [02:21<07:35,  1.73s/it] 23%|██▎       | 78/340 [02:23<08:02,  1.84s/it] 23%|██▎       | 79/340 [02:24<07:48,  1.80s/it] 24%|██▎       | 80/340 [02:27<08:17,  1.91s/it] 24%|██▍       | 81/340 [02:29<08:24,  1.95s/it] 24%|██▍       | 82/340 [02:31<08:25,  1.96s/it] 24%|██▍       | 83/340 [02:32<08:00,  1.87s/it] 25%|██▍       | 84/340 [02:34<07:45,  1.82s/it] 25%|██▌       | 85/340 [02:37<08:57,  2.11s/it] 25%|██▌       | 86/340 [02:38<08:11,  1.94s/it] 26%|██▌       | 87/340 [02:40<07:26,  1.77s/it] 26%|██▌       | 88/340 [02:41<06:50,  1.63s/it] 26%|██▌       | 89/340 [02:42<06:38,  1.59s/it] 26%|██▋       | 90/340 [02:44<07:01,  1.69s/it] 27%|██▋       | 91/340 [02:46<06:45,  1.63s/it] 27%|██▋       | 92/340 [02:48<06:47,  1.64s/it] 27%|██▋       | 93/340 [02:50<07:30,  1.83s/it] 28%|██▊       | 94/340 [02:51<07:17,  1.78s/it] 28%|██▊       | 95/340 [02:53<06:47,  1.66s/it] 28%|██▊       | 96/340 [02:54<06:27,  1.59s/it] 29%|██▊       | 97/340 [02:56<06:33,  1.62s/it] 29%|██▉       | 98/340 [02:58<06:26,  1.60s/it] 29%|██▉       | 99/340 [02:59<06:30,  1.62s/it] 29%|██▉       | 100/340 [03:01<06:56,  1.74s/it] 30%|██▉       | 101/340 [03:03<07:04,  1.78s/it] 30%|███       | 102/340 [03:05<07:09,  1.80s/it] 30%|███       | 103/340 [03:07<07:15,  1.84s/it] 31%|███       | 104/340 [03:08<06:38,  1.69s/it] 31%|███       | 105/340 [03:09<06:06,  1.56s/it] 31%|███       | 106/340 [03:11<06:13,  1.59s/it] 31%|███▏      | 107/340 [03:13<06:04,  1.57s/it] 32%|███▏      | 108/340 [03:14<06:11,  1.60s/it] 32%|███▏      | 109/340 [03:16<06:08,  1.59s/it] 32%|███▏      | 110/340 [03:17<05:48,  1.52s/it] 33%|███▎      | 111/340 [03:19<06:00,  1.57s/it] 33%|███▎      | 112/340 [03:23<08:57,  2.36s/it] 33%|███▎      | 113/340 [03:26<09:29,  2.51s/it] 34%|███▎      | 114/340 [03:28<08:56,  2.38s/it] 34%|███▍      | 115/340 [03:30<08:05,  2.16s/it] 34%|███▍      | 116/340 [03:31<07:22,  1.97s/it] 34%|███▍      | 117/340 [03:33<06:56,  1.87s/it] 35%|███▍      | 118/340 [03:35<06:56,  1.88s/it] 35%|███▌      | 119/340 [03:37<07:07,  1.93s/it] 35%|███▌      | 120/340 [03:38<06:39,  1.82s/it] 36%|███▌      | 121/340 [03:44<10:57,  3.00s/it] 36%|███▌      | 122/340 [03:45<08:59,  2.48s/it] 36%|███▌      | 123/340 [03:47<07:40,  2.12s/it] 36%|███▋      | 124/340 [03:48<07:02,  1.96s/it] 37%|███▋      | 125/340 [03:50<06:44,  1.88s/it] 37%|███▋      | 126/340 [03:52<06:29,  1.82s/it] 37%|███▋      | 127/340 [03:53<06:18,  1.78s/it] 38%|███▊      | 128/340 [03:55<06:09,  1.74s/it] 38%|███▊      | 129/340 [03:56<05:45,  1.64s/it] 38%|███▊      | 130/340 [03:58<05:55,  1.69s/it] 39%|███▊      | 131/340 [04:04<10:08,  2.91s/it] 39%|███▉      | 132/340 [04:10<13:01,  3.76s/it] 39%|███▉      | 133/340 [04:15<15:03,  4.37s/it] 39%|███▉      | 134/340 [04:21<16:28,  4.80s/it] 40%|███▉      | 135/340 [04:27<17:26,  5.10s/it] 40%|████      | 136/340 [04:30<14:36,  4.30s/it] 40%|████      | 137/340 [04:35<16:01,  4.74s/it] 41%|████      | 138/340 [04:41<17:01,  5.06s/it] 41%|████      | 139/340 [04:47<17:39,  5.27s/it] 41%|████      | 140/340 [04:53<18:05,  5.43s/it] 41%|████▏     | 141/340 [04:54<13:59,  4.22s/it] 42%|████▏     | 142/340 [04:56<11:35,  3.51s/it] 42%|████▏     | 143/340 [04:58<09:42,  2.96s/it] 42%|████▏     | 144/340 [04:59<08:04,  2.47s/it] 43%|████▎     | 145/340 [05:00<06:57,  2.14s/it] 43%|████▎     | 146/340 [05:02<06:19,  1.96s/it] 43%|████▎     | 147/340 [05:04<06:03,  1.88s/it] 44%|████▎     | 148/340 [05:05<05:54,  1.84s/it] 44%|████▍     | 149/340 [05:08<06:22,  2.00s/it] 44%|████▍     | 150/340 [05:10<06:21,  2.01s/it] 44%|████▍     | 151/340 [05:13<08:00,  2.54s/it] 45%|████▍     | 152/340 [05:19<10:58,  3.50s/it] 45%|████▌     | 153/340 [05:21<09:05,  2.92s/it] 45%|████▌     | 154/340 [05:22<07:53,  2.55s/it] 46%|████▌     | 155/340 [05:27<09:27,  3.07s/it] 46%|████▌     | 156/340 [05:29<08:41,  2.83s/it] 46%|████▌     | 157/340 [05:31<07:53,  2.59s/it] 46%|████▋     | 158/340 [05:34<07:54,  2.61s/it] 47%|████▋     | 159/340 [05:36<07:28,  2.48s/it] 47%|████▋     | 160/340 [05:38<07:07,  2.38s/it] 47%|████▋     | 161/340 [05:40<06:19,  2.12s/it] 48%|████▊     | 162/340 [05:41<05:56,  2.00s/it] 48%|████▊     | 163/340 [05:43<05:51,  1.98s/it] 48%|████▊     | 164/340 [05:45<05:31,  1.88s/it] 49%|████▊     | 165/340 [05:47<05:28,  1.87s/it] 49%|████▉     | 166/340 [05:48<05:00,  1.73s/it] 49%|████▉     | 167/340 [05:50<04:49,  1.67s/it] 49%|████▉     | 168/340 [05:51<04:31,  1.58s/it] 50%|████▉     | 169/340 [05:53<04:36,  1.62s/it] 50%|█████     | 170/340 [05:54<04:20,  1.53s/it] 50%|█████     | 171/340 [05:56<04:19,  1.54s/it] 51%|█████     | 172/340 [05:57<04:15,  1.52s/it] 51%|█████     | 173/340 [05:59<04:23,  1.58s/it] 51%|█████     | 174/340 [06:00<04:29,  1.63s/it] 51%|█████▏    | 175/340 [06:02<04:16,  1.55s/it] 52%|█████▏    | 176/340 [06:04<04:23,  1.60s/it] 52%|█████▏    | 177/340 [06:06<04:36,  1.70s/it] 52%|█████▏    | 178/340 [06:07<04:37,  1.72s/it] 53%|█████▎    | 179/340 [06:13<07:55,  2.95s/it] 53%|█████▎    | 180/340 [06:15<06:52,  2.58s/it] 53%|█████▎    | 181/340 [06:16<06:01,  2.28s/it] 54%|█████▎    | 182/340 [06:18<05:34,  2.12s/it] 54%|█████▍    | 183/340 [06:20<05:12,  1.99s/it] 54%|█████▍    | 184/340 [06:22<05:31,  2.13s/it] 54%|█████▍    | 185/340 [06:24<05:09,  2.00s/it] 55%|█████▍    | 186/340 [06:25<04:28,  1.74s/it] 55%|█████▌    | 187/340 [06:27<04:24,  1.73s/it] 55%|█████▌    | 188/340 [06:28<04:09,  1.64s/it] 56%|█████▌    | 189/340 [06:30<03:52,  1.54s/it] 56%|█████▌    | 190/340 [06:31<03:49,  1.53s/it] 56%|█████▌    | 191/340 [06:33<03:52,  1.56s/it] 56%|█████▋    | 192/340 [06:34<03:41,  1.50s/it] 57%|█████▋    | 193/340 [06:36<03:49,  1.56s/it] 57%|█████▋    | 194/340 [06:37<03:45,  1.55s/it] 57%|█████▋    | 195/340 [06:39<03:43,  1.54s/it] 58%|█████▊    | 196/340 [06:41<03:50,  1.60s/it] 58%|█████▊    | 197/340 [06:42<03:51,  1.62s/it] 58%|█████▊    | 198/340 [06:44<03:52,  1.64s/it] 59%|█████▊    | 199/340 [06:45<03:47,  1.62s/it] 59%|█████▉    | 200/340 [06:48<04:08,  1.78s/it] 59%|█████▉    | 201/340 [06:49<03:54,  1.68s/it] 59%|█████▉    | 202/340 [06:51<04:01,  1.75s/it] 60%|█████▉    | 203/340 [06:53<03:57,  1.73s/it] 60%|██████    | 204/340 [06:54<03:41,  1.63s/it] 60%|██████    | 205/340 [06:56<03:43,  1.66s/it] 61%|██████    | 206/340 [06:58<03:50,  1.72s/it] 61%|██████    | 207/340 [06:59<03:52,  1.75s/it] 61%|██████    | 208/340 [07:02<04:05,  1.86s/it] 61%|██████▏   | 209/340 [07:04<04:20,  1.99s/it] 62%|██████▏   | 210/340 [07:06<04:15,  1.96s/it] 62%|██████▏   | 211/340 [07:08<04:04,  1.90s/it] 62%|██████▏   | 212/340 [07:09<03:48,  1.79s/it] 63%|██████▎   | 213/340 [07:11<03:43,  1.76s/it] 63%|██████▎   | 214/340 [07:13<03:44,  1.78s/it] 63%|██████▎   | 215/340 [07:14<03:35,  1.72s/it] 64%|██████▎   | 216/340 [07:16<03:33,  1.72s/it] 64%|██████▍   | 217/340 [07:18<03:31,  1.72s/it] 64%|██████▍   | 218/340 [07:19<03:30,  1.73s/it] 64%|██████▍   | 219/340 [07:21<03:31,  1.75s/it] 65%|██████▍   | 220/340 [07:23<03:30,  1.76s/it] 65%|██████▌   | 221/340 [07:25<03:23,  1.71s/it] 65%|██████▌   | 222/340 [07:27<03:37,  1.85s/it] 66%|██████▌   | 223/340 [07:29<03:45,  1.92s/it] 66%|██████▌   | 224/340 [07:31<03:38,  1.88s/it] 66%|██████▌   | 225/340 [07:32<03:36,  1.88s/it] 66%|██████▋   | 226/340 [07:34<03:20,  1.76s/it] 67%|██████▋   | 227/340 [07:36<03:18,  1.75s/it] 67%|██████▋   | 228/340 [07:37<03:13,  1.73s/it] 67%|██████▋   | 229/340 [07:39<03:11,  1.72s/it] 68%|██████▊   | 230/340 [07:41<03:04,  1.67s/it] 68%|██████▊   | 231/340 [07:42<02:57,  1.62s/it] 68%|██████▊   | 232/340 [07:44<02:53,  1.61s/it] 69%|██████▊   | 233/340 [07:45<02:47,  1.57s/it] 69%|██████▉   | 234/340 [07:47<02:49,  1.60s/it] 69%|██████▉   | 235/340 [07:49<02:55,  1.67s/it] 69%|██████▉   | 236/340 [07:50<02:54,  1.68s/it] 70%|██████▉   | 237/340 [07:54<03:49,  2.22s/it] 70%|███████   | 238/340 [07:56<03:33,  2.09s/it] 70%|███████   | 239/340 [07:57<03:23,  2.02s/it] 71%|███████   | 240/340 [08:00<03:32,  2.13s/it] 71%|███████   | 241/340 [08:01<03:11,  1.93s/it] 71%|███████   | 242/340 [08:03<02:53,  1.77s/it] 71%|███████▏  | 243/340 [08:04<02:38,  1.64s/it] 72%|███████▏  | 244/340 [08:06<02:39,  1.66s/it] 72%|███████▏  | 245/340 [08:07<02:25,  1.54s/it] 72%|███████▏  | 246/340 [08:09<02:41,  1.72s/it] 73%|███████▎  | 247/340 [08:15<04:21,  2.81s/it] 73%|███████▎  | 248/340 [08:16<03:44,  2.44s/it] 73%|███████▎  | 249/340 [08:18<03:21,  2.22s/it] 74%|███████▎  | 250/340 [08:24<05:00,  3.34s/it] 74%|███████▍  | 251/340 [08:25<04:13,  2.84s/it] 74%|███████▍  | 252/340 [08:27<03:43,  2.54s/it] 74%|███████▍  | 253/340 [08:29<03:18,  2.29s/it] 75%|███████▍  | 254/340 [08:30<02:52,  2.01s/it] 75%|███████▌  | 255/340 [08:32<02:42,  1.91s/it] 75%|███████▌  | 256/340 [08:38<04:15,  3.04s/it] 76%|███████▌  | 257/340 [08:39<03:40,  2.65s/it] 76%|███████▌  | 258/340 [08:41<03:07,  2.29s/it] 76%|███████▌  | 259/340 [08:42<02:35,  1.92s/it] 76%|███████▋  | 260/340 [08:44<02:36,  1.96s/it] 77%|███████▋  | 261/340 [08:45<02:19,  1.76s/it] 77%|███████▋  | 262/340 [08:47<02:07,  1.63s/it] 77%|███████▋  | 263/340 [08:49<02:13,  1.74s/it] 78%|███████▊  | 264/340 [08:50<02:13,  1.76s/it] 78%|███████▊  | 265/340 [08:53<02:20,  1.88s/it] 78%|███████▊  | 266/340 [08:54<02:19,  1.88s/it] 79%|███████▊  | 267/340 [08:56<02:17,  1.88s/it] 79%|███████▉  | 268/340 [08:58<02:07,  1.77s/it] 79%|███████▉  | 269/340 [09:00<02:07,  1.79s/it] 79%|███████▉  | 270/340 [09:02<02:17,  1.97s/it] 80%|███████▉  | 271/340 [09:04<02:07,  1.85s/it] 80%|████████  | 272/340 [09:06<02:06,  1.86s/it] 80%|████████  | 273/340 [09:07<02:04,  1.85s/it] 81%|████████  | 274/340 [09:09<01:58,  1.80s/it] 81%|████████  | 275/340 [09:11<01:58,  1.83s/it] 81%|████████  | 276/340 [09:13<01:55,  1.81s/it] 81%|████████▏ | 277/340 [09:15<01:54,  1.82s/it] 82%|████████▏ | 278/340 [09:16<01:51,  1.79s/it] 82%|████████▏ | 279/340 [09:18<01:50,  1.82s/it] 82%|████████▏ | 280/340 [09:20<01:46,  1.78s/it] 83%|████████▎ | 281/340 [09:22<01:43,  1.76s/it] 83%|████████▎ | 282/340 [09:23<01:43,  1.79s/it] 83%|████████▎ | 283/340 [09:25<01:43,  1.82s/it] 84%|████████▎ | 284/340 [09:27<01:40,  1.79s/it] 84%|████████▍ | 285/340 [09:29<01:37,  1.77s/it] 84%|████████▍ | 286/340 [09:31<01:37,  1.80s/it] 84%|████████▍ | 287/340 [09:33<01:38,  1.86s/it] 85%|████████▍ | 288/340 [09:34<01:35,  1.83s/it] 85%|████████▌ | 289/340 [09:36<01:34,  1.85s/it] 85%|████████▌ | 290/340 [09:38<01:29,  1.80s/it] 86%|████████▌ | 291/340 [09:40<01:29,  1.82s/it] 86%|████████▌ | 292/340 [09:42<01:30,  1.89s/it] 86%|████████▌ | 293/340 [09:44<01:25,  1.83s/it] 86%|████████▋ | 294/340 [09:45<01:22,  1.79s/it] 87%|████████▋ | 295/340 [09:47<01:21,  1.81s/it] 87%|████████▋ | 296/340 [09:49<01:20,  1.82s/it] 87%|████████▋ | 297/340 [09:50<01:14,  1.73s/it] 88%|████████▊ | 298/340 [09:52<01:14,  1.78s/it] 88%|████████▊ | 299/340 [09:54<01:10,  1.71s/it] 88%|████████▊ | 300/340 [09:56<01:10,  1.77s/it] 89%|████████▊ | 301/340 [09:58<01:08,  1.76s/it] 89%|████████▉ | 302/340 [09:59<01:06,  1.74s/it] 89%|████████▉ | 303/340 [10:01<00:59,  1.60s/it] 89%|████████▉ | 304/340 [10:02<01:00,  1.69s/it] 90%|████████▉ | 305/340 [10:04<00:56,  1.61s/it] 90%|█████████ | 306/340 [10:06<00:56,  1.66s/it] 90%|█████████ | 307/340 [10:08<00:57,  1.75s/it] 91%|█████████ | 308/340 [10:09<00:55,  1.73s/it] 91%|█████████ | 309/340 [10:11<00:53,  1.72s/it] 91%|█████████ | 310/340 [10:13<00:51,  1.71s/it] 91%|█████████▏| 311/340 [10:14<00:47,  1.63s/it] 92%|█████████▏| 312/340 [10:16<00:45,  1.61s/it] 92%|█████████▏| 313/340 [10:18<00:45,  1.69s/it] 92%|█████████▏| 314/340 [10:19<00:43,  1.68s/it] 93%|█████████▎| 315/340 [10:21<00:44,  1.77s/it] 93%|█████████▎| 316/340 [10:27<01:11,  2.97s/it] 93%|█████████▎| 317/340 [10:33<01:27,  3.81s/it] 94%|█████████▎| 318/340 [10:35<01:11,  3.27s/it] 94%|█████████▍| 319/340 [10:41<01:24,  4.02s/it] 94%|█████████▍| 320/340 [10:43<01:08,  3.43s/it] 94%|█████████▍| 321/340 [10:44<00:56,  2.96s/it] 95%|█████████▍| 322/340 [10:46<00:46,  2.59s/it] 95%|█████████▌| 323/340 [10:48<00:39,  2.33s/it] 95%|█████████▌| 324/340 [10:50<00:34,  2.15s/it] 96%|█████████▌| 325/340 [10:51<00:29,  1.95s/it] 96%|█████████▌| 326/340 [10:53<00:25,  1.84s/it] 96%|█████████▌| 327/340 [10:55<00:25,  1.93s/it] 96%|█████████▋| 328/340 [10:57<00:22,  1.91s/it] 97%|█████████▋| 329/340 [10:59<00:21,  1.98s/it] 97%|█████████▋| 330/340 [11:01<00:20,  2.03s/it] 97%|█████████▋| 331/340 [11:03<00:18,  2.05s/it] 98%|█████████▊| 332/340 [11:05<00:15,  1.94s/it] 98%|█████████▊| 333/340 [11:07<00:13,  1.99s/it] 98%|█████████▊| 334/340 [11:09<00:11,  1.91s/it] 99%|█████████▊| 335/340 [11:10<00:09,  1.90s/it] 99%|█████████▉| 336/340 [11:12<00:07,  1.84s/it] 99%|█████████▉| 337/340 [11:14<00:05,  1.71s/it] 99%|█████████▉| 338/340 [11:16<00:03,  1.86s/it]100%|█████████▉| 339/340 [11:17<00:01,  1.81s/it]100%|██████████| 340/340 [11:19<00:00,  1.65s/it]100%|██████████| 340/340 [11:35<00:00,  2.05s/it]
-***** eval metrics *****
-  eval_block_avg          =     1.8927
-  eval_exact_match        =    75.2696
-  eval_f1                 =    84.1182
-  eval_loss               =     1.0116
-  eval_runtime            = 0:11:20.97
-  eval_samples            =      10873
-  eval_samples_per_second =     15.967
-  eval_steps_per_second   =      0.499
-Using the `WANDB_DISABLED` environment variable is deprecated and will be removed in v5. Use the --report_to flag to control the integrations used for logging result (for instance --report_to none).
-05/22/2024 10:59:01 - WARNING - __main__ - Process rank: 0, device: cuda:0, n_gpu: 1distributed training: True, 16-bits training: False
-05/22/2024 10:59:01 - INFO - __main__ - Training/evaluation parameters Seq2SeqTrainingArguments(
-_n_gpu=1,
-adafactor=False,
-adam_beta1=0.9,
-adam_beta2=0.999,
-adam_epsilon=1e-08,
-auto_find_batch_size=False,
-bf16=False,
-bf16_full_eval=False,
-data_seed=None,
-dataloader_drop_last=False,
-dataloader_num_workers=0,
-dataloader_pin_memory=True,
-ddp_bucket_cap_mb=None,
-ddp_find_unused_parameters=None,
-ddp_timeout=1800,
-debug=[],
-deepspeed=None,
-disable_tqdm=False,
-do_eval=True,
-do_predict=False,
-do_train=False,
-eval_accumulation_steps=None,
-eval_delay=0,
-eval_steps=None,
-evaluation_strategy=no,
-fp16=False,
-fp16_backend=auto,
-fp16_full_eval=False,
-fp16_opt_level=O1,
-fsdp=[],
-fsdp_config={'fsdp_min_num_params': 0, 'xla': False, 'xla_fsdp_grad_ckpt': False},
-fsdp_min_num_params=0,
-fsdp_transformer_layer_cls_to_wrap=None,
-full_determinism=False,
-generation_config=None,
-generation_max_length=None,
-generation_num_beams=None,
-gradient_accumulation_steps=1,
-gradient_checkpointing=False,
-greater_is_better=None,
-group_by_length=False,
-half_precision_backend=auto,
-hub_model_id=None,
-hub_private_repo=False,
-hub_strategy=every_save,
-hub_token=<HUB_TOKEN>,
-ignore_data_skip=False,
-include_inputs_for_metrics=False,
-jit_mode_eval=False,
-label_names=None,
-label_smoothing_factor=0.0,
-learning_rate=0.0001,
-length_column_name=length,
-load_best_model_at_end=False,
-local_rank=0,
-log_level=passive,
-log_level_replica=warning,
-log_on_each_node=True,
-logging_dir=./save/squad_t5_large/runs/May22_10-59-01_c96132b362d4,
-logging_first_step=False,
-logging_nan_inf_filter=True,
-logging_steps=500,
-logging_strategy=steps,
-lr_scheduler_type=linear,
-max_grad_norm=1.0,
-max_steps=-1,
-metric_for_best_model=None,
-mp_parameters=,
-no_cuda=False,
-num_train_epochs=5.0,
-optim=adamw_hf,
-optim_args=None,
-output_dir=./save/squad_t5_large/,
-overwrite_output_dir=True,
-past_index=-1,
-per_device_eval_batch_size=32,
-per_device_train_batch_size=8,
-predict_with_generate=True,
-prediction_loss_only=False,
-push_to_hub=False,
-push_to_hub_model_id=None,
-push_to_hub_organization=None,
-push_to_hub_token=<PUSH_TO_HUB_TOKEN>,
-ray_scope=last,
-remove_unused_columns=True,
-report_to=[],
-resume_from_checkpoint=None,
-run_name=./save/squad_t5_large/,
-save_on_each_node=False,
-save_safetensors=False,
-save_steps=5475,
-save_strategy=steps,
-save_total_limit=None,
-seed=42,
-sharded_ddp=[],
-skip_memory_metrics=True,
-sortish_sampler=False,
-tf32=None,
-torch_compile=False,
-torch_compile_backend=None,
-torch_compile_mode=None,
-torchdynamo=None,
-tpu_metrics_debug=False,
-tpu_num_cores=None,
-use_ipex=False,
-use_legacy_prediction_loop=False,
-use_mps_device=False,
-warmup_ratio=0.0,
-warmup_steps=0,
-weight_decay=0.0,
-xpu_backend=None,
-)
-/opt/conda/lib/python3.10/site-packages/datasets/load.py:2547: FutureWarning: 'use_auth_token' was deprecated in favor of 'token' in version 2.14.0 and will be removed in 3.0.0.
-You can remove this warning by passing 'token=<use_auth_token>' instead.
-  warnings.warn(
-Overwrite dataset info from restored data version if exists.
-05/22/2024 10:59:06 - INFO - datasets.builder - Overwrite dataset info from restored data version if exists.
-Loading Dataset info from /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f
-05/22/2024 10:59:06 - INFO - datasets.info - Loading Dataset info from /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f
-Found cached dataset squad (/root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f)
-05/22/2024 10:59:06 - INFO - datasets.builder - Found cached dataset squad (/root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f)
-Loading Dataset info from /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f
-05/22/2024 10:59:06 - INFO - datasets.info - Loading Dataset info from /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f
-[INFO|configuration_utils.py:666] 2024-05-22 10:59:06,556 >> loading configuration file checkpoints/SQUAD/config.json
-[INFO|configuration_utils.py:720] 2024-05-22 10:59:06,557 >> Model config T5Config {
-  "_name_or_path": "checkpoints/SQUAD",
-  "architectures": [
-    "EffT5ForConditionalGeneration"
-  ],
-  "copy_skipped_hidden_states": true,
-  "d_ff": 4096,
-  "d_kv": 64,
-  "d_model": 1024,
-  "decoder_start_token_id": 0,
-  "dense_act_fn": "relu",
-  "distill_alpha": null,
-  "distill_layer_alpha": null,
-  "distill_layer_map": "dyna",
-  "distill_temp": null,
-  "do_layer_distill": false,
-  "do_layer_transformation": false,
-  "dropout_rate": 0.1,
-  "eos_token_id": 1,
-  "exit_conf_threshold": 1.0,
-  "exit_conf_type": null,
-  "exit_position_temp": null,
-  "fallback_conf_threshold": 1.0,
-  "fallback_conf_type": null,
-  "feed_forward_proj": "relu",
-  "initializer_factor": 1.0,
-  "intermediate_loss_fn": "weighted_ce",
-  "is_encoder_decoder": true,
-  "is_gated_act": false,
-  "layer_norm_epsilon": 1e-06,
-  "max_answer_length": 30,
-  "model_type": "t5",
-  "n_positions": 512,
-  "num_decoder_layers": 24,
-  "num_heads": 16,
-  "num_layers": 24,
-  "output_hidden_states_decoder": true,
-  "output_past": true,
-  "pad_token_id": 0,
-  "parallel_gen_token": false,
-  "relative_attention_max_distance": 128,
-  "relative_attention_num_buckets": 32,
-  "rollback_conf_threshold": null,
-  "small_exit_layer": null,
-  "static_exit_layer": null,
-  "task_specific_params": {
-    "summarization": {
-      "early_stopping": true,
-      "length_penalty": 2.0,
-      "max_length": 200,
-      "min_length": 30,
-      "no_repeat_ngram_size": 3,
-      "num_beams": 4,
-      "prefix": "summarize: "
-    },
-    "translation_en_to_de": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to German: "
-    },
-    "translation_en_to_fr": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to French: "
-    },
-    "translation_en_to_ro": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to Romanian: "
-    }
-  },
-  "torch_dtype": "float32",
-  "train_meta_cm_head": false,
-  "transformers_version": "4.28.1",
-  "use_big_small": false,
-  "use_cache": true,
-  "vocab_size": 32128
-}
-
-/opt/conda/lib/python3.10/site-packages/huggingface_hub/file_download.py:1132: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
-  warnings.warn(
-[INFO|tokenization_auto.py:502] 2024-05-22 10:59:06,683 >> Could not locate the tokenizer configuration file, will try to use the model config instead.
-[INFO|configuration_utils.py:668] 2024-05-22 10:59:06,809 >> loading configuration file config.json from cache at /root/.cache/huggingface/hub/models--t5-large/snapshots/150ebc2c4b72291e770f58e6057481c8d2ed331a/config.json
-[INFO|configuration_utils.py:720] 2024-05-22 10:59:06,810 >> Model config T5Config {
-  "_name_or_path": "t5-large",
-  "architectures": [
-    "T5ForConditionalGeneration"
-  ],
-  "d_ff": 4096,
-  "d_kv": 64,
-  "d_model": 1024,
-  "decoder_start_token_id": 0,
-  "dense_act_fn": "relu",
-  "dropout_rate": 0.1,
-  "eos_token_id": 1,
-  "feed_forward_proj": "relu",
-  "initializer_factor": 1.0,
-  "is_encoder_decoder": true,
-  "is_gated_act": false,
-  "layer_norm_epsilon": 1e-06,
-  "model_type": "t5",
-  "n_positions": 512,
-  "num_decoder_layers": 24,
-  "num_heads": 16,
-  "num_layers": 24,
-  "output_past": true,
-  "pad_token_id": 0,
-  "relative_attention_max_distance": 128,
-  "relative_attention_num_buckets": 32,
-  "task_specific_params": {
-    "summarization": {
-      "early_stopping": true,
-      "length_penalty": 2.0,
-      "max_length": 200,
-      "min_length": 30,
-      "no_repeat_ngram_size": 3,
-      "num_beams": 4,
-      "prefix": "summarize: "
-    },
-    "translation_en_to_de": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to German: "
-    },
-    "translation_en_to_fr": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to French: "
-    },
-    "translation_en_to_ro": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to Romanian: "
-    }
-  },
-  "transformers_version": "4.28.1",
-  "use_cache": true,
-  "vocab_size": 32128
-}
-
-[INFO|tokenization_utils_base.py:1809] 2024-05-22 10:59:07,122 >> loading file spiece.model from cache at /root/.cache/huggingface/hub/models--t5-large/snapshots/150ebc2c4b72291e770f58e6057481c8d2ed331a/spiece.model
-[INFO|tokenization_utils_base.py:1809] 2024-05-22 10:59:07,122 >> loading file tokenizer.json from cache at /root/.cache/huggingface/hub/models--t5-large/snapshots/150ebc2c4b72291e770f58e6057481c8d2ed331a/tokenizer.json
-[INFO|tokenization_utils_base.py:1809] 2024-05-22 10:59:07,122 >> loading file added_tokens.json from cache at None
-[INFO|tokenization_utils_base.py:1809] 2024-05-22 10:59:07,122 >> loading file special_tokens_map.json from cache at None
-[INFO|tokenization_utils_base.py:1809] 2024-05-22 10:59:07,122 >> loading file tokenizer_config.json from cache at None
-[INFO|configuration_utils.py:668] 2024-05-22 10:59:07,122 >> loading configuration file config.json from cache at /root/.cache/huggingface/hub/models--t5-large/snapshots/150ebc2c4b72291e770f58e6057481c8d2ed331a/config.json
-[INFO|configuration_utils.py:720] 2024-05-22 10:59:07,123 >> Model config T5Config {
-  "_name_or_path": "t5-large",
-  "architectures": [
-    "T5ForConditionalGeneration"
-  ],
-  "d_ff": 4096,
-  "d_kv": 64,
-  "d_model": 1024,
-  "decoder_start_token_id": 0,
-  "dense_act_fn": "relu",
-  "dropout_rate": 0.1,
-  "eos_token_id": 1,
-  "feed_forward_proj": "relu",
-  "initializer_factor": 1.0,
-  "is_encoder_decoder": true,
-  "is_gated_act": false,
-  "layer_norm_epsilon": 1e-06,
-  "model_type": "t5",
-  "n_positions": 512,
-  "num_decoder_layers": 24,
-  "num_heads": 16,
-  "num_layers": 24,
-  "output_past": true,
-  "pad_token_id": 0,
-  "relative_attention_max_distance": 128,
-  "relative_attention_num_buckets": 32,
-  "task_specific_params": {
-    "summarization": {
-      "early_stopping": true,
-      "length_penalty": 2.0,
-      "max_length": 200,
-      "min_length": 30,
-      "no_repeat_ngram_size": 3,
-      "num_beams": 4,
-      "prefix": "summarize: "
-    },
-    "translation_en_to_de": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to German: "
-    },
-    "translation_en_to_fr": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to French: "
-    },
-    "translation_en_to_ro": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to Romanian: "
-    }
-  },
-  "transformers_version": "4.28.1",
-  "use_cache": true,
-  "vocab_size": 32128
-}
-
-/opt/conda/lib/python3.10/site-packages/transformers/models/t5/tokenization_t5_fast.py:155: FutureWarning: This tokenizer was incorrectly instantiated with a model max length of 512 which will be corrected in Transformers v5.
-For now, this behavior is kept to avoid breaking backwards compatibility when padding/encoding with `truncation is True`.
-- Be aware that you SHOULD NOT rely on t5-large automatically truncating your input to 512 when padding/encoding.
-- If you want to encode/pad to sequences longer than 512 you can either instantiate this tokenizer with `model_max_length` or pass `max_length` when encoding/padding.
-- To avoid this warning, please instantiate this tokenizer with `model_max_length` set to your preferred value.
-  warnings.warn(
-[INFO|modeling_utils.py:2531] 2024-05-22 10:59:07,172 >> loading weights file checkpoints/SQUAD/pytorch_model.bin
-[INFO|configuration_utils.py:575] 2024-05-22 10:59:08,279 >> Generate config GenerationConfig {
-  "_from_model_config": true,
-  "decoder_start_token_id": 0,
-  "eos_token_id": 1,
-  "pad_token_id": 0,
-  "transformers_version": "4.28.1"
-}
-
-[INFO|modeling_utils.py:3190] 2024-05-22 11:00:24,915 >> All model checkpoint weights were used when initializing EffT5ForConditionalGeneration.
-
-[INFO|modeling_utils.py:3198] 2024-05-22 11:00:24,915 >> All the weights of EffT5ForConditionalGeneration were initialized from the model checkpoint at checkpoints/SQUAD.
-If your task is similar to the task the model of the checkpoint was trained on, you can already use EffT5ForConditionalGeneration for predictions without further training.
-[INFO|modeling_utils.py:2839] 2024-05-22 11:00:25,004 >> Generation config file not found, using a generation config created from the model config.
-Loading cached processed dataset at /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f/cache-57ecd0bc42e999ad.arrow
-05/22/2024 11:00:25 - INFO - datasets.arrow_dataset - Loading cached processed dataset at /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f/cache-57ecd0bc42e999ad.arrow
-05/22/2024 11:00:32 - INFO - __main__ - *** Evaluate ***
-[INFO|trainer.py:762] 2024-05-22 11:00:32,489 >> The following columns in the evaluation set don't have a corresponding argument in `EffT5ForConditionalGeneration.forward` and have been ignored: example_id, offset_mapping. If example_id, offset_mapping are not expected by `EffT5ForConditionalGeneration.forward`,  you can safely ignore this message.
-[WARNING|logging.py:280] 2024-05-22 11:00:32,510 >> You're using a T5TokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
-[INFO|configuration_utils.py:575] 2024-05-22 11:00:32,519 >> Generate config GenerationConfig {
-  "_from_model_config": true,
-  "decoder_start_token_id": 0,
-  "eos_token_id": 1,
-  "pad_token_id": 0,
-  "transformers_version": "4.28.1"
-}
-
-  0%|          | 0/340 [00:00<?, ?it/s]  1%|          | 2/340 [00:01<02:52,  1.95it/s]  1%|          | 3/340 [00:02<04:09,  1.35it/s]  1%|          | 4/340 [00:03<05:26,  1.03it/s]  1%|▏         | 5/340 [00:04<06:05,  1.09s/it]  2%|▏         | 6/340 [00:06<06:29,  1.16s/it]  2%|▏         | 7/340 [00:07<06:43,  1.21s/it]  2%|▏         | 8/340 [00:08<06:56,  1.25s/it]  3%|▎         | 9/340 [00:10<07:00,  1.27s/it]  3%|▎         | 10/340 [00:11<07:03,  1.28s/it]  3%|▎         | 11/340 [00:12<06:39,  1.21s/it]  4%|▎         | 12/340 [00:13<06:21,  1.16s/it]  4%|▍         | 13/340 [00:14<06:37,  1.22s/it]  4%|▍         | 14/340 [00:16<06:47,  1.25s/it]  4%|▍         | 15/340 [00:17<06:56,  1.28s/it]  5%|▍         | 16/340 [00:18<06:58,  1.29s/it]  5%|▌         | 17/340 [00:20<06:58,  1.30s/it]  5%|▌         | 18/340 [00:21<06:58,  1.30s/it]  6%|▌         | 19/340 [00:22<06:59,  1.31s/it]  6%|▌         | 20/340 [00:24<06:57,  1.30s/it]  6%|▌         | 21/340 [00:25<06:56,  1.31s/it]  6%|▋         | 22/340 [00:26<06:29,  1.22s/it]  7%|▋         | 23/340 [00:27<06:38,  1.26s/it]  7%|▋         | 24/340 [00:29<06:44,  1.28s/it]  7%|▋         | 25/340 [00:30<06:50,  1.30s/it]  8%|▊         | 26/340 [00:31<06:50,  1.31s/it]  8%|▊         | 27/340 [00:33<06:50,  1.31s/it]  8%|▊         | 28/340 [00:34<06:48,  1.31s/it]  9%|▊         | 29/340 [00:35<06:46,  1.31s/it]  9%|▉         | 30/340 [00:36<06:45,  1.31s/it]  9%|▉         | 31/340 [00:38<06:23,  1.24s/it]  9%|▉         | 32/340 [00:39<06:28,  1.26s/it] 10%|▉         | 33/340 [00:40<06:31,  1.27s/it] 10%|█         | 34/340 [00:41<06:35,  1.29s/it] 10%|█         | 35/340 [00:43<06:37,  1.30s/it] 11%|█         | 36/340 [00:44<06:41,  1.32s/it] 11%|█         | 37/340 [00:45<06:39,  1.32s/it] 11%|█         | 38/340 [00:47<06:37,  1.32s/it] 11%|█▏        | 39/340 [00:48<06:35,  1.31s/it] 12%|█▏        | 40/340 [00:49<06:34,  1.31s/it] 12%|█▏        | 41/340 [00:51<06:32,  1.31s/it] 12%|█▏        | 42/340 [00:52<06:30,  1.31s/it] 13%|█▎        | 43/340 [00:53<06:29,  1.31s/it] 13%|█▎        | 44/340 [00:55<06:30,  1.32s/it] 13%|█▎        | 45/340 [00:56<06:29,  1.32s/it] 14%|█▎        | 46/340 [00:57<06:31,  1.33s/it] 14%|█▍        | 47/340 [00:59<06:28,  1.32s/it] 14%|█▍        | 48/340 [01:00<06:24,  1.32s/it] 14%|█▍        | 49/340 [01:01<06:22,  1.31s/it] 15%|█▍        | 50/340 [01:03<06:20,  1.31s/it] 15%|█▌        | 51/340 [01:04<06:19,  1.31s/it] 15%|█▌        | 52/340 [01:05<06:08,  1.28s/it] 16%|█▌        | 53/340 [01:06<06:08,  1.29s/it] 16%|█▌        | 54/340 [01:08<06:10,  1.30s/it] 16%|█▌        | 55/340 [01:09<06:12,  1.31s/it] 16%|█▋        | 56/340 [01:10<06:14,  1.32s/it] 17%|█▋        | 57/340 [01:12<06:14,  1.32s/it] 17%|█▋        | 58/340 [01:13<06:11,  1.32s/it] 17%|█▋        | 59/340 [01:14<06:08,  1.31s/it] 18%|█▊        | 60/340 [01:16<06:07,  1.31s/it] 18%|█▊        | 61/340 [01:17<06:06,  1.31s/it] 18%|█▊        | 62/340 [01:18<06:04,  1.31s/it] 19%|█▊        | 63/340 [01:20<06:03,  1.31s/it] 19%|█▉        | 64/340 [01:21<05:42,  1.24s/it] 19%|█▉        | 65/340 [01:22<05:47,  1.26s/it] 19%|█▉        | 66/340 [01:23<05:49,  1.28s/it] 20%|█▉        | 67/340 [01:25<05:54,  1.30s/it] 20%|██        | 68/340 [01:26<05:53,  1.30s/it] 20%|██        | 69/340 [01:27<05:54,  1.31s/it] 21%|██        | 70/340 [01:28<05:41,  1.27s/it] 21%|██        | 71/340 [01:30<05:45,  1.28s/it] 21%|██        | 72/340 [01:31<05:46,  1.29s/it] 21%|██▏       | 73/340 [01:32<05:46,  1.30s/it] 22%|██▏       | 74/340 [01:34<05:45,  1.30s/it] 22%|██▏       | 75/340 [01:35<05:47,  1.31s/it] 22%|██▏       | 76/340 [01:36<05:47,  1.31s/it] 23%|██▎       | 77/340 [01:38<05:48,  1.33s/it] 23%|██▎       | 78/340 [01:39<05:45,  1.32s/it] 23%|██▎       | 79/340 [01:40<05:42,  1.31s/it] 24%|██▎       | 80/340 [01:42<05:41,  1.31s/it] 24%|██▍       | 81/340 [01:43<05:39,  1.31s/it] 24%|██▍       | 82/340 [01:44<05:38,  1.31s/it] 24%|██▍       | 83/340 [01:46<05:36,  1.31s/it] 25%|██▍       | 84/340 [01:47<05:34,  1.31s/it] 25%|██▌       | 85/340 [01:48<05:32,  1.30s/it] 25%|██▌       | 86/340 [01:49<05:31,  1.30s/it] 26%|██▌       | 87/340 [01:50<05:08,  1.22s/it] 26%|██▌       | 88/340 [01:52<05:13,  1.24s/it] 26%|██▌       | 89/340 [01:53<05:16,  1.26s/it] 26%|██▋       | 90/340 [01:54<05:18,  1.27s/it] 27%|██▋       | 91/340 [01:56<05:18,  1.28s/it] 27%|██▋       | 92/340 [01:57<05:19,  1.29s/it] 27%|██▋       | 93/340 [01:58<05:18,  1.29s/it] 28%|██▊       | 94/340 [02:00<05:18,  1.29s/it] 28%|██▊       | 95/340 [02:01<05:17,  1.30s/it] 28%|██▊       | 96/340 [02:02<05:16,  1.30s/it] 29%|██▊       | 97/340 [02:03<05:15,  1.30s/it] 29%|██▉       | 98/340 [02:05<05:14,  1.30s/it] 29%|██▉       | 99/340 [02:06<05:12,  1.30s/it] 29%|██▉       | 100/340 [02:07<05:11,  1.30s/it] 30%|██▉       | 101/340 [02:09<05:10,  1.30s/it] 30%|███       | 102/340 [02:10<05:10,  1.30s/it] 30%|███       | 103/340 [02:11<05:08,  1.30s/it] 31%|███       | 104/340 [02:13<05:07,  1.30s/it] 31%|███       | 105/340 [02:14<05:05,  1.30s/it] 31%|███       | 106/340 [02:15<05:04,  1.30s/it] 31%|███▏      | 107/340 [02:16<05:03,  1.30s/it] 32%|███▏      | 108/340 [02:18<05:02,  1.30s/it] 32%|███▏      | 109/340 [02:19<05:01,  1.30s/it] 32%|███▏      | 110/340 [02:20<04:59,  1.30s/it] 33%|███▎      | 111/340 [02:22<04:59,  1.31s/it] 33%|███▎      | 112/340 [02:23<04:57,  1.31s/it] 33%|███▎      | 113/340 [02:24<04:56,  1.30s/it] 34%|███▎      | 114/340 [02:26<04:54,  1.30s/it] 34%|███▍      | 115/340 [02:27<04:52,  1.30s/it] 34%|███▍      | 116/340 [02:28<04:51,  1.30s/it] 34%|███▍      | 117/340 [02:30<04:50,  1.30s/it] 35%|███▍      | 118/340 [02:31<04:49,  1.30s/it] 35%|███▌      | 119/340 [02:32<04:47,  1.30s/it] 35%|███▌      | 120/340 [02:33<04:45,  1.30s/it] 36%|███▌      | 121/340 [02:35<04:44,  1.30s/it] 36%|███▌      | 122/340 [02:36<04:43,  1.30s/it] 36%|███▌      | 123/340 [02:37<04:42,  1.30s/it] 36%|███▋      | 124/340 [02:39<04:41,  1.30s/it] 37%|███▋      | 125/340 [02:40<04:39,  1.30s/it] 37%|███▋      | 126/340 [02:41<04:38,  1.30s/it] 37%|███▋      | 127/340 [02:43<04:37,  1.30s/it] 38%|███▊      | 128/340 [02:44<04:35,  1.30s/it] 38%|███▊      | 129/340 [02:45<04:35,  1.31s/it] 38%|███▊      | 130/340 [02:46<04:33,  1.30s/it] 39%|███▊      | 131/340 [02:48<04:32,  1.30s/it] 39%|███▉      | 132/340 [02:49<04:31,  1.30s/it] 39%|███▉      | 133/340 [02:50<04:29,  1.30s/it] 39%|███▉      | 134/340 [02:52<04:28,  1.30s/it] 40%|███▉      | 135/340 [02:53<04:26,  1.30s/it] 40%|████      | 136/340 [02:54<04:25,  1.30s/it] 40%|████      | 137/340 [02:56<04:24,  1.30s/it] 41%|████      | 138/340 [02:57<04:23,  1.30s/it] 41%|████      | 139/340 [02:58<04:21,  1.30s/it] 41%|████      | 140/340 [02:59<04:20,  1.30s/it] 41%|████▏     | 141/340 [03:01<04:07,  1.24s/it] 42%|████▏     | 142/340 [03:02<04:09,  1.26s/it] 42%|████▏     | 143/340 [03:03<04:10,  1.27s/it] 42%|████▏     | 144/340 [03:04<04:11,  1.28s/it] 43%|████▎     | 145/340 [03:06<04:10,  1.29s/it] 43%|████▎     | 146/340 [03:07<04:10,  1.29s/it] 43%|████▎     | 147/340 [03:08<04:09,  1.29s/it] 44%|████▎     | 148/340 [03:10<04:08,  1.30s/it] 44%|████▍     | 149/340 [03:11<04:07,  1.30s/it] 44%|████▍     | 150/340 [03:12<04:06,  1.30s/it] 44%|████▍     | 151/340 [03:14<04:05,  1.30s/it] 45%|████▍     | 152/340 [03:15<04:04,  1.30s/it] 45%|████▌     | 153/340 [03:16<04:02,  1.30s/it] 45%|████▌     | 154/340 [03:17<04:01,  1.30s/it] 46%|████▌     | 155/340 [03:19<04:00,  1.30s/it] 46%|████▌     | 156/340 [03:20<03:59,  1.30s/it] 46%|████▌     | 157/340 [03:21<03:58,  1.30s/it] 46%|████▋     | 158/340 [03:23<03:56,  1.30s/it] 47%|████▋     | 159/340 [03:24<03:55,  1.30s/it] 47%|████▋     | 160/340 [03:25<03:54,  1.30s/it] 47%|████▋     | 161/340 [03:27<03:52,  1.30s/it] 48%|████▊     | 162/340 [03:28<03:51,  1.30s/it] 48%|████▊     | 163/340 [03:29<03:50,  1.30s/it] 48%|████▊     | 164/340 [03:30<03:49,  1.30s/it] 49%|████▊     | 165/340 [03:32<03:40,  1.26s/it] 49%|████▉     | 166/340 [03:33<03:41,  1.27s/it] 49%|████▉     | 167/340 [03:34<03:41,  1.28s/it] 49%|████▉     | 168/340 [03:35<03:35,  1.25s/it] 50%|████▉     | 169/340 [03:37<03:36,  1.27s/it] 50%|█████     | 170/340 [03:38<03:26,  1.22s/it] 50%|█████     | 171/340 [03:39<03:29,  1.24s/it] 51%|█████     | 172/340 [03:40<03:32,  1.26s/it] 51%|█████     | 173/340 [03:42<03:34,  1.28s/it] 51%|█████     | 174/340 [03:43<03:34,  1.30s/it] 51%|█████▏    | 175/340 [03:44<03:23,  1.23s/it] 52%|█████▏    | 176/340 [03:45<03:26,  1.26s/it] 52%|█████▏    | 177/340 [03:47<03:27,  1.27s/it] 52%|█████▏    | 178/340 [03:48<03:27,  1.28s/it] 53%|█████▎    | 179/340 [03:49<03:27,  1.29s/it] 53%|█████▎    | 180/340 [03:51<03:27,  1.30s/it] 53%|█████▎    | 181/340 [03:52<03:26,  1.30s/it] 54%|█████▎    | 182/340 [03:53<03:25,  1.30s/it] 54%|█████▍    | 183/340 [03:55<03:24,  1.30s/it] 54%|█████▍    | 184/340 [03:56<03:24,  1.31s/it] 54%|█████▍    | 185/340 [03:57<03:25,  1.32s/it] 55%|█████▍    | 186/340 [03:59<03:23,  1.32s/it] 55%|█████▌    | 187/340 [04:00<03:21,  1.32s/it] 55%|█████▌    | 188/340 [04:01<03:19,  1.31s/it] 56%|█████▌    | 189/340 [04:03<03:17,  1.31s/it] 56%|█████▌    | 190/340 [04:04<03:16,  1.31s/it] 56%|█████▌    | 191/340 [04:05<03:15,  1.31s/it] 56%|█████▋    | 192/340 [04:06<03:13,  1.31s/it] 57%|█████▋    | 193/340 [04:08<03:11,  1.31s/it] 57%|█████▋    | 194/340 [04:09<03:11,  1.31s/it] 57%|█████▋    | 195/340 [04:10<03:10,  1.32s/it] 58%|█████▊    | 196/340 [04:12<03:11,  1.33s/it] 58%|█████▊    | 197/340 [04:13<03:09,  1.32s/it] 58%|█████▊    | 198/340 [04:14<03:06,  1.32s/it] 59%|█████▊    | 199/340 [04:16<03:04,  1.31s/it] 59%|█████▉    | 200/340 [04:17<03:03,  1.31s/it] 59%|█████▉    | 201/340 [04:18<02:52,  1.24s/it] 59%|█████▉    | 202/340 [04:19<02:54,  1.26s/it] 60%|█████▉    | 203/340 [04:21<02:54,  1.28s/it] 60%|██████    | 204/340 [04:22<02:55,  1.29s/it] 60%|██████    | 205/340 [04:23<02:55,  1.30s/it] 61%|██████    | 206/340 [04:25<02:54,  1.31s/it] 61%|██████    | 207/340 [04:26<02:55,  1.32s/it] 61%|██████    | 208/340 [04:27<02:53,  1.31s/it] 61%|██████▏   | 209/340 [04:29<02:51,  1.31s/it] 62%|██████▏   | 210/340 [04:30<02:50,  1.31s/it] 62%|██████▏   | 211/340 [04:31<02:48,  1.31s/it] 62%|██████▏   | 212/340 [04:33<02:47,  1.31s/it] 63%|██████▎   | 213/340 [04:34<02:45,  1.31s/it] 63%|██████▎   | 214/340 [04:35<02:44,  1.30s/it] 63%|██████▎   | 215/340 [04:36<02:44,  1.31s/it] 64%|██████▎   | 216/340 [04:38<02:43,  1.32s/it] 64%|██████▍   | 217/340 [04:39<02:43,  1.33s/it] 64%|██████▍   | 218/340 [04:40<02:41,  1.33s/it] 64%|██████▍   | 219/340 [04:42<02:39,  1.32s/it] 65%|██████▍   | 220/340 [04:43<02:37,  1.31s/it] 65%|██████▌   | 221/340 [04:44<02:36,  1.31s/it] 65%|██████▌   | 222/340 [04:46<02:35,  1.31s/it] 66%|██████▌   | 223/340 [04:47<02:33,  1.31s/it] 66%|██████▌   | 224/340 [04:48<02:31,  1.31s/it] 66%|██████▌   | 225/340 [04:50<02:30,  1.31s/it] 66%|██████▋   | 226/340 [04:51<02:30,  1.32s/it] 67%|██████▋   | 227/340 [04:52<02:29,  1.33s/it] 67%|██████▋   | 228/340 [04:54<02:29,  1.33s/it] 67%|██████▋   | 229/340 [04:55<02:27,  1.32s/it] 68%|██████▊   | 230/340 [04:56<02:24,  1.32s/it] 68%|██████▊   | 231/340 [04:58<02:23,  1.32s/it] 68%|██████▊   | 232/340 [04:59<02:22,  1.32s/it] 69%|██████▊   | 233/340 [05:00<02:20,  1.31s/it] 69%|██████▉   | 234/340 [05:02<02:19,  1.31s/it] 69%|██████▉   | 235/340 [05:03<02:17,  1.31s/it] 69%|██████▉   | 236/340 [05:04<02:16,  1.31s/it] 70%|██████▉   | 237/340 [05:05<02:15,  1.32s/it] 70%|███████   | 238/340 [05:07<02:14,  1.32s/it] 70%|███████   | 239/340 [05:08<02:13,  1.32s/it] 71%|███████   | 240/340 [05:09<02:11,  1.32s/it] 71%|███████   | 241/340 [05:11<02:09,  1.31s/it] 71%|███████   | 242/340 [05:12<02:08,  1.31s/it] 71%|███████▏  | 243/340 [05:13<01:59,  1.24s/it] 72%|███████▏  | 244/340 [05:14<02:00,  1.26s/it] 72%|███████▏  | 245/340 [05:16<02:00,  1.27s/it] 72%|███████▏  | 246/340 [05:17<02:00,  1.28s/it] 73%|███████▎  | 247/340 [05:18<02:00,  1.29s/it] 73%|███████▎  | 248/340 [05:20<01:59,  1.30s/it] 73%|███████▎  | 249/340 [05:21<01:59,  1.31s/it] 74%|███████▎  | 250/340 [05:22<01:58,  1.31s/it] 74%|███████▍  | 251/340 [05:24<01:56,  1.31s/it] 74%|███████▍  | 252/340 [05:25<01:55,  1.31s/it] 74%|███████▍  | 253/340 [05:26<01:53,  1.31s/it] 75%|███████▍  | 254/340 [05:28<01:52,  1.31s/it] 75%|███████▌  | 255/340 [05:29<01:50,  1.30s/it] 75%|███████▌  | 256/340 [05:30<01:49,  1.30s/it] 76%|███████▌  | 257/340 [05:31<01:48,  1.30s/it] 76%|███████▌  | 258/340 [05:33<01:47,  1.31s/it] 76%|███████▌  | 259/340 [05:34<01:40,  1.24s/it] 76%|███████▋  | 260/340 [05:35<01:40,  1.26s/it] 77%|███████▋  | 261/340 [05:36<01:40,  1.28s/it] 77%|███████▋  | 262/340 [05:38<01:40,  1.28s/it] 77%|███████▋  | 263/340 [05:39<01:39,  1.29s/it] 78%|███████▊  | 264/340 [05:40<01:38,  1.29s/it] 78%|███████▊  | 265/340 [05:42<01:37,  1.30s/it] 78%|███████▊  | 266/340 [05:43<01:36,  1.30s/it] 79%|███████▊  | 267/340 [05:44<01:35,  1.30s/it] 79%|███████▉  | 268/340 [05:46<01:34,  1.31s/it] 79%|███████▉  | 269/340 [05:47<01:33,  1.31s/it] 79%|███████▉  | 270/340 [05:48<01:32,  1.33s/it] 80%|███████▉  | 271/340 [05:50<01:31,  1.33s/it] 80%|████████  | 272/340 [05:51<01:29,  1.32s/it] 80%|████████  | 273/340 [05:52<01:28,  1.32s/it] 81%|████████  | 274/340 [05:54<01:26,  1.31s/it] 81%|████████  | 275/340 [05:55<01:25,  1.31s/it] 81%|████████  | 276/340 [05:56<01:23,  1.31s/it] 81%|████████▏ | 277/340 [05:57<01:22,  1.31s/it] 82%|████████▏ | 278/340 [05:59<01:21,  1.31s/it] 82%|████████▏ | 279/340 [06:00<01:19,  1.31s/it] 82%|████████▏ | 280/340 [06:01<01:18,  1.31s/it] 83%|████████▎ | 281/340 [06:03<01:16,  1.30s/it] 83%|████████▎ | 282/340 [06:04<01:15,  1.31s/it] 83%|████████▎ | 283/340 [06:05<01:14,  1.31s/it] 84%|████████▎ | 284/340 [06:07<01:13,  1.31s/it] 84%|████████▍ | 285/340 [06:08<01:11,  1.31s/it] 84%|████████▍ | 286/340 [06:09<01:10,  1.30s/it] 84%|████████▍ | 287/340 [06:11<01:09,  1.30s/it] 85%|████████▍ | 288/340 [06:12<01:07,  1.30s/it] 85%|████████▌ | 289/340 [06:13<01:06,  1.30s/it] 85%|████████▌ | 290/340 [06:14<01:05,  1.30s/it] 86%|████████▌ | 291/340 [06:16<01:03,  1.30s/it] 86%|████████▌ | 292/340 [06:17<01:02,  1.30s/it] 86%|████████▌ | 293/340 [06:18<01:01,  1.30s/it] 86%|████████▋ | 294/340 [06:20<00:59,  1.30s/it] 87%|████████▋ | 295/340 [06:21<00:58,  1.30s/it] 87%|████████▋ | 296/340 [06:22<00:57,  1.30s/it] 87%|████████▋ | 297/340 [06:24<00:55,  1.30s/it] 88%|████████▊ | 298/340 [06:25<00:54,  1.30s/it] 88%|████████▊ | 299/340 [06:26<00:53,  1.30s/it] 88%|████████▊ | 300/340 [06:27<00:52,  1.30s/it] 89%|████████▊ | 301/340 [06:29<00:50,  1.30s/it] 89%|████████▉ | 302/340 [06:30<00:49,  1.30s/it] 89%|████████▉ | 303/340 [06:31<00:48,  1.30s/it] 89%|████████▉ | 304/340 [06:33<00:46,  1.30s/it] 90%|████████▉ | 305/340 [06:34<00:45,  1.30s/it] 90%|█████████ | 306/340 [06:35<00:44,  1.30s/it] 90%|█████████ | 307/340 [06:37<00:42,  1.30s/it] 91%|█████████ | 308/340 [06:38<00:41,  1.30s/it] 91%|█████████ | 309/340 [06:39<00:40,  1.30s/it] 91%|█████████ | 310/340 [06:40<00:39,  1.30s/it] 91%|█████████▏| 311/340 [06:42<00:37,  1.30s/it] 92%|█████████▏| 312/340 [06:43<00:36,  1.30s/it] 92%|█████████▏| 313/340 [06:44<00:35,  1.30s/it] 92%|█████████▏| 314/340 [06:46<00:33,  1.30s/it] 93%|█████████▎| 315/340 [06:47<00:32,  1.30s/it] 93%|█████████▎| 316/340 [06:48<00:31,  1.30s/it] 93%|█████████▎| 317/340 [06:50<00:29,  1.30s/it] 94%|█████████▎| 318/340 [06:51<00:28,  1.30s/it] 94%|█████████▍| 319/340 [06:52<00:27,  1.31s/it] 94%|█████████▍| 320/340 [06:53<00:26,  1.30s/it] 94%|█████████▍| 321/340 [06:55<00:24,  1.30s/it] 95%|█████████▍| 322/340 [06:56<00:23,  1.31s/it] 95%|█████████▌| 323/340 [06:57<00:22,  1.30s/it] 95%|█████████▌| 324/340 [06:59<00:20,  1.30s/it] 96%|█████████▌| 325/340 [07:00<00:19,  1.30s/it] 96%|█████████▌| 326/340 [07:01<00:18,  1.30s/it] 96%|█████████▌| 327/340 [07:03<00:16,  1.31s/it] 96%|█████████▋| 328/340 [07:04<00:15,  1.31s/it] 97%|█████████▋| 329/340 [07:05<00:14,  1.30s/it] 97%|█████████▋| 330/340 [07:06<00:13,  1.30s/it] 97%|█████████▋| 331/340 [07:08<00:11,  1.30s/it] 98%|█████████▊| 332/340 [07:09<00:10,  1.30s/it] 98%|█████████▊| 333/340 [07:10<00:09,  1.30s/it] 98%|█████████▊| 334/340 [07:12<00:07,  1.30s/it] 99%|█████████▊| 335/340 [07:13<00:06,  1.30s/it] 99%|█████████▉| 336/340 [07:14<00:05,  1.30s/it] 99%|█████████▉| 337/340 [07:16<00:03,  1.30s/it] 99%|█████████▉| 338/340 [07:17<00:02,  1.30s/it]100%|█████████▉| 339/340 [07:18<00:01,  1.30s/it]100%|██████████| 340/340 [07:19<00:00,  1.25s/it]100%|██████████| 340/340 [07:36<00:00,  1.34s/it]
-***** eval metrics *****
-  eval_block_avg          =     2.0001
-  eval_exact_match        =    64.9953
-  eval_f1                 =    75.9515
-  eval_loss               =     1.0116
-  eval_runtime            = 0:07:21.25
-  eval_samples            =      10873
-  eval_samples_per_second =     24.641
-  eval_steps_per_second   =      0.771
-Using the `WANDB_DISABLED` environment variable is deprecated and will be removed in v5. Use the --report_to flag to control the integrations used for logging result (for instance --report_to none).
-05/22/2024 11:08:23 - WARNING - __main__ - Process rank: 0, device: cuda:0, n_gpu: 1distributed training: True, 16-bits training: False
-05/22/2024 11:08:23 - INFO - __main__ - Training/evaluation parameters Seq2SeqTrainingArguments(
-_n_gpu=1,
-adafactor=False,
-adam_beta1=0.9,
-adam_beta2=0.999,
-adam_epsilon=1e-08,
-auto_find_batch_size=False,
-bf16=False,
-bf16_full_eval=False,
-data_seed=None,
-dataloader_drop_last=False,
-dataloader_num_workers=0,
-dataloader_pin_memory=True,
-ddp_bucket_cap_mb=None,
-ddp_find_unused_parameters=None,
-ddp_timeout=1800,
-debug=[],
-deepspeed=None,
-disable_tqdm=False,
-do_eval=True,
-do_predict=False,
-do_train=False,
-eval_accumulation_steps=None,
-eval_delay=0,
-eval_steps=None,
-evaluation_strategy=no,
-fp16=False,
-fp16_backend=auto,
-fp16_full_eval=False,
-fp16_opt_level=O1,
-fsdp=[],
-fsdp_config={'fsdp_min_num_params': 0, 'xla': False, 'xla_fsdp_grad_ckpt': False},
-fsdp_min_num_params=0,
-fsdp_transformer_layer_cls_to_wrap=None,
-full_determinism=False,
-generation_config=None,
-generation_max_length=None,
-generation_num_beams=None,
-gradient_accumulation_steps=1,
-gradient_checkpointing=False,
-greater_is_better=None,
-group_by_length=False,
-half_precision_backend=auto,
-hub_model_id=None,
-hub_private_repo=False,
-hub_strategy=every_save,
-hub_token=<HUB_TOKEN>,
-ignore_data_skip=False,
-include_inputs_for_metrics=False,
-jit_mode_eval=False,
-label_names=None,
-label_smoothing_factor=0.0,
-learning_rate=0.0001,
-length_column_name=length,
-load_best_model_at_end=False,
-local_rank=0,
-log_level=passive,
-log_level_replica=warning,
-log_on_each_node=True,
-logging_dir=./save/squad_t5_large/runs/May22_11-08-23_c96132b362d4,
-logging_first_step=False,
-logging_nan_inf_filter=True,
-logging_steps=500,
-logging_strategy=steps,
-lr_scheduler_type=linear,
-max_grad_norm=1.0,
-max_steps=-1,
-metric_for_best_model=None,
-mp_parameters=,
-no_cuda=False,
-num_train_epochs=5.0,
-optim=adamw_hf,
-optim_args=None,
-output_dir=./save/squad_t5_large/,
-overwrite_output_dir=True,
-past_index=-1,
-per_device_eval_batch_size=32,
-per_device_train_batch_size=8,
-predict_with_generate=True,
-prediction_loss_only=False,
-push_to_hub=False,
-push_to_hub_model_id=None,
-push_to_hub_organization=None,
-push_to_hub_token=<PUSH_TO_HUB_TOKEN>,
-ray_scope=last,
-remove_unused_columns=True,
-report_to=[],
-resume_from_checkpoint=None,
-run_name=./save/squad_t5_large/,
-save_on_each_node=False,
-save_safetensors=False,
-save_steps=5475,
-save_strategy=steps,
-save_total_limit=None,
-seed=42,
-sharded_ddp=[],
-skip_memory_metrics=True,
-sortish_sampler=False,
-tf32=None,
-torch_compile=False,
-torch_compile_backend=None,
-torch_compile_mode=None,
-torchdynamo=None,
-tpu_metrics_debug=False,
-tpu_num_cores=None,
-use_ipex=False,
-use_legacy_prediction_loop=False,
-use_mps_device=False,
-warmup_ratio=0.0,
-warmup_steps=0,
-weight_decay=0.0,
-xpu_backend=None,
-)
-/opt/conda/lib/python3.10/site-packages/datasets/load.py:2547: FutureWarning: 'use_auth_token' was deprecated in favor of 'token' in version 2.14.0 and will be removed in 3.0.0.
-You can remove this warning by passing 'token=<use_auth_token>' instead.
-  warnings.warn(
-Overwrite dataset info from restored data version if exists.
-05/22/2024 11:08:28 - INFO - datasets.builder - Overwrite dataset info from restored data version if exists.
-Loading Dataset info from /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f
-05/22/2024 11:08:28 - INFO - datasets.info - Loading Dataset info from /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f
-Found cached dataset squad (/root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f)
-05/22/2024 11:08:28 - INFO - datasets.builder - Found cached dataset squad (/root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f)
-Loading Dataset info from /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f
-05/22/2024 11:08:28 - INFO - datasets.info - Loading Dataset info from /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f
-[INFO|configuration_utils.py:666] 2024-05-22 11:08:28,694 >> loading configuration file checkpoints/SQUAD/config.json
-[INFO|configuration_utils.py:720] 2024-05-22 11:08:28,696 >> Model config T5Config {
-  "_name_or_path": "checkpoints/SQUAD",
-  "architectures": [
-    "EffT5ForConditionalGeneration"
-  ],
-  "copy_skipped_hidden_states": true,
-  "d_ff": 4096,
-  "d_kv": 64,
-  "d_model": 1024,
-  "decoder_start_token_id": 0,
-  "dense_act_fn": "relu",
-  "distill_alpha": null,
-  "distill_layer_alpha": null,
-  "distill_layer_map": "dyna",
-  "distill_temp": null,
-  "do_layer_distill": false,
-  "do_layer_transformation": false,
-  "dropout_rate": 0.1,
-  "eos_token_id": 1,
-  "exit_conf_threshold": 1.0,
-  "exit_conf_type": null,
-  "exit_position_temp": null,
-  "fallback_conf_threshold": 1.0,
-  "fallback_conf_type": null,
-  "feed_forward_proj": "relu",
-  "initializer_factor": 1.0,
-  "intermediate_loss_fn": "weighted_ce",
-  "is_encoder_decoder": true,
-  "is_gated_act": false,
-  "layer_norm_epsilon": 1e-06,
-  "max_answer_length": 30,
-  "model_type": "t5",
-  "n_positions": 512,
-  "num_decoder_layers": 24,
-  "num_heads": 16,
-  "num_layers": 24,
-  "output_hidden_states_decoder": true,
-  "output_past": true,
-  "pad_token_id": 0,
-  "parallel_gen_token": false,
-  "relative_attention_max_distance": 128,
-  "relative_attention_num_buckets": 32,
-  "rollback_conf_threshold": null,
-  "small_exit_layer": null,
-  "static_exit_layer": null,
-  "task_specific_params": {
-    "summarization": {
-      "early_stopping": true,
-      "length_penalty": 2.0,
-      "max_length": 200,
-      "min_length": 30,
-      "no_repeat_ngram_size": 3,
-      "num_beams": 4,
-      "prefix": "summarize: "
-    },
-    "translation_en_to_de": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to German: "
-    },
-    "translation_en_to_fr": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to French: "
-    },
-    "translation_en_to_ro": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to Romanian: "
-    }
-  },
-  "torch_dtype": "float32",
-  "train_meta_cm_head": false,
-  "transformers_version": "4.28.1",
-  "use_big_small": false,
-  "use_cache": true,
-  "vocab_size": 32128
-}
-
-/opt/conda/lib/python3.10/site-packages/huggingface_hub/file_download.py:1132: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
-  warnings.warn(
-[INFO|tokenization_auto.py:502] 2024-05-22 11:08:28,826 >> Could not locate the tokenizer configuration file, will try to use the model config instead.
-[INFO|configuration_utils.py:668] 2024-05-22 11:08:28,953 >> loading configuration file config.json from cache at /root/.cache/huggingface/hub/models--t5-large/snapshots/150ebc2c4b72291e770f58e6057481c8d2ed331a/config.json
-[INFO|configuration_utils.py:720] 2024-05-22 11:08:28,955 >> Model config T5Config {
-  "_name_or_path": "t5-large",
-  "architectures": [
-    "T5ForConditionalGeneration"
-  ],
-  "d_ff": 4096,
-  "d_kv": 64,
-  "d_model": 1024,
-  "decoder_start_token_id": 0,
-  "dense_act_fn": "relu",
-  "dropout_rate": 0.1,
-  "eos_token_id": 1,
-  "feed_forward_proj": "relu",
-  "initializer_factor": 1.0,
-  "is_encoder_decoder": true,
-  "is_gated_act": false,
-  "layer_norm_epsilon": 1e-06,
-  "model_type": "t5",
-  "n_positions": 512,
-  "num_decoder_layers": 24,
-  "num_heads": 16,
-  "num_layers": 24,
-  "output_past": true,
-  "pad_token_id": 0,
-  "relative_attention_max_distance": 128,
-  "relative_attention_num_buckets": 32,
-  "task_specific_params": {
-    "summarization": {
-      "early_stopping": true,
-      "length_penalty": 2.0,
-      "max_length": 200,
-      "min_length": 30,
-      "no_repeat_ngram_size": 3,
-      "num_beams": 4,
-      "prefix": "summarize: "
-    },
-    "translation_en_to_de": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to German: "
-    },
-    "translation_en_to_fr": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to French: "
-    },
-    "translation_en_to_ro": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to Romanian: "
-    }
-  },
-  "transformers_version": "4.28.1",
-  "use_cache": true,
-  "vocab_size": 32128
-}
-
-[INFO|tokenization_utils_base.py:1809] 2024-05-22 11:08:29,212 >> loading file spiece.model from cache at /root/.cache/huggingface/hub/models--t5-large/snapshots/150ebc2c4b72291e770f58e6057481c8d2ed331a/spiece.model
-[INFO|tokenization_utils_base.py:1809] 2024-05-22 11:08:29,212 >> loading file tokenizer.json from cache at /root/.cache/huggingface/hub/models--t5-large/snapshots/150ebc2c4b72291e770f58e6057481c8d2ed331a/tokenizer.json
-[INFO|tokenization_utils_base.py:1809] 2024-05-22 11:08:29,212 >> loading file added_tokens.json from cache at None
-[INFO|tokenization_utils_base.py:1809] 2024-05-22 11:08:29,212 >> loading file special_tokens_map.json from cache at None
-[INFO|tokenization_utils_base.py:1809] 2024-05-22 11:08:29,213 >> loading file tokenizer_config.json from cache at None
-[INFO|configuration_utils.py:668] 2024-05-22 11:08:29,213 >> loading configuration file config.json from cache at /root/.cache/huggingface/hub/models--t5-large/snapshots/150ebc2c4b72291e770f58e6057481c8d2ed331a/config.json
-[INFO|configuration_utils.py:720] 2024-05-22 11:08:29,214 >> Model config T5Config {
-  "_name_or_path": "t5-large",
-  "architectures": [
-    "T5ForConditionalGeneration"
-  ],
-  "d_ff": 4096,
-  "d_kv": 64,
-  "d_model": 1024,
-  "decoder_start_token_id": 0,
-  "dense_act_fn": "relu",
-  "dropout_rate": 0.1,
-  "eos_token_id": 1,
-  "feed_forward_proj": "relu",
-  "initializer_factor": 1.0,
-  "is_encoder_decoder": true,
-  "is_gated_act": false,
-  "layer_norm_epsilon": 1e-06,
-  "model_type": "t5",
-  "n_positions": 512,
-  "num_decoder_layers": 24,
-  "num_heads": 16,
-  "num_layers": 24,
-  "output_past": true,
-  "pad_token_id": 0,
-  "relative_attention_max_distance": 128,
-  "relative_attention_num_buckets": 32,
-  "task_specific_params": {
-    "summarization": {
-      "early_stopping": true,
-      "length_penalty": 2.0,
-      "max_length": 200,
-      "min_length": 30,
-      "no_repeat_ngram_size": 3,
-      "num_beams": 4,
-      "prefix": "summarize: "
-    },
-    "translation_en_to_de": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to German: "
-    },
-    "translation_en_to_fr": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to French: "
-    },
-    "translation_en_to_ro": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to Romanian: "
-    }
-  },
-  "transformers_version": "4.28.1",
-  "use_cache": true,
-  "vocab_size": 32128
-}
-
-/opt/conda/lib/python3.10/site-packages/transformers/models/t5/tokenization_t5_fast.py:155: FutureWarning: This tokenizer was incorrectly instantiated with a model max length of 512 which will be corrected in Transformers v5.
-For now, this behavior is kept to avoid breaking backwards compatibility when padding/encoding with `truncation is True`.
-- Be aware that you SHOULD NOT rely on t5-large automatically truncating your input to 512 when padding/encoding.
-- If you want to encode/pad to sequences longer than 512 you can either instantiate this tokenizer with `model_max_length` or pass `max_length` when encoding/padding.
-- To avoid this warning, please instantiate this tokenizer with `model_max_length` set to your preferred value.
-  warnings.warn(
-[INFO|modeling_utils.py:2531] 2024-05-22 11:08:29,263 >> loading weights file checkpoints/SQUAD/pytorch_model.bin
-[INFO|configuration_utils.py:575] 2024-05-22 11:08:30,525 >> Generate config GenerationConfig {
-  "_from_model_config": true,
-  "decoder_start_token_id": 0,
-  "eos_token_id": 1,
-  "pad_token_id": 0,
-  "transformers_version": "4.28.1"
-}
-
-[INFO|modeling_utils.py:3190] 2024-05-22 11:09:36,313 >> All model checkpoint weights were used when initializing EffT5ForConditionalGeneration.
-
-[INFO|modeling_utils.py:3198] 2024-05-22 11:09:36,399 >> All the weights of EffT5ForConditionalGeneration were initialized from the model checkpoint at checkpoints/SQUAD.
-If your task is similar to the task the model of the checkpoint was trained on, you can already use EffT5ForConditionalGeneration for predictions without further training.
-[INFO|modeling_utils.py:2839] 2024-05-22 11:09:36,410 >> Generation config file not found, using a generation config created from the model config.
-Loading cached processed dataset at /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f/cache-57ecd0bc42e999ad.arrow
-05/22/2024 11:09:36 - INFO - datasets.arrow_dataset - Loading cached processed dataset at /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f/cache-57ecd0bc42e999ad.arrow
-05/22/2024 11:09:49 - INFO - __main__ - *** Evaluate ***
-[INFO|trainer.py:762] 2024-05-22 11:09:49,215 >> The following columns in the evaluation set don't have a corresponding argument in `EffT5ForConditionalGeneration.forward` and have been ignored: offset_mapping, example_id. If offset_mapping, example_id are not expected by `EffT5ForConditionalGeneration.forward`,  you can safely ignore this message.
-[WARNING|logging.py:280] 2024-05-22 11:09:49,236 >> You're using a T5TokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
-[INFO|configuration_utils.py:575] 2024-05-22 11:09:49,245 >> Generate config GenerationConfig {
-  "_from_model_config": true,
-  "decoder_start_token_id": 0,
-  "eos_token_id": 1,
-  "pad_token_id": 0,
-  "transformers_version": "4.28.1"
-}
-
-  0%|          | 0/340 [00:00<?, ?it/s]  1%|          | 2/340 [00:01<05:33,  1.01it/s]  1%|          | 3/340 [00:04<08:56,  1.59s/it]  1%|          | 4/340 [00:10<18:02,  3.22s/it]  1%|▏         | 5/340 [00:12<16:47,  3.01s/it]  2%|▏         | 6/340 [00:16<17:34,  3.16s/it]  2%|▏         | 7/340 [00:18<15:40,  2.82s/it]  2%|▏         | 8/340 [00:20<14:12,  2.57s/it]  3%|▎         | 9/340 [00:24<15:39,  2.84s/it]  3%|▎         | 10/340 [00:25<14:07,  2.57s/it]  3%|▎         | 11/340 [00:28<13:36,  2.48s/it]  4%|▎         | 12/340 [00:30<13:13,  2.42s/it]  4%|▍         | 13/340 [00:32<12:58,  2.38s/it]  4%|▍         | 14/340 [00:36<15:27,  2.85s/it]  4%|▍         | 15/340 [00:38<13:58,  2.58s/it]  5%|▍         | 16/340 [00:41<13:59,  2.59s/it]  5%|▌         | 17/340 [00:46<17:59,  3.34s/it]  5%|▌         | 18/340 [00:48<16:37,  3.10s/it]  6%|▌         | 19/340 [00:53<18:34,  3.47s/it]  6%|▌         | 20/340 [00:56<18:28,  3.46s/it]  6%|▌         | 21/340 [01:00<18:20,  3.45s/it]  6%|▋         | 22/340 [01:02<16:32,  3.12s/it]  7%|▋         | 23/340 [01:05<15:34,  2.95s/it]  7%|▋         | 24/340 [01:07<14:12,  2.70s/it]  7%|▋         | 25/340 [01:09<13:00,  2.48s/it]  8%|▊         | 26/340 [01:10<11:39,  2.23s/it]  8%|▊         | 27/340 [01:14<13:14,  2.54s/it]  8%|▊         | 28/340 [01:17<15:19,  2.95s/it]  9%|▊         | 29/340 [01:21<16:01,  3.09s/it]  9%|▉         | 30/340 [01:26<18:33,  3.59s/it]  9%|▉         | 31/340 [01:28<17:13,  3.34s/it]  9%|▉         | 32/340 [01:32<18:02,  3.51s/it] 10%|▉         | 33/340 [01:36<17:50,  3.49s/it] 10%|█         | 34/340 [01:39<18:10,  3.56s/it] 10%|█         | 35/340 [01:44<19:51,  3.91s/it] 11%|█         | 36/340 [01:48<19:48,  3.91s/it] 11%|█         | 37/340 [01:51<18:01,  3.57s/it] 11%|█         | 38/340 [01:54<17:05,  3.39s/it] 11%|█▏        | 39/340 [01:58<18:45,  3.74s/it] 12%|█▏        | 40/340 [02:01<17:16,  3.45s/it] 12%|█▏        | 41/340 [02:04<16:27,  3.30s/it] 12%|█▏        | 42/340 [02:07<15:07,  3.04s/it] 13%|█▎        | 43/340 [02:12<17:54,  3.62s/it] 13%|█▎        | 44/340 [02:16<19:14,  3.90s/it] 13%|█▎        | 45/340 [02:20<18:43,  3.81s/it] 14%|█▎        | 46/340 [02:24<18:45,  3.83s/it] 14%|█▍        | 47/340 [02:28<19:09,  3.92s/it] 14%|█▍        | 48/340 [02:33<20:48,  4.27s/it] 14%|█▍        | 49/340 [02:37<20:06,  4.15s/it] 15%|█▍        | 50/340 [02:40<18:26,  3.81s/it] 15%|█▌        | 51/340 [02:45<20:12,  4.20s/it] 15%|█▌        | 52/340 [02:48<18:33,  3.87s/it] 16%|█▌        | 53/340 [02:50<16:04,  3.36s/it] 16%|█▌        | 54/340 [02:54<17:15,  3.62s/it] 16%|█▌        | 55/340 [02:59<18:20,  3.86s/it] 16%|█▋        | 56/340 [03:02<17:25,  3.68s/it] 17%|█▋        | 57/340 [03:05<15:57,  3.38s/it] 17%|█▋        | 58/340 [03:08<15:52,  3.38s/it] 17%|█▋        | 59/340 [03:11<15:52,  3.39s/it] 18%|█▊        | 60/340 [03:17<18:52,  4.05s/it] 18%|█▊        | 61/340 [03:19<16:27,  3.54s/it] 18%|█▊        | 62/340 [03:22<14:55,  3.22s/it] 19%|█▊        | 63/340 [03:27<17:15,  3.74s/it] 19%|█▉        | 64/340 [03:30<15:50,  3.45s/it] 19%|█▉        | 65/340 [03:34<16:55,  3.69s/it] 19%|█▉        | 66/340 [03:37<15:49,  3.47s/it] 20%|█▉        | 67/340 [03:40<14:49,  3.26s/it] 20%|██        | 68/340 [03:45<17:16,  3.81s/it] 20%|██        | 69/340 [03:50<18:42,  4.14s/it] 21%|██        | 70/340 [03:52<16:33,  3.68s/it] 21%|██        | 71/340 [03:55<15:17,  3.41s/it] 21%|██        | 72/340 [03:58<15:17,  3.42s/it] 21%|██▏       | 73/340 [04:04<18:19,  4.12s/it] 22%|██▏       | 74/340 [04:08<17:34,  3.96s/it] 22%|██▏       | 75/340 [04:11<16:33,  3.75s/it] 22%|██▏       | 76/340 [04:14<16:05,  3.66s/it] 23%|██▎       | 77/340 [04:19<16:49,  3.84s/it] 23%|██▎       | 78/340 [04:24<18:21,  4.21s/it] 23%|██▎       | 79/340 [04:27<17:03,  3.92s/it] 24%|██▎       | 80/340 [04:33<19:18,  4.46s/it] 24%|██▍       | 81/340 [04:38<20:51,  4.83s/it] 24%|██▍       | 82/340 [04:42<18:45,  4.36s/it] 24%|██▍       | 83/340 [04:44<16:25,  3.83s/it] 25%|██▍       | 84/340 [04:50<19:05,  4.48s/it] 25%|██▌       | 85/340 [04:53<16:38,  3.92s/it] 25%|██▌       | 86/340 [04:55<14:43,  3.48s/it] 26%|██▌       | 87/340 [04:57<12:44,  3.02s/it] 26%|██▌       | 88/340 [05:00<12:10,  2.90s/it] 26%|██▌       | 89/340 [05:02<11:00,  2.63s/it] 26%|██▋       | 90/340 [05:07<14:19,  3.44s/it] 27%|██▋       | 91/340 [05:10<13:28,  3.25s/it] 27%|██▋       | 92/340 [05:16<16:35,  4.01s/it] 27%|██▋       | 93/340 [05:19<15:42,  3.82s/it] 28%|██▊       | 94/340 [05:25<17:59,  4.39s/it] 28%|██▊       | 95/340 [05:28<16:34,  4.06s/it] 28%|██▊       | 96/340 [05:32<16:31,  4.06s/it] 29%|██▊       | 97/340 [05:36<15:28,  3.82s/it] 29%|██▉       | 98/340 [05:39<15:08,  3.76s/it] 29%|██▉       | 99/340 [05:43<14:59,  3.73s/it] 29%|██▉       | 100/340 [05:48<16:29,  4.12s/it] 30%|██▉       | 101/340 [05:52<16:00,  4.02s/it] 30%|███       | 102/340 [05:56<16:28,  4.15s/it] 30%|███       | 103/340 [05:59<15:18,  3.88s/it] 31%|███       | 104/340 [06:04<15:51,  4.03s/it] 31%|███       | 105/340 [06:06<14:06,  3.60s/it] 31%|███       | 106/340 [06:10<13:43,  3.52s/it] 31%|███▏      | 107/340 [06:12<12:32,  3.23s/it] 32%|███▏      | 108/340 [06:15<12:32,  3.24s/it] 32%|███▏      | 109/340 [06:18<11:45,  3.05s/it] 32%|███▏      | 110/340 [06:21<11:56,  3.11s/it] 33%|███▎      | 111/340 [06:24<11:11,  2.93s/it] 33%|███▎      | 112/340 [06:29<13:43,  3.61s/it] 33%|███▎      | 113/340 [06:32<13:05,  3.46s/it] 34%|███▎      | 114/340 [06:37<14:17,  3.80s/it] 34%|███▍      | 115/340 [06:40<13:36,  3.63s/it] 34%|███▍      | 116/340 [06:42<12:03,  3.23s/it] 34%|███▍      | 117/340 [06:46<12:14,  3.29s/it] 35%|███▍      | 118/340 [06:50<12:52,  3.48s/it] 35%|███▌      | 119/340 [06:54<13:18,  3.62s/it] 35%|███▌      | 120/340 [06:57<12:42,  3.46s/it] 36%|███▌      | 121/340 [07:02<15:08,  4.15s/it] 36%|███▌      | 122/340 [07:06<14:37,  4.03s/it] 36%|███▌      | 123/340 [07:09<13:23,  3.70s/it] 36%|███▋      | 124/340 [07:13<13:40,  3.80s/it] 37%|███▋      | 125/340 [07:16<12:57,  3.62s/it] 37%|███▋      | 126/340 [07:19<12:09,  3.41s/it] 37%|███▋      | 127/340 [07:22<11:26,  3.22s/it] 38%|███▊      | 128/340 [07:25<10:44,  3.04s/it] 38%|███▊      | 129/340 [07:28<10:53,  3.10s/it] 38%|███▊      | 130/340 [07:34<13:38,  3.90s/it] 39%|███▊      | 131/340 [07:39<15:31,  4.46s/it] 39%|███▉      | 132/340 [07:45<16:57,  4.89s/it] 39%|███▉      | 133/340 [07:50<16:25,  4.76s/it] 39%|███▉      | 134/340 [07:56<17:33,  5.11s/it] 40%|███▉      | 135/340 [08:01<17:17,  5.06s/it] 40%|████      | 136/340 [08:05<16:52,  4.97s/it] 40%|████      | 137/340 [08:11<17:30,  5.18s/it] 41%|████      | 138/340 [08:17<18:03,  5.36s/it] 41%|████      | 139/340 [08:23<18:28,  5.51s/it] 41%|████      | 140/340 [08:27<16:52,  5.06s/it] 41%|████▏     | 141/340 [08:30<15:01,  4.53s/it] 42%|████▏     | 142/340 [08:34<14:30,  4.40s/it] 42%|████▏     | 143/340 [08:38<14:18,  4.36s/it] 42%|████▏     | 144/340 [08:41<12:49,  3.93s/it] 43%|████▎     | 145/340 [08:44<11:29,  3.54s/it] 43%|████▎     | 146/340 [08:48<11:58,  3.70s/it] 43%|████▎     | 147/340 [08:52<11:48,  3.67s/it] 44%|████▎     | 148/340 [08:56<12:26,  3.89s/it] 44%|████▍     | 149/340 [09:02<14:11,  4.46s/it] 44%|████▍     | 150/340 [09:07<15:10,  4.79s/it] 44%|████▍     | 151/340 [09:13<15:59,  5.07s/it] 45%|████▍     | 152/340 [09:19<16:41,  5.33s/it] 45%|████▌     | 153/340 [09:23<15:25,  4.95s/it] 45%|████▌     | 154/340 [09:26<13:20,  4.30s/it] 46%|████▌     | 155/340 [09:29<12:00,  3.89s/it] 46%|████▌     | 156/340 [09:32<11:02,  3.60s/it] 46%|████▌     | 157/340 [09:37<12:54,  4.23s/it] 46%|████▋     | 158/340 [09:43<14:12,  4.68s/it] 47%|████▋     | 159/340 [09:49<15:03,  4.99s/it] 47%|████▋     | 160/340 [09:55<15:38,  5.21s/it] 47%|████▋     | 161/340 [09:57<13:21,  4.48s/it] 48%|████▊     | 162/340 [10:03<13:56,  4.70s/it] 48%|████▊     | 163/340 [10:08<14:27,  4.90s/it] 48%|████▊     | 164/340 [10:11<12:55,  4.41s/it] 49%|████▊     | 165/340 [10:14<11:24,  3.91s/it] 49%|████▉     | 166/340 [10:18<11:36,  4.00s/it] 49%|████▉     | 167/340 [10:23<12:25,  4.31s/it] 49%|████▉     | 168/340 [10:26<10:53,  3.80s/it] 50%|████▉     | 169/340 [10:30<11:02,  3.88s/it] 50%|█████     | 170/340 [10:33<10:02,  3.54s/it] 50%|█████     | 171/340 [10:38<11:23,  4.04s/it] 51%|█████     | 172/340 [10:41<10:39,  3.81s/it] 51%|█████     | 173/340 [10:43<09:19,  3.35s/it] 51%|█████     | 174/340 [10:46<09:02,  3.27s/it] 51%|█████▏    | 175/340 [10:49<08:34,  3.12s/it] 52%|█████▏    | 176/340 [10:52<08:14,  3.02s/it] 52%|█████▏    | 177/340 [10:57<10:07,  3.73s/it] 52%|█████▏    | 178/340 [11:00<09:33,  3.54s/it] 53%|█████▎    | 179/340 [11:06<11:14,  4.19s/it] 53%|█████▎    | 180/340 [11:09<10:17,  3.86s/it] 53%|█████▎    | 181/340 [11:13<10:17,  3.88s/it] 54%|█████▎    | 182/340 [11:18<10:53,  4.14s/it] 54%|█████▍    | 183/340 [11:22<11:02,  4.22s/it] 54%|█████▍    | 184/340 [11:28<12:07,  4.66s/it] 54%|█████▍    | 185/340 [11:31<10:50,  4.20s/it] 55%|█████▍    | 186/340 [11:34<09:40,  3.77s/it] 55%|█████▌    | 187/340 [11:36<08:36,  3.37s/it] 55%|█████▌    | 188/340 [11:40<08:34,  3.38s/it] 56%|█████▌    | 189/340 [11:42<07:41,  3.06s/it] 56%|█████▌    | 190/340 [11:46<08:32,  3.42s/it] 56%|█████▌    | 191/340 [11:48<07:30,  3.02s/it] 56%|█████▋    | 192/340 [11:50<06:10,  2.51s/it] 57%|█████▋    | 193/340 [11:53<06:25,  2.62s/it] 57%|█████▋    | 194/340 [11:55<06:04,  2.50s/it] 57%|█████▋    | 195/340 [11:58<06:28,  2.68s/it] 58%|█████▊    | 196/340 [12:00<06:17,  2.62s/it] 58%|█████▊    | 197/340 [12:03<06:27,  2.71s/it] 58%|█████▊    | 198/340 [12:09<08:15,  3.49s/it] 59%|█████▊    | 199/340 [12:12<07:55,  3.37s/it] 59%|█████▉    | 200/340 [12:15<07:55,  3.40s/it] 59%|█████▉    | 201/340 [12:18<07:26,  3.21s/it] 59%|█████▉    | 202/340 [12:24<09:16,  4.03s/it] 60%|█████▉    | 203/340 [12:28<09:15,  4.05s/it] 60%|██████    | 204/340 [12:31<08:32,  3.77s/it] 60%|██████    | 205/340 [12:34<08:05,  3.60s/it] 61%|██████    | 206/340 [12:39<08:44,  3.92s/it] 61%|██████    | 207/340 [12:44<09:27,  4.27s/it] 61%|██████    | 208/340 [12:50<10:29,  4.77s/it] 61%|██████▏   | 209/340 [12:54<09:56,  4.55s/it] 62%|██████▏   | 210/340 [12:59<10:11,  4.71s/it] 62%|██████▏   | 211/340 [13:05<10:55,  5.08s/it] 62%|██████▏   | 212/340 [13:09<09:53,  4.63s/it] 63%|██████▎   | 213/340 [13:12<09:02,  4.27s/it] 63%|██████▎   | 214/340 [13:16<08:29,  4.04s/it] 63%|██████▎   | 215/340 [13:19<07:53,  3.79s/it] 64%|██████▎   | 216/340 [13:23<08:00,  3.87s/it] 64%|██████▍   | 217/340 [13:27<07:57,  3.88s/it] 64%|██████▍   | 218/340 [13:33<09:10,  4.51s/it] 64%|██████▍   | 219/340 [13:38<09:32,  4.73s/it] 65%|██████▍   | 220/340 [13:43<09:29,  4.75s/it] 65%|██████▌   | 221/340 [13:48<09:58,  5.03s/it] 65%|██████▌   | 222/340 [13:53<09:38,  4.90s/it] 66%|██████▌   | 223/340 [13:59<10:09,  5.21s/it] 66%|██████▌   | 224/340 [14:03<09:25,  4.87s/it] 66%|██████▌   | 225/340 [14:07<08:36,  4.49s/it] 66%|██████▋   | 226/340 [14:11<08:09,  4.29s/it] 67%|██████▋   | 227/340 [14:14<07:34,  4.03s/it] 67%|██████▋   | 228/340 [14:17<07:10,  3.84s/it] 67%|██████▋   | 229/340 [14:20<06:21,  3.43s/it] 68%|██████▊   | 230/340 [14:23<06:01,  3.28s/it] 68%|██████▊   | 231/340 [14:26<06:07,  3.37s/it] 68%|██████▊   | 232/340 [14:31<06:43,  3.73s/it] 69%|██████▊   | 233/340 [14:34<06:30,  3.65s/it] 69%|██████▉   | 234/340 [14:38<06:26,  3.64s/it] 69%|██████▉   | 235/340 [14:42<06:46,  3.87s/it] 69%|██████▉   | 236/340 [14:46<06:38,  3.83s/it] 70%|██████▉   | 237/340 [14:50<06:47,  3.96s/it] 70%|███████   | 238/340 [14:55<06:58,  4.10s/it] 70%|███████   | 239/340 [15:01<07:43,  4.58s/it] 71%|███████   | 240/340 [15:05<07:22,  4.43s/it] 71%|███████   | 241/340 [15:08<06:37,  4.01s/it] 71%|███████   | 242/340 [15:11<06:26,  3.95s/it] 71%|███████▏  | 243/340 [15:14<05:44,  3.55s/it] 72%|███████▏  | 244/340 [15:17<05:31,  3.46s/it] 72%|███████▏  | 245/340 [15:20<05:19,  3.36s/it] 72%|███████▏  | 246/340 [15:26<06:11,  3.95s/it] 73%|███████▎  | 247/340 [15:30<06:11,  4.00s/it] 73%|███████▎  | 248/340 [15:34<06:07,  3.99s/it] 73%|███████▎  | 249/340 [15:37<05:27,  3.60s/it] 74%|███████▎  | 250/340 [15:41<05:37,  3.74s/it] 74%|███████▍  | 251/340 [15:45<05:51,  3.95s/it] 74%|███████▍  | 252/340 [15:51<06:40,  4.55s/it] 74%|███████▍  | 253/340 [15:55<06:15,  4.32s/it] 75%|███████▍  | 254/340 [15:58<05:35,  3.91s/it] 75%|███████▌  | 255/340 [16:01<05:07,  3.62s/it] 75%|███████▌  | 256/340 [16:03<04:32,  3.25s/it] 76%|███████▌  | 257/340 [16:07<04:55,  3.56s/it] 76%|███████▌  | 258/340 [16:12<05:17,  3.87s/it] 76%|███████▌  | 259/340 [16:14<04:39,  3.44s/it] 76%|███████▋  | 260/340 [16:19<05:10,  3.88s/it] 77%|███████▋  | 261/340 [16:22<04:39,  3.54s/it] 77%|███████▋  | 262/340 [16:25<04:21,  3.36s/it] 77%|███████▋  | 263/340 [16:31<05:13,  4.07s/it] 78%|███████▊  | 264/340 [16:34<04:58,  3.93s/it] 78%|███████▊  | 265/340 [16:40<05:34,  4.46s/it] 78%|███████▊  | 266/340 [16:46<05:58,  4.84s/it] 79%|███████▊  | 267/340 [16:50<05:40,  4.66s/it] 79%|███████▉  | 268/340 [16:55<05:41,  4.74s/it] 79%|███████▉  | 269/340 [17:01<05:57,  5.04s/it] 79%|███████▉  | 270/340 [17:05<05:32,  4.75s/it] 80%|███████▉  | 271/340 [17:09<05:14,  4.56s/it] 80%|████████  | 272/340 [17:13<05:04,  4.47s/it] 80%|████████  | 273/340 [17:18<05:02,  4.51s/it] 81%|████████  | 274/340 [17:23<05:05,  4.63s/it] 81%|████████  | 275/340 [17:27<04:50,  4.47s/it] 81%|████████  | 276/340 [17:32<05:03,  4.75s/it] 81%|████████▏ | 277/340 [17:37<05:08,  4.90s/it] 82%|████████▏ | 278/340 [17:42<04:54,  4.76s/it] 82%|████████▏ | 279/340 [17:48<05:08,  5.06s/it] 82%|████████▏ | 280/340 [17:53<05:15,  5.26s/it] 83%|████████▎ | 281/340 [17:57<04:43,  4.81s/it] 83%|████████▎ | 282/340 [18:03<04:54,  5.08s/it] 83%|████████▎ | 283/340 [18:07<04:35,  4.83s/it] 84%|████████▎ | 284/340 [18:10<04:03,  4.35s/it] 84%|████████▍ | 285/340 [18:16<04:22,  4.76s/it] 84%|████████▍ | 286/340 [18:22<04:32,  5.05s/it] 84%|████████▍ | 287/340 [18:27<04:38,  5.25s/it] 85%|████████▍ | 288/340 [18:33<04:37,  5.34s/it] 85%|████████▌ | 289/340 [18:38<04:25,  5.21s/it] 85%|████████▌ | 290/340 [18:44<04:28,  5.36s/it] 86%|████████▌ | 291/340 [18:47<04:01,  4.93s/it] 86%|████████▌ | 292/340 [18:52<03:51,  4.83s/it] 86%|████████▌ | 293/340 [18:55<03:22,  4.31s/it] 86%|████████▋ | 294/340 [19:01<03:37,  4.74s/it] 87%|████████▋ | 295/340 [19:05<03:26,  4.59s/it] 87%|████████▋ | 296/340 [19:09<03:11,  4.35s/it] 87%|████████▋ | 297/340 [19:12<02:55,  4.08s/it] 88%|████████▊ | 298/340 [19:16<02:45,  3.93s/it] 88%|████████▊ | 299/340 [19:18<02:23,  3.49s/it] 88%|████████▊ | 300/340 [19:24<02:42,  4.07s/it] 89%|████████▊ | 301/340 [19:28<02:36,  4.03s/it] 89%|████████▉ | 302/340 [19:31<02:28,  3.90s/it] 89%|████████▉ | 303/340 [19:34<02:11,  3.56s/it] 89%|████████▉ | 304/340 [19:38<02:08,  3.58s/it] 90%|████████▉ | 305/340 [19:41<02:05,  3.58s/it] 90%|█████████ | 306/340 [19:47<02:20,  4.13s/it] 90%|█████████ | 307/340 [19:50<02:02,  3.72s/it] 91%|█████████ | 308/340 [19:53<01:58,  3.69s/it] 91%|█████████ | 309/340 [19:59<02:10,  4.20s/it] 91%|█████████ | 310/340 [20:03<02:07,  4.26s/it] 91%|█████████▏| 311/340 [20:08<02:07,  4.40s/it] 92%|█████████▏| 312/340 [20:11<01:50,  3.96s/it] 92%|█████████▏| 313/340 [20:14<01:42,  3.80s/it] 92%|█████████▏| 314/340 [20:17<01:36,  3.69s/it] 93%|█████████▎| 315/340 [20:21<01:34,  3.76s/it] 93%|█████████▎| 316/340 [20:27<01:44,  4.36s/it] 93%|█████████▎| 317/340 [20:31<01:37,  4.23s/it] 94%|█████████▎| 318/340 [20:36<01:39,  4.54s/it] 94%|█████████▍| 319/340 [20:40<01:29,  4.26s/it] 94%|█████████▍| 320/340 [20:43<01:17,  3.87s/it] 94%|█████████▍| 321/340 [20:49<01:24,  4.43s/it] 95%|█████████▍| 322/340 [20:53<01:18,  4.38s/it] 95%|█████████▌| 323/340 [20:57<01:12,  4.28s/it] 95%|█████████▌| 324/340 [21:01<01:05,  4.12s/it] 96%|█████████▌| 325/340 [21:04<00:57,  3.86s/it] 96%|█████████▌| 326/340 [21:07<00:50,  3.58s/it] 96%|█████████▌| 327/340 [21:10<00:45,  3.53s/it] 96%|█████████▋| 328/340 [21:16<00:49,  4.09s/it] 97%|█████████▋| 329/340 [21:21<00:48,  4.42s/it] 97%|█████████▋| 330/340 [21:27<00:48,  4.81s/it] 97%|█████████▋| 331/340 [21:32<00:45,  5.07s/it] 98%|█████████▊| 332/340 [21:36<00:37,  4.72s/it] 98%|█████████▊| 333/340 [21:42<00:35,  5.02s/it] 98%|█████████▊| 334/340 [21:45<00:27,  4.59s/it] 99%|█████████▊| 335/340 [21:48<00:19,  3.94s/it] 99%|█████████▉| 336/340 [21:51<00:14,  3.64s/it] 99%|█████████▉| 337/340 [21:53<00:09,  3.23s/it] 99%|█████████▉| 338/340 [21:58<00:07,  3.68s/it]100%|█████████▉| 339/340 [22:01<00:03,  3.46s/it]100%|██████████| 340/340 [22:03<00:00,  3.18s/it]100%|██████████| 340/340 [22:20<00:00,  3.94s/it]
-***** eval metrics *****
-  eval_block_avg          =    11.8488
-  eval_exact_match        =    81.1164
-  eval_f1                 =    88.5642
-  eval_loss               =     1.0116
-  eval_runtime            = 0:22:07.98
-  eval_samples            =      10873
-  eval_samples_per_second =      8.188
-  eval_steps_per_second   =      0.256
-Using the `WANDB_DISABLED` environment variable is deprecated and will be removed in v5. Use the --report_to flag to control the integrations used for logging result (for instance --report_to none).
-05/22/2024 11:32:26 - WARNING - __main__ - Process rank: 0, device: cuda:0, n_gpu: 1distributed training: True, 16-bits training: False
-05/22/2024 11:32:26 - INFO - __main__ - Training/evaluation parameters Seq2SeqTrainingArguments(
-_n_gpu=1,
-adafactor=False,
-adam_beta1=0.9,
-adam_beta2=0.999,
-adam_epsilon=1e-08,
-auto_find_batch_size=False,
-bf16=False,
-bf16_full_eval=False,
-data_seed=None,
-dataloader_drop_last=False,
-dataloader_num_workers=0,
-dataloader_pin_memory=True,
-ddp_bucket_cap_mb=None,
-ddp_find_unused_parameters=None,
-ddp_timeout=1800,
-debug=[],
-deepspeed=None,
-disable_tqdm=False,
-do_eval=True,
-do_predict=False,
-do_train=True,
-eval_accumulation_steps=None,
-eval_delay=0,
-eval_steps=None,
-evaluation_strategy=no,
-fp16=False,
-fp16_backend=auto,
-fp16_full_eval=False,
-fp16_opt_level=O1,
-fsdp=[],
-fsdp_config={'fsdp_min_num_params': 0, 'xla': False, 'xla_fsdp_grad_ckpt': False},
-fsdp_min_num_params=0,
-fsdp_transformer_layer_cls_to_wrap=None,
-full_determinism=False,
-generation_config=None,
-generation_max_length=None,
-generation_num_beams=None,
-gradient_accumulation_steps=1,
-gradient_checkpointing=False,
-greater_is_better=None,
-group_by_length=False,
-half_precision_backend=auto,
-hub_model_id=None,
-hub_private_repo=False,
-hub_strategy=every_save,
-hub_token=<HUB_TOKEN>,
-ignore_data_skip=False,
-include_inputs_for_metrics=False,
-jit_mode_eval=False,
-label_names=None,
-label_smoothing_factor=0.0,
-learning_rate=0.0001,
-length_column_name=length,
-load_best_model_at_end=False,
-local_rank=0,
-log_level=passive,
-log_level_replica=warning,
-log_on_each_node=True,
-logging_dir=src/save/squad_t5_large/runs/May22_11-32-26_c96132b362d4,
-logging_first_step=False,
-logging_nan_inf_filter=True,
-logging_steps=500,
-logging_strategy=steps,
-lr_scheduler_type=linear,
-max_grad_norm=1.0,
-max_steps=-1,
-metric_for_best_model=None,
-mp_parameters=,
-no_cuda=False,
-num_train_epochs=5.0,
-optim=adamw_hf,
-optim_args=None,
-output_dir=src/save/squad_t5_large/,
-overwrite_output_dir=True,
-past_index=-1,
-per_device_eval_batch_size=32,
-per_device_train_batch_size=32,
-predict_with_generate=True,
-prediction_loss_only=False,
-push_to_hub=False,
-push_to_hub_model_id=None,
-push_to_hub_organization=None,
-push_to_hub_token=<PUSH_TO_HUB_TOKEN>,
-ray_scope=last,
-remove_unused_columns=True,
-report_to=[],
-resume_from_checkpoint=None,
-run_name=src/save/squad_t5_large/,
-save_on_each_node=False,
-save_safetensors=False,
-save_steps=5475,
-save_strategy=steps,
-save_total_limit=None,
-seed=42,
-sharded_ddp=[],
-skip_memory_metrics=True,
-sortish_sampler=False,
-tf32=None,
-torch_compile=False,
-torch_compile_backend=None,
-torch_compile_mode=None,
-torchdynamo=None,
-tpu_metrics_debug=False,
-tpu_num_cores=None,
-use_ipex=False,
-use_legacy_prediction_loop=False,
-use_mps_device=False,
-warmup_ratio=0.0,
-warmup_steps=0,
-weight_decay=0.0,
-xpu_backend=None,
-)
-/opt/conda/lib/python3.10/site-packages/datasets/load.py:2547: FutureWarning: 'use_auth_token' was deprecated in favor of 'token' in version 2.14.0 and will be removed in 3.0.0.
-You can remove this warning by passing 'token=<use_auth_token>' instead.
-  warnings.warn(
-Overwrite dataset info from restored data version if exists.
-05/22/2024 11:32:31 - INFO - datasets.builder - Overwrite dataset info from restored data version if exists.
-Loading Dataset info from /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f
-05/22/2024 11:32:31 - INFO - datasets.info - Loading Dataset info from /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f
-Found cached dataset squad (/root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f)
-05/22/2024 11:32:31 - INFO - datasets.builder - Found cached dataset squad (/root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f)
-Loading Dataset info from /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f
-05/22/2024 11:32:31 - INFO - datasets.info - Loading Dataset info from /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f
-[INFO|configuration_utils.py:666] 2024-05-22 11:32:31,475 >> loading configuration file checkpoints/SQUAD/config.json
-[INFO|configuration_utils.py:720] 2024-05-22 11:32:31,476 >> Model config T5Config {
-  "_name_or_path": "checkpoints/SQUAD",
-  "architectures": [
-    "EffT5ForConditionalGeneration"
-  ],
-  "copy_skipped_hidden_states": true,
-  "d_ff": 4096,
-  "d_kv": 64,
-  "d_model": 1024,
-  "decoder_start_token_id": 0,
-  "dense_act_fn": "relu",
-  "distill_alpha": null,
-  "distill_layer_alpha": null,
-  "distill_layer_map": "dyna",
-  "distill_temp": null,
-  "do_layer_distill": false,
-  "do_layer_transformation": false,
-  "dropout_rate": 0.1,
-  "eos_token_id": 1,
-  "exit_conf_threshold": 1.0,
-  "exit_conf_type": null,
-  "exit_position_temp": null,
-  "fallback_conf_threshold": 1.0,
-  "fallback_conf_type": null,
-  "feed_forward_proj": "relu",
-  "initializer_factor": 1.0,
-  "intermediate_loss_fn": "weighted_ce",
-  "is_encoder_decoder": true,
-  "is_gated_act": false,
-  "layer_norm_epsilon": 1e-06,
-  "max_answer_length": 30,
-  "model_type": "t5",
-  "n_positions": 512,
-  "num_decoder_layers": 24,
-  "num_heads": 16,
-  "num_layers": 24,
-  "output_hidden_states_decoder": true,
-  "output_past": true,
-  "pad_token_id": 0,
-  "parallel_gen_token": false,
-  "relative_attention_max_distance": 128,
-  "relative_attention_num_buckets": 32,
-  "rollback_conf_threshold": null,
-  "small_exit_layer": null,
-  "static_exit_layer": null,
-  "task_specific_params": {
-    "summarization": {
-      "early_stopping": true,
-      "length_penalty": 2.0,
-      "max_length": 200,
-      "min_length": 30,
-      "no_repeat_ngram_size": 3,
-      "num_beams": 4,
-      "prefix": "summarize: "
-    },
-    "translation_en_to_de": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to German: "
-    },
-    "translation_en_to_fr": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to French: "
-    },
-    "translation_en_to_ro": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to Romanian: "
-    }
-  },
-  "torch_dtype": "float32",
-  "train_meta_cm_head": false,
-  "transformers_version": "4.28.1",
-  "use_big_small": false,
-  "use_cache": true,
-  "vocab_size": 32128
-}
-
-/opt/conda/lib/python3.10/site-packages/huggingface_hub/file_download.py:1132: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
-  warnings.warn(
-[INFO|tokenization_auto.py:502] 2024-05-22 11:32:31,608 >> Could not locate the tokenizer configuration file, will try to use the model config instead.
-[INFO|configuration_utils.py:668] 2024-05-22 11:32:31,740 >> loading configuration file config.json from cache at /root/.cache/huggingface/hub/models--t5-large/snapshots/150ebc2c4b72291e770f58e6057481c8d2ed331a/config.json
-[INFO|configuration_utils.py:720] 2024-05-22 11:32:31,741 >> Model config T5Config {
-  "_name_or_path": "t5-large",
-  "architectures": [
-    "T5ForConditionalGeneration"
-  ],
-  "d_ff": 4096,
-  "d_kv": 64,
-  "d_model": 1024,
-  "decoder_start_token_id": 0,
-  "dense_act_fn": "relu",
-  "dropout_rate": 0.1,
-  "eos_token_id": 1,
-  "feed_forward_proj": "relu",
-  "initializer_factor": 1.0,
-  "is_encoder_decoder": true,
-  "is_gated_act": false,
-  "layer_norm_epsilon": 1e-06,
-  "model_type": "t5",
-  "n_positions": 512,
-  "num_decoder_layers": 24,
-  "num_heads": 16,
-  "num_layers": 24,
-  "output_past": true,
-  "pad_token_id": 0,
-  "relative_attention_max_distance": 128,
-  "relative_attention_num_buckets": 32,
-  "task_specific_params": {
-    "summarization": {
-      "early_stopping": true,
-      "length_penalty": 2.0,
-      "max_length": 200,
-      "min_length": 30,
-      "no_repeat_ngram_size": 3,
-      "num_beams": 4,
-      "prefix": "summarize: "
-    },
-    "translation_en_to_de": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to German: "
-    },
-    "translation_en_to_fr": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to French: "
-    },
-    "translation_en_to_ro": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to Romanian: "
-    }
-  },
-  "transformers_version": "4.28.1",
-  "use_cache": true,
-  "vocab_size": 32128
-}
-
-[INFO|tokenization_utils_base.py:1809] 2024-05-22 11:32:31,993 >> loading file spiece.model from cache at /root/.cache/huggingface/hub/models--t5-large/snapshots/150ebc2c4b72291e770f58e6057481c8d2ed331a/spiece.model
-[INFO|tokenization_utils_base.py:1809] 2024-05-22 11:32:31,993 >> loading file tokenizer.json from cache at /root/.cache/huggingface/hub/models--t5-large/snapshots/150ebc2c4b72291e770f58e6057481c8d2ed331a/tokenizer.json
-[INFO|tokenization_utils_base.py:1809] 2024-05-22 11:32:31,993 >> loading file added_tokens.json from cache at None
-[INFO|tokenization_utils_base.py:1809] 2024-05-22 11:32:31,993 >> loading file special_tokens_map.json from cache at None
-[INFO|tokenization_utils_base.py:1809] 2024-05-22 11:32:31,993 >> loading file tokenizer_config.json from cache at None
-[INFO|configuration_utils.py:668] 2024-05-22 11:32:31,993 >> loading configuration file config.json from cache at /root/.cache/huggingface/hub/models--t5-large/snapshots/150ebc2c4b72291e770f58e6057481c8d2ed331a/config.json
-[INFO|configuration_utils.py:720] 2024-05-22 11:32:31,994 >> Model config T5Config {
-  "_name_or_path": "t5-large",
-  "architectures": [
-    "T5ForConditionalGeneration"
-  ],
-  "d_ff": 4096,
-  "d_kv": 64,
-  "d_model": 1024,
-  "decoder_start_token_id": 0,
-  "dense_act_fn": "relu",
-  "dropout_rate": 0.1,
-  "eos_token_id": 1,
-  "feed_forward_proj": "relu",
-  "initializer_factor": 1.0,
-  "is_encoder_decoder": true,
-  "is_gated_act": false,
-  "layer_norm_epsilon": 1e-06,
-  "model_type": "t5",
-  "n_positions": 512,
-  "num_decoder_layers": 24,
-  "num_heads": 16,
-  "num_layers": 24,
-  "output_past": true,
-  "pad_token_id": 0,
-  "relative_attention_max_distance": 128,
-  "relative_attention_num_buckets": 32,
-  "task_specific_params": {
-    "summarization": {
-      "early_stopping": true,
-      "length_penalty": 2.0,
-      "max_length": 200,
-      "min_length": 30,
-      "no_repeat_ngram_size": 3,
-      "num_beams": 4,
-      "prefix": "summarize: "
-    },
-    "translation_en_to_de": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to German: "
-    },
-    "translation_en_to_fr": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to French: "
-    },
-    "translation_en_to_ro": {
-      "early_stopping": true,
-      "max_length": 300,
-      "num_beams": 4,
-      "prefix": "translate English to Romanian: "
-    }
-  },
-  "transformers_version": "4.28.1",
-  "use_cache": true,
-  "vocab_size": 32128
-}
-
-/opt/conda/lib/python3.10/site-packages/transformers/models/t5/tokenization_t5_fast.py:155: FutureWarning: This tokenizer was incorrectly instantiated with a model max length of 512 which will be corrected in Transformers v5.
-For now, this behavior is kept to avoid breaking backwards compatibility when padding/encoding with `truncation is True`.
-- Be aware that you SHOULD NOT rely on t5-large automatically truncating your input to 512 when padding/encoding.
-- If you want to encode/pad to sequences longer than 512 you can either instantiate this tokenizer with `model_max_length` or pass `max_length` when encoding/padding.
-- To avoid this warning, please instantiate this tokenizer with `model_max_length` set to your preferred value.
-  warnings.warn(
-[INFO|modeling_utils.py:2531] 2024-05-22 11:32:32,040 >> loading weights file checkpoints/SQUAD/pytorch_model.bin
-[INFO|configuration_utils.py:575] 2024-05-22 11:32:33,211 >> Generate config GenerationConfig {
-  "_from_model_config": true,
-  "decoder_start_token_id": 0,
-  "eos_token_id": 1,
-  "pad_token_id": 0,
-  "transformers_version": "4.28.1"
-}
-
-[INFO|modeling_utils.py:3190] 2024-05-22 11:33:26,602 >> All model checkpoint weights were used when initializing EffT5ForConditionalGeneration.
-
-[WARNING|modeling_utils.py:3192] 2024-05-22 11:33:26,603 >> Some weights of EffT5ForConditionalGeneration were not initialized from the model checkpoint at checkpoints/SQUAD and are newly initialized: ['cm_head.0.weight', 'cm_head.2.weight']
-You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
-[INFO|modeling_utils.py:2839] 2024-05-22 11:33:26,699 >> Generation config file not found, using a generation config created from the model config.
-Loading cached processed dataset at /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f/cache-ff8c4c8d81d7712c.arrow
-05/22/2024 11:33:26 - INFO - datasets.arrow_dataset - Loading cached processed dataset at /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f/cache-ff8c4c8d81d7712c.arrow
-Running tokenizer on validation dataset:   0%|          | 0/10570 [00:00<?, ? examples/s]Caching processed dataset at /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f/cache-9e014a0f7187a407.arrow
-05/22/2024 11:33:27 - INFO - datasets.arrow_dataset - Caching processed dataset at /root/.cache/huggingface/datasets/squad/plain_text/0.0.0/7b6d24c440a36b6815f21b70d25016731768db1f/cache-9e014a0f7187a407.arrow
-Running tokenizer on validation dataset:   9%|▉         | 1000/10570 [00:00<00:05, 1852.26 examples/s]Running tokenizer on validation dataset:  19%|█▉        | 2000/10570 [00:01<00:04, 1913.37 examples/s]Running tokenizer on validation dataset:  28%|██▊       | 3000/10570 [00:01<00:03, 1915.42 examples/s]Running tokenizer on validation dataset:  38%|███▊      | 4000/10570 [00:02<00:03, 1892.17 examples/s]Running tokenizer on validation dataset:  47%|████▋     | 5000/10570 [00:03<00:03, 1485.27 examples/s]Running tokenizer on validation dataset:  57%|█████▋    | 6000/10570 [00:03<00:02, 1565.37 examples/s]Running tokenizer on validation dataset:  66%|██████▌   | 7000/10570 [00:04<00:02, 1628.99 examples/s]Running tokenizer on validation dataset:  76%|███████▌  | 8000/10570 [00:04<00:01, 1668.39 examples/s]Running tokenizer on validation dataset:  85%|████████▌ | 9000/10570 [00:05<00:00, 1709.27 examples/s]Running tokenizer on validation dataset:  95%|█████████▍| 10000/10570 [00:05<00:00, 1749.11 examples/s]Running tokenizer on validation dataset: 100%|██████████| 10570/10570 [00:06<00:00, 1738.11 examples/s]Running tokenizer on validation dataset: 100%|██████████| 10570/10570 [00:06<00:00, 1708.22 examples/s]
-[INFO|trainer.py:1769] 2024-05-22 11:33:35,593 >> ***** Running training *****
-[INFO|trainer.py:1770] 2024-05-22 11:33:35,593 >>   Num examples = 10,000
-[INFO|trainer.py:1771] 2024-05-22 11:33:35,593 >>   Num Epochs = 5
-[INFO|trainer.py:1772] 2024-05-22 11:33:35,593 >>   Instantaneous batch size per device = 32
-[INFO|trainer.py:1773] 2024-05-22 11:33:35,593 >>   Total train batch size (w. parallel, distributed & accumulation) = 32
-[INFO|trainer.py:1774] 2024-05-22 11:33:35,593 >>   Gradient Accumulation steps = 1
-[INFO|trainer.py:1775] 2024-05-22 11:33:35,593 >>   Total optimization steps = 1,565
-[INFO|trainer.py:1776] 2024-05-22 11:33:35,595 >>   Number of trainable parameters = 1,050,624
-  0%|          | 0/1565 [00:00<?, ?it/s][WARNING|logging.py:280] 2024-05-22 11:33:35,611 >> You're using a T5TokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
-[rank0]:[W reducer.cpp:1360] Warning: find_unused_parameters=True was specified in DDP constructor, but did not find any unused parameters in the forward pass. This flag results in an extra traversal of the autograd graph every iteration,  which can adversely affect performance. If your model indeed never has any unused parameters in the forward pass, consider turning this flag off. Note that this warning may be a false positive if your model has flow control causing later iterations to have unused parameters. (function operator())
-  0%|          | 1/1565 [00:01<42:17,  1.62s/it]  0%|          | 2/1565 [00:02<33:19,  1.28s/it]  0%|          | 3/1565 [00:03<30:23,  1.17s/it]  0%|          | 4/1565 [00:04<28:56,  1.11s/it]  0%|          | 5/1565 [00:06<31:14,  1.20s/it]  0%|          | 6/1565 [00:07<29:39,  1.14s/it]  0%|          | 7/1565 [00:08<28:42,  1.11s/it]  1%|          | 8/1565 [00:09<30:33,  1.18s/it]  1%|          | 9/1565 [00:10<29:17,  1.13s/it]  1%|          | 10/1565 [00:11<28:27,  1.10s/it]  1%|          | 11/1565 [00:12<30:31,  1.18s/it]  1%|          | 12/1565 [00:13<29:18,  1.13s/it]  1%|          | 13/1565 [00:14<28:27,  1.10s/it]  1%|          | 14/1565 [00:15<27:50,  1.08s/it]  1%|          | 15/1565 [00:17<29:48,  1.15s/it]  1%|          | 16/1565 [00:18<28:46,  1.11s/it]  1%|          | 17/1565 [00:19<28:01,  1.09s/it]  1%|          | 18/1565 [00:20<29:47,  1.16s/it]  1%|          | 19/1565 [00:21<28:44,  1.12s/it]  1%|▏         | 20/1565 [00:22<28:02,  1.09s/it]  1%|▏         | 21/1565 [00:23<29:05,  1.13s/it]  1%|▏         | 22/1565 [00:24<28:15,  1.10s/it]  1%|▏         | 23/1565 [00:25<27:42,  1.08s/it]  2%|▏         | 24/1565 [00:27<29:36,  1.15s/it]  2%|▏         | 25/1565 [00:28<28:34,  1.11s/it]  2%|▏         | 26/1565 [00:29<27:51,  1.09s/it]  2%|▏         | 27/1565 [00:30<27:21,  1.07s/it]  2%|▏         | 28/1565 [00:31<29:33,  1.15s/it]  2%|▏         | 29/1565 [00:32<28:35,  1.12s/it]  2%|▏         | 30/1565 [00:33<27:48,  1.09s/it]  2%|▏         | 31/1565 [00:35<29:18,  1.15s/it]  2%|▏         | 32/1565 [00:36<28:23,  1.11s/it]  2%|▏         | 33/1565 [00:37<27:41,  1.08s/it]  2%|▏         | 34/1565 [00:38<27:12,  1.07s/it]  2%|▏         | 35/1565 [00:39<29:05,  1.14s/it]  2%|▏         | 36/1565 [00:40<28:07,  1.10s/it]  2%|▏         | 37/1565 [00:41<27:29,  1.08s/it]  2%|▏         | 38/1565 [00:42<29:21,  1.15s/it]  2%|▏         | 39/1565 [00:43<28:19,  1.11s/it]  3%|▎         | 40/1565 [00:44<27:33,  1.08s/it]  3%|▎         | 41/1565 [00:46<29:23,  1.16s/it]  3%|▎         | 42/1565 [00:47<28:18,  1.12s/it]  3%|▎         | 43/1565 [00:48<27:35,  1.09s/it]  3%|▎         | 44/1565 [00:49<29:22,  1.16s/it]  3%|▎         | 45/1565 [00:50<28:18,  1.12s/it]  3%|▎         | 46/1565 [00:51<27:31,  1.09s/it]  3%|▎         | 47/1565 [00:52<29:21,  1.16s/it]  3%|▎         | 48/1565 [00:53<28:15,  1.12s/it]  3%|▎         | 49/1565 [00:54<27:30,  1.09s/it]  3%|▎         | 50/1565 [00:55<27:01,  1.07s/it]  3%|▎         | 51/1565 [00:57<28:50,  1.14s/it]  3%|▎         | 52/1565 [00:58<27:53,  1.11s/it]  3%|▎         | 53/1565 [00:59<27:15,  1.08s/it]  3%|▎         | 54/1565 [01:00<29:12,  1.16s/it]  4%|▎         | 55/1565 [01:01<28:07,  1.12s/it]  4%|▎         | 56/1565 [01:02<27:22,  1.09s/it]  4%|▎         | 57/1565 [01:03<26:51,  1.07s/it]  4%|▎         | 58/1565 [01:05<28:46,  1.15s/it]  4%|▍         | 59/1565 [01:06<27:48,  1.11s/it]  4%|▍         | 60/1565 [01:07<27:04,  1.08s/it]  4%|▍         | 61/1565 [01:08<27:57,  1.12s/it]  4%|▍         | 62/1565 [01:09<27:12,  1.09s/it]  4%|▍         | 63/1565 [01:10<26:41,  1.07s/it]  4%|▍         | 64/1565 [01:11<26:19,  1.05s/it]  4%|▍         | 65/1565 [01:12<28:16,  1.13s/it]  4%|▍         | 66/1565 [01:13<27:25,  1.10s/it]  4%|▍         | 67/1565 [01:14<26:51,  1.08s/it]  4%|▍         | 68/1565 [01:16<28:40,  1.15s/it]  4%|▍         | 69/1565 [01:17<27:45,  1.11s/it]  4%|▍         | 70/1565 [01:18<27:01,  1.08s/it]  5%|▍         | 71/1565 [01:19<28:47,  1.16s/it]  5%|▍         | 72/1565 [01:20<27:43,  1.11s/it]  5%|▍         | 73/1565 [01:21<27:00,  1.09s/it]  5%|▍         | 74/1565 [01:22<28:43,  1.16s/it]  5%|▍         | 75/1565 [01:23<27:43,  1.12s/it]  5%|▍         | 76/1565 [01:24<26:58,  1.09s/it]  5%|▍         | 77/1565 [01:26<28:45,  1.16s/it]  5%|▍         | 78/1565 [01:27<27:40,  1.12s/it]  5%|▌         | 79/1565 [01:28<26:59,  1.09s/it]  5%|▌         | 80/1565 [01:29<26:25,  1.07s/it]  5%|▌         | 81/1565 [01:30<28:15,  1.14s/it]  5%|▌         | 82/1565 [01:31<27:19,  1.11s/it]  5%|▌         | 83/1565 [01:32<26:42,  1.08s/it]  5%|▌         | 84/1565 [01:33<28:29,  1.15s/it]  5%|▌         | 85/1565 [01:34<27:31,  1.12s/it]  5%|▌         | 86/1565 [01:35<26:47,  1.09s/it]  6%|▌         | 87/1565 [01:36<26:17,  1.07s/it]  6%|▌         | 88/1565 [01:38<28:04,  1.14s/it]  6%|▌         | 89/1565 [01:39<27:12,  1.11s/it]  6%|▌         | 90/1565 [01:40<26:35,  1.08s/it]  6%|▌         | 91/1565 [01:41<28:22,  1.16s/it]  6%|▌         | 92/1565 [01:42<27:23,  1.12s/it]  6%|▌         | 93/1565 [01:43<26:38,  1.09s/it]  6%|▌         | 94/1565 [01:44<26:08,  1.07s/it]  6%|▌         | 95/1565 [01:46<27:59,  1.14s/it]  6%|▌         | 96/1565 [01:47<27:04,  1.11s/it]  6%|▌         | 97/1565 [01:48<26:26,  1.08s/it]  6%|▋         | 98/1565 [01:49<28:06,  1.15s/it]  6%|▋         | 99/1565 [01:50<27:09,  1.11s/it]  6%|▋         | 100/1565 [01:51<26:27,  1.08s/it]  6%|▋         | 101/1565 [01:52<28:07,  1.15s/it]  7%|▋         | 102/1565 [01:53<27:13,  1.12s/it]  7%|▋         | 103/1565 [01:54<26:32,  1.09s/it]  7%|▋         | 104/1565 [01:56<28:12,  1.16s/it]  7%|▋         | 105/1565 [01:57<27:14,  1.12s/it]  7%|▋         | 106/1565 [01:58<26:30,  1.09s/it]  7%|▋         | 107/1565 [01:59<28:24,  1.17s/it]  7%|▋         | 108/1565 [02:00<27:18,  1.12s/it]  7%|▋         | 109/1565 [02:01<26:31,  1.09s/it]  7%|▋         | 110/1565 [02:02<25:59,  1.07s/it]  7%|▋         | 111/1565 [02:03<27:49,  1.15s/it]  7%|▋         | 112/1565 [02:04<26:53,  1.11s/it]  7%|▋         | 113/1565 [02:05<26:12,  1.08s/it]  7%|▋         | 114/1565 [02:07<27:03,  1.12s/it]  7%|▋         | 115/1565 [02:08<26:19,  1.09s/it]  7%|▋         | 116/1565 [02:09<25:48,  1.07s/it]  7%|▋         | 117/1565 [02:10<25:25,  1.05s/it]  8%|▊         | 118/1565 [02:11<27:17,  1.13s/it]  8%|▊         | 119/1565 [02:12<26:30,  1.10s/it]  8%|▊         | 120/1565 [02:13<25:53,  1.08s/it]  8%|▊         | 121/1565 [02:14<27:12,  1.13s/it]  8%|▊         | 122/1565 [02:15<26:24,  1.10s/it]  8%|▊         | 123/1565 [02:16<25:52,  1.08s/it]  8%|▊         | 124/1565 [02:17<25:26,  1.06s/it]  8%|▊         | 125/1565 [02:19<27:20,  1.14s/it]  8%|▊         | 126/1565 [02:20<26:23,  1.10s/it]  8%|▊         | 127/1565 [02:21<25:49,  1.08s/it]  8%|▊         | 128/1565 [02:22<27:04,  1.13s/it]  8%|▊         | 129/1565 [02:23<26:20,  1.10s/it]  8%|▊         | 130/1565 [02:24<25:43,  1.08s/it]  8%|▊         | 131/1565 [02:25<27:09,  1.14s/it]  8%|▊         | 132/1565 [02:26<26:18,  1.10s/it]  8%|▊         | 133/1565 [02:27<25:44,  1.08s/it]  9%|▊         | 134/1565 [02:29<27:29,  1.15s/it]  9%|▊         | 135/1565 [02:30<26:33,  1.11s/it]  9%|▊         | 136/1565 [02:31<25:49,  1.08s/it]  9%|▉         | 137/1565 [02:32<27:32,  1.16s/it]  9%|▉         | 138/1565 [02:33<26:32,  1.12s/it]  9%|▉         | 139/1565 [02:34<25:50,  1.09s/it]  9%|▉         | 140/1565 [02:35<25:16,  1.06s/it]  9%|▉         | 141/1565 [02:36<27:05,  1.14s/it]  9%|▉         | 142/1565 [02:37<26:12,  1.11s/it]  9%|▉         | 143/1565 [02:38<25:36,  1.08s/it]  9%|▉         | 144/1565 [02:40<27:20,  1.15s/it]  9%|▉         | 145/1565 [02:41<26:22,  1.11s/it]  9%|▉         | 146/1565 [02:42<25:42,  1.09s/it]  9%|▉         | 147/1565 [02:43<25:15,  1.07s/it]  9%|▉         | 148/1565 [02:44<27:00,  1.14s/it] 10%|▉         | 149/1565 [02:45<26:08,  1.11s/it] 10%|▉         | 150/1565 [02:46<25:30,  1.08s/it] 10%|▉         | 151/1565 [02:48<27:14,  1.16s/it] 10%|▉         | 152/1565 [02:49<26:17,  1.12s/it] 10%|▉         | 153/1565 [02:50<25:37,  1.09s/it] 10%|▉         | 154/1565 [02:51<25:06,  1.07s/it] 10%|▉         | 155/1565 [02:52<26:50,  1.14s/it] 10%|▉         | 156/1565 [02:53<25:56,  1.10s/it] 10%|█         | 157/1565 [02:54<25:22,  1.08s/it] 10%|█         | 158/1565 [02:55<27:02,  1.15s/it] 10%|█         | 159/1565 [02:56<26:05,  1.11s/it] 10%|█         | 160/1565 [02:57<25:25,  1.09s/it] 10%|█         | 161/1565 [02:59<27:05,  1.16s/it] 10%|█         | 162/1565 [03:00<26:06,  1.12s/it] 10%|█         | 163/1565 [03:01<25:26,  1.09s/it] 10%|█         | 164/1565 [03:02<27:12,  1.17s/it] 11%|█         | 165/1565 [03:03<26:11,  1.12s/it] 11%|█         | 166/1565 [03:04<25:27,  1.09s/it] 11%|█         | 167/1565 [03:05<27:07,  1.16s/it] 11%|█         | 168/1565 [03:06<26:05,  1.12s/it] 11%|█         | 169/1565 [03:07<25:22,  1.09s/it] 11%|█         | 170/1565 [03:09<24:50,  1.07s/it] 11%|█         | 171/1565 [03:10<26:32,  1.14s/it] 11%|█         | 172/1565 [03:11<25:42,  1.11s/it] 11%|█         | 173/1565 [03:12<25:06,  1.08s/it] 11%|█         | 174/1565 [03:13<25:55,  1.12s/it] 11%|█         | 175/1565 [03:14<25:13,  1.09s/it] 11%|█         | 176/1565 [03:15<24:44,  1.07s/it] 11%|█▏        | 177/1565 [03:16<24:22,  1.05s/it] 11%|█▏        | 178/1565 [03:17<25:21,  1.10s/it] 11%|█▏        | 179/1565 [03:18<24:49,  1.07s/it] 12%|█▏        | 180/1565 [03:19<24:25,  1.06s/it] 12%|█▏        | 181/1565 [03:21<26:14,  1.14s/it] 12%|█▏        | 182/1565 [03:22<25:24,  1.10s/it] 12%|█▏        | 183/1565 [03:23<24:51,  1.08s/it] 12%|█▏        | 184/1565 [03:24<24:23,  1.06s/it] 12%|█▏        | 185/1565 [03:25<26:02,  1.13s/it] 12%|█▏        | 186/1565 [03:26<25:14,  1.10s/it] 12%|█▏        | 187/1565 [03:27<24:42,  1.08s/it] 12%|█▏        | 188/1565 [03:28<26:15,  1.14s/it] 12%|█▏        | 189/1565 [03:29<25:24,  1.11s/it] 12%|█▏        | 190/1565 [03:30<24:47,  1.08s/it] 12%|█▏        | 191/1565 [03:32<25:56,  1.13s/it] 12%|█▏        | 192/1565 [03:33<25:05,  1.10s/it] 12%|█▏        | 193/1565 [03:34<24:34,  1.07s/it] 12%|█▏        | 194/1565 [03:35<26:19,  1.15s/it] 12%|█▏        | 195/1565 [03:36<25:23,  1.11s/it] 13%|█▎        | 196/1565 [03:37<24:43,  1.08s/it] 13%|█▎        | 197/1565 [03:38<26:22,  1.16s/it] 13%|█▎        | 198/1565 [03:39<25:25,  1.12s/it] 13%|█▎        | 199/1565 [03:40<24:41,  1.08s/it] 13%|█▎        | 200/1565 [03:41<24:12,  1.06s/it] 13%|█▎        | 201/1565 [03:43<25:36,  1.13s/it] 13%|█▎        | 202/1565 [03:44<24:50,  1.09s/it] 13%|█▎        | 203/1565 [03:45<24:20,  1.07s/it] 13%|█▎        | 204/1565 [03:46<25:33,  1.13s/it] 13%|█▎        | 205/1565 [03:47<24:49,  1.10s/it] 13%|█▎        | 206/1565 [03:48<24:19,  1.07s/it] 13%|█▎        | 207/1565 [03:49<23:54,  1.06s/it] 13%|█▎        | 208/1565 [03:50<25:38,  1.13s/it] 13%|█▎        | 209/1565 [03:51<24:50,  1.10s/it] 13%|█▎        | 210/1565 [03:52<24:14,  1.07s/it] 13%|█▎        | 211/1565 [03:54<25:54,  1.15s/it] 14%|█▎        | 212/1565 [03:55<25:06,  1.11s/it] 14%|█▎        | 213/1565 [03:56<24:29,  1.09s/it] 14%|█▎        | 214/1565 [03:57<23:58,  1.06s/it] 14%|█▎        | 215/1565 [03:58<25:38,  1.14s/it] 14%|█▍        | 216/1565 [03:59<24:46,  1.10s/it] 14%|█▍        | 217/1565 [04:00<24:11,  1.08s/it] 14%|█▍        | 218/1565 [04:02<25:51,  1.15s/it] 14%|█▍        | 219/1565 [04:03<24:57,  1.11s/it] 14%|█▍        | 220/1565 [04:04<24:18,  1.08s/it] 14%|█▍        | 221/1565 [04:05<26:01,  1.16s/it] 14%|█▍        | 222/1565 [04:06<25:00,  1.12s/it] 14%|█▍        | 223/1565 [04:07<24:21,  1.09s/it] 14%|█▍        | 224/1565 [04:08<25:37,  1.15s/it] 14%|█▍        | 225/1565 [04:09<24:45,  1.11s/it] 14%|█▍        | 226/1565 [04:10<24:08,  1.08s/it] 15%|█▍        | 227/1565 [04:12<25:45,  1.16s/it] 15%|█▍        | 228/1565 [04:13<24:50,  1.11s/it] 15%|█▍        | 229/1565 [04:14<24:10,  1.09s/it] 15%|█▍        | 230/1565 [04:15<23:45,  1.07s/it] 15%|█▍        | 231/1565 [04:16<24:36,  1.11s/it] 15%|█▍        | 232/1565 [04:17<23:58,  1.08s/it] 15%|█▍        | 233/1565 [04:18<23:34,  1.06s/it] 15%|█▍        | 234/1565 [04:19<25:06,  1.13s/it] 15%|█▌        | 235/1565 [04:20<24:21,  1.10s/it] 15%|█▌        | 236/1565 [04:21<23:47,  1.07s/it] 15%|█▌        | 237/1565 [04:22<23:24,  1.06s/it] 15%|█▌        | 238/1565 [04:24<25:05,  1.13s/it] 15%|█▌        | 239/1565 [04:25<24:20,  1.10s/it] 15%|█▌        | 240/1565 [04:26<23:48,  1.08s/it] 15%|█▌        | 241/1565 [04:27<25:27,  1.15s/it] 15%|█▌        | 242/1565 [04:28<24:34,  1.11s/it] 16%|█▌        | 243/1565 [04:29<23:55,  1.09s/it] 16%|█▌        | 244/1565 [04:30<23:28,  1.07s/it] 16%|█▌        | 245/1565 [04:31<25:10,  1.14s/it] 16%|█▌        | 246/1565 [04:32<24:17,  1.11s/it] 16%|█▌        | 247/1565 [04:33<23:43,  1.08s/it] 16%|█▌        | 248/1565 [04:35<25:16,  1.15s/it] 16%|█▌        | 249/1565 [04:36<24:25,  1.11s/it] 16%|█▌        | 250/1565 [04:37<23:45,  1.08s/it] 16%|█▌        | 251/1565 [04:38<25:17,  1.16s/it] 16%|█▌        | 252/1565 [04:39<24:23,  1.11s/it] 16%|█▌        | 253/1565 [04:40<23:45,  1.09s/it] 16%|█▌        | 254/1565 [04:41<25:17,  1.16s/it] 16%|█▋        | 255/1565 [04:42<24:22,  1.12s/it] 16%|█▋        | 256/1565 [04:43<23:41,  1.09s/it] 16%|█▋        | 257/1565 [04:45<25:17,  1.16s/it] 16%|█▋        | 258/1565 [04:46<24:19,  1.12s/it] 17%|█▋        | 259/1565 [04:47<23:43,  1.09s/it] 17%|█▋        | 260/1565 [04:48<23:15,  1.07s/it] 17%|█▋        | 261/1565 [04:49<24:34,  1.13s/it] 17%|█▋        | 262/1565 [04:50<23:51,  1.10s/it] 17%|█▋        | 263/1565 [04:51<23:19,  1.08s/it] 17%|█▋        | 264/1565 [04:52<24:54,  1.15s/it] 17%|█▋        | 265/1565 [04:53<24:07,  1.11s/it] 17%|█▋        | 266/1565 [04:55<23:30,  1.09s/it] 17%|█▋        | 267/1565 [04:56<23:03,  1.07s/it] 17%|█▋        | 268/1565 [04:57<24:38,  1.14s/it] 17%|█▋        | 269/1565 [04:58<23:52,  1.11s/it] 17%|█▋        | 270/1565 [04:59<23:16,  1.08s/it] 17%|█▋        | 271/1565 [05:00<24:52,  1.15s/it] 17%|█▋        | 272/1565 [05:01<23:57,  1.11s/it] 17%|█▋        | 273/1565 [05:02<23:20,  1.08s/it] 18%|█▊        | 274/1565 [05:03<22:53,  1.06s/it] 18%|█▊        | 275/1565 [05:05<24:32,  1.14s/it] 18%|█▊        | 276/1565 [05:06<23:44,  1.10s/it] 18%|█▊        | 277/1565 [05:07<23:12,  1.08s/it] 18%|█▊        | 278/1565 [05:08<23:55,  1.12s/it] 18%|█▊        | 279/1565 [05:09<23:17,  1.09s/it] 18%|█▊        | 280/1565 [05:10<22:50,  1.07s/it] 18%|█▊        | 281/1565 [05:11<24:27,  1.14s/it] 18%|█▊        | 282/1565 [05:12<23:37,  1.10s/it] 18%|█▊        | 283/1565 [05:13<23:05,  1.08s/it] 18%|█▊        | 284/1565 [05:15<24:36,  1.15s/it] 18%|█▊        | 285/1565 [05:16<23:45,  1.11s/it] 18%|█▊        | 286/1565 [05:17<23:07,  1.09s/it] 18%|█▊        | 287/1565 [05:18<24:40,  1.16s/it] 18%|█▊        | 288/1565 [05:19<23:46,  1.12s/it] 18%|█▊        | 289/1565 [05:20<23:09,  1.09s/it] 19%|█▊        | 290/1565 [05:21<22:43,  1.07s/it] 19%|█▊        | 291/1565 [05:22<23:48,  1.12s/it] 19%|█▊        | 292/1565 [05:23<23:07,  1.09s/it] 19%|█▊        | 293/1565 [05:24<22:40,  1.07s/it] 19%|█▉        | 294/1565 [05:26<24:14,  1.14s/it] 19%|█▉        | 295/1565 [05:27<23:26,  1.11s/it] 19%|█▉        | 296/1565 [05:28<22:52,  1.08s/it] 19%|█▉        | 297/1565 [05:29<22:27,  1.06s/it] 19%|█▉        | 298/1565 [05:30<24:01,  1.14s/it] 19%|█▉        | 299/1565 [05:31<23:15,  1.10s/it] 19%|█▉        | 300/1565 [05:32<22:41,  1.08s/it] 19%|█▉        | 301/1565 [05:33<23:52,  1.13s/it] 19%|█▉        | 302/1565 [05:34<23:07,  1.10s/it] 19%|█▉        | 303/1565 [05:35<22:40,  1.08s/it] 19%|█▉        | 304/1565 [05:36<22:16,  1.06s/it] 19%|█▉        | 305/1565 [05:38<23:51,  1.14s/it] 20%|█▉        | 306/1565 [05:39<23:06,  1.10s/it] 20%|█▉        | 307/1565 [05:40<22:34,  1.08s/it] 20%|█▉        | 308/1565 [05:41<24:03,  1.15s/it] 20%|█▉        | 309/1565 [05:42<23:14,  1.11s/it] 20%|█▉        | 310/1565 [05:43<22:38,  1.08s/it] 20%|█▉        | 311/1565 [05:44<24:08,  1.16s/it] 20%|█▉        | 312/1565 [05:45<23:19,  1.12s/it] 20%|██        | 313/1565 [05:46<19:56,  1.05it/s] 20%|██        | 314/1565 [05:47<20:20,  1.03it/s] 20%|██        | 315/1565 [05:48<22:09,  1.06s/it] 20%|██        | 316/1565 [05:49<21:51,  1.05s/it] 20%|██        | 317/1565 [05:50<21:38,  1.04s/it] 20%|██        | 318/1565 [05:52<22:36,  1.09s/it] 20%|██        | 319/1565 [05:53<22:09,  1.07s/it] 20%|██        | 320/1565 [05:54<21:49,  1.05s/it] 21%|██        | 321/1565 [05:55<23:31,  1.13s/it] 21%|██        | 322/1565 [05:56<22:46,  1.10s/it] 21%|██        | 323/1565 [05:57<22:17,  1.08s/it] 21%|██        | 324/1565 [05:58<21:54,  1.06s/it] 21%|██        | 325/1565 [05:59<22:45,  1.10s/it] 21%|██        | 326/1565 [06:00<22:16,  1.08s/it] 21%|██        | 327/1565 [06:01<21:53,  1.06s/it] 21%|██        | 328/1565 [06:02<22:43,  1.10s/it] 21%|██        | 329/1565 [06:03<22:12,  1.08s/it] 21%|██        | 330/1565 [06:04<21:49,  1.06s/it] 21%|██        | 331/1565 [06:06<23:11,  1.13s/it] 21%|██        | 332/1565 [06:07<22:30,  1.10s/it] 21%|██▏       | 333/1565 [06:08<22:01,  1.07s/it] 21%|██▏       | 334/1565 [06:09<23:33,  1.15s/it] 21%|██▏       | 335/1565 [06:10<22:46,  1.11s/it] 21%|██▏       | 336/1565 [06:11<22:10,  1.08s/it] 22%|██▏       | 337/1565 [06:12<21:46,  1.06s/it] 22%|██▏       | 338/1565 [06:13<23:27,  1.15s/it] 22%|██▏       | 339/1565 [06:14<22:40,  1.11s/it] 22%|██▏       | 340/1565 [06:16<22:06,  1.08s/it] 22%|██▏       | 341/1565 [06:17<23:32,  1.15s/it] 22%|██▏       | 342/1565 [06:18<22:42,  1.11s/it] 22%|██▏       | 343/1565 [06:19<22:06,  1.09s/it] 22%|██▏       | 344/1565 [06:20<23:33,  1.16s/it] 22%|██▏       | 345/1565 [06:21<22:41,  1.12s/it] 22%|██▏       | 346/1565 [06:22<22:08,  1.09s/it] 22%|██▏       | 347/1565 [06:24<23:35,  1.16s/it] 22%|██▏       | 348/1565 [06:25<22:40,  1.12s/it] 22%|██▏       | 349/1565 [06:26<22:04,  1.09s/it] 22%|██▏       | 350/1565 [06:27<21:38,  1.07s/it] 22%|██▏       | 351/1565 [06:28<22:35,  1.12s/it] 22%|██▏       | 352/1565 [06:29<21:58,  1.09s/it] 23%|██▎       | 353/1565 [06:30<21:34,  1.07s/it] 23%|██▎       | 354/1565 [06:31<23:05,  1.14s/it] 23%|██▎       | 355/1565 [06:32<22:20,  1.11s/it] 23%|██▎       | 356/1565 [06:33<21:48,  1.08s/it] 23%|██▎       | 357/1565 [06:34<22:34,  1.12s/it] 23%|██▎       | 358/1565 [06:35<21:55,  1.09s/it] 23%|██▎       | 359/1565 [06:37<21:31,  1.07s/it] 23%|██▎       | 360/1565 [06:38<21:11,  1.06s/it] 23%|██▎       | 361/1565 [06:39<22:00,  1.10s/it] 23%|██▎       | 362/1565 [06:40<21:33,  1.08s/it] 23%|██▎       | 363/1565 [06:41<21:13,  1.06s/it] 23%|██▎       | 364/1565 [06:42<22:46,  1.14s/it] 23%|██▎       | 365/1565 [06:43<22:04,  1.10s/it] 23%|██▎       | 366/1565 [06:44<21:33,  1.08s/it] 23%|██▎       | 367/1565 [06:45<23:00,  1.15s/it] 24%|██▎       | 368/1565 [06:46<22:14,  1.11s/it] 24%|██▎       | 369/1565 [06:48<21:39,  1.09s/it] 24%|██▎       | 370/1565 [06:49<23:02,  1.16s/it] 24%|██▎       | 371/1565 [06:50<22:13,  1.12s/it] 24%|██▍       | 372/1565 [06:51<21:37,  1.09s/it] 24%|██▍       | 373/1565 [06:52<21:14,  1.07s/it] 24%|██▍       | 374/1565 [06:53<22:45,  1.15s/it] 24%|██▍       | 375/1565 [06:54<22:00,  1.11s/it] 24%|██▍       | 376/1565 [06:55<21:28,  1.08s/it] 24%|██▍       | 377/1565 [06:57<23:05,  1.17s/it] 24%|██▍       | 378/1565 [06:58<22:21,  1.13s/it] 24%|██▍       | 379/1565 [06:59<21:57,  1.11s/it] 24%|██▍       | 380/1565 [07:00<23:11,  1.17s/it] 24%|██▍       | 381/1565 [07:01<22:16,  1.13s/it] 24%|██▍       | 382/1565 [07:02<21:36,  1.10s/it] 24%|██▍       | 383/1565 [07:03<22:58,  1.17s/it] 25%|██▍       | 384/1565 [07:04<22:08,  1.12s/it] 25%|██▍       | 385/1565 [07:05<21:29,  1.09s/it] 25%|██▍       | 386/1565 [07:07<21:03,  1.07s/it] 25%|██▍       | 387/1565 [07:08<22:31,  1.15s/it] 25%|██▍       | 388/1565 [07:09<21:43,  1.11s/it] 25%|██▍       | 389/1565 [07:10<21:24,  1.09s/it] 25%|██▍       | 390/1565 [07:11<22:52,  1.17s/it] 25%|██▍       | 391/1565 [07:12<22:15,  1.14s/it] 25%|██▌       | 392/1565 [07:13<21:42,  1.11s/it] 25%|██▌       | 393/1565 [07:15<22:59,  1.18s/it] 25%|██▌       | 394/1565 [07:16<22:02,  1.13s/it] 25%|██▌       | 395/1565 [07:17<21:24,  1.10s/it] 25%|██▌       | 396/1565 [07:18<20:57,  1.08s/it] 25%|██▌       | 397/1565 [07:19<22:12,  1.14s/it] 25%|██▌       | 398/1565 [07:20<21:26,  1.10s/it] 25%|██▌       | 399/1565 [07:21<20:59,  1.08s/it] 26%|██▌       | 400/1565 [07:22<22:24,  1.15s/it] 26%|██▌       | 401/1565 [07:23<21:50,  1.13s/it] 26%|██▌       | 402/1565 [07:25<21:23,  1.10s/it] 26%|██▌       | 403/1565 [07:26<22:31,  1.16s/it] 26%|██▌       | 404/1565 [07:27<21:55,  1.13s/it] 26%|██▌       | 405/1565 [07:28<21:20,  1.10s/it] 26%|██▌       | 406/1565 [07:29<22:46,  1.18s/it] 26%|██▌       | 407/1565 [07:30<21:52,  1.13s/it] 26%|██▌       | 408/1565 [07:31<21:12,  1.10s/it] 26%|██▌       | 409/1565 [07:32<20:51,  1.08s/it] 26%|██▌       | 410/1565 [07:34<22:12,  1.15s/it] 26%|██▋       | 411/1565 [07:35<21:26,  1.11s/it] 26%|██▋       | 412/1565 [07:36<20:51,  1.09s/it] 26%|██▋       | 413/1565 [07:37<22:17,  1.16s/it] 26%|██▋       | 414/1565 [07:38<21:40,  1.13s/it] 27%|██▋       | 415/1565 [07:39<21:12,  1.11s/it] 27%|██▋       | 416/1565 [07:40<22:21,  1.17s/it] 27%|██▋       | 417/1565 [07:42<21:34,  1.13s/it] 27%|██▋       | 418/1565 [07:43<20:58,  1.10s/it] 27%|██▋       | 419/1565 [07:44<22:20,  1.17s/it] 27%|██▋       | 420/1565 [07:45<21:27,  1.12s/it] 27%|██▋       | 421/1565 [07:46<20:57,  1.10s/it] 27%|██▋       | 422/1565 [07:47<20:30,  1.08s/it] 27%|██▋       | 423/1565 [07:48<21:55,  1.15s/it] 27%|██▋       | 424/1565 [07:49<21:09,  1.11s/it] 27%|██▋       | 425/1565 [07:50<20:40,  1.09s/it] 27%|██▋       | 426/1565 [07:52<21:57,  1.16s/it] 27%|██▋       | 427/1565 [07:53<21:18,  1.12s/it] 27%|██▋       | 428/1565 [07:54<21:03,  1.11s/it] 27%|██▋       | 429/1565 [07:55<22:27,  1.19s/it] 27%|██▋       | 430/1565 [07:56<21:33,  1.14s/it] 28%|██▊       | 431/1565 [07:57<20:54,  1.11s/it] 28%|██▊       | 432/1565 [07:58<20:23,  1.08s/it] 28%|██▊       | 433/1565 [08:00<21:45,  1.15s/it] 28%|██▊       | 434/1565 [08:01<21:01,  1.12s/it] 28%|██▊       | 435/1565 [08:02<20:30,  1.09s/it] 28%|██▊       | 436/1565 [08:03<21:05,  1.12s/it] 28%|██▊       | 437/1565 [08:04<20:32,  1.09s/it] 28%|██▊       | 438/1565 [08:05<20:14,  1.08s/it] 28%|██▊       | 439/1565 [08:06<21:43,  1.16s/it] 28%|██▊       | 440/1565 [08:07<21:06,  1.13s/it] 28%|██▊       | 441/1565 [08:08<20:43,  1.11s/it] 28%|██▊       | 442/1565 [08:10<21:59,  1.17s/it] 28%|██▊       | 443/1565 [08:11<21:07,  1.13s/it] 28%|██▊       | 444/1565 [08:12<20:31,  1.10s/it] 28%|██▊       | 445/1565 [08:13<20:05,  1.08s/it] 28%|██▊       | 446/1565 [08:14<21:32,  1.15s/it] 29%|██▊       | 447/1565 [08:15<20:46,  1.11s/it] 29%|██▊       | 448/1565 [08:16<20:12,  1.09s/it] 29%|██▊       | 449/1565 [08:17<21:31,  1.16s/it] 29%|██▉       | 450/1565 [08:18<20:46,  1.12s/it] 29%|██▉       | 451/1565 [08:20<20:25,  1.10s/it] 29%|██▉       | 452/1565 [08:21<21:43,  1.17s/it] 29%|██▉       | 453/1565 [08:22<21:03,  1.14s/it] 29%|██▉       | 454/1565 [08:23<20:26,  1.10s/it] 29%|██▉       | 455/1565 [08:24<21:40,  1.17s/it] 29%|██▉       | 456/1565 [08:25<20:49,  1.13s/it] 29%|██▉       | 457/1565 [08:26<20:13,  1.10s/it] 29%|██▉       | 458/1565 [08:27<19:55,  1.08s/it] 29%|██▉       | 459/1565 [08:29<21:11,  1.15s/it] 29%|██▉       | 460/1565 [08:30<20:27,  1.11s/it] 29%|██▉       | 461/1565 [08:31<19:57,  1.08s/it] 30%|██▉       | 462/1565 [08:32<21:13,  1.16s/it] 30%|██▉       | 463/1565 [08:33<20:38,  1.12s/it] 30%|██▉       | 464/1565 [08:34<20:13,  1.10s/it] 30%|██▉       | 465/1565 [08:35<21:18,  1.16s/it] 30%|██▉       | 466/1565 [08:36<20:32,  1.12s/it] 30%|██▉       | 467/1565 [08:38<20:02,  1.10s/it] 30%|██▉       | 468/1565 [08:39<19:34,  1.07s/it] 30%|██▉       | 469/1565 [08:40<20:33,  1.13s/it] 30%|███       | 470/1565 [08:41<20:00,  1.10s/it] 30%|███       | 471/1565 [08:42<19:32,  1.07s/it] 30%|███       | 472/1565 [08:43<20:52,  1.15s/it] 30%|███       | 473/1565 [08:44<20:09,  1.11s/it] 30%|███       | 474/1565 [08:45<19:44,  1.09s/it] 30%|███       | 475/1565 [08:46<20:38,  1.14s/it] 30%|███       | 476/1565 [08:47<20:07,  1.11s/it] 30%|███       | 477/1565 [08:49<19:48,  1.09s/it] 31%|███       | 478/1565 [08:50<21:19,  1.18s/it] 31%|███       | 479/1565 [08:51<20:29,  1.13s/it] 31%|███       | 480/1565 [08:52<19:51,  1.10s/it] 31%|███       | 481/1565 [08:53<19:23,  1.07s/it] 31%|███       | 482/1565 [08:54<20:42,  1.15s/it] 31%|███       | 483/1565 [08:55<20:03,  1.11s/it] 31%|███       | 484/1565 [08:56<19:32,  1.08s/it] 31%|███       | 485/1565 [08:58<20:48,  1.16s/it] 31%|███       | 486/1565 [08:59<20:01,  1.11s/it] 31%|███       | 487/1565 [09:00<19:35,  1.09s/it] 31%|███       | 488/1565 [09:01<20:47,  1.16s/it] 31%|███       | 489/1565 [09:02<20:10,  1.12s/it] 31%|███▏      | 490/1565 [09:03<19:51,  1.11s/it] 31%|███▏      | 491/1565 [09:05<21:05,  1.18s/it] 31%|███▏      | 492/1565 [09:06<20:13,  1.13s/it] 32%|███▏      | 493/1565 [09:07<19:37,  1.10s/it] 32%|███▏      | 494/1565 [09:08<19:10,  1.07s/it] 32%|███▏      | 495/1565 [09:09<20:41,  1.16s/it] 32%|███▏      | 496/1565 [09:10<19:53,  1.12s/it] 32%|███▏      | 497/1565 [09:11<19:22,  1.09s/it] 32%|███▏      | 498/1565 [09:12<20:18,  1.14s/it] 32%|███▏      | 499/1565 [09:13<19:38,  1.11s/it] 32%|███▏      | 500/1565 [09:14<19:10,  1.08s/it]                                                  {'loss': 0.1908, 'learning_rate': 6.805111821086262e-05, 'epoch': 1.6}
- 32%|███▏      | 500/1565 [09:14<19:10,  1.08s/it] 32%|███▏      | 501/1565 [09:16<20:30,  1.16s/it] 32%|███▏      | 502/1565 [09:17<19:45,  1.12s/it] 32%|███▏      | 503/1565 [09:18<19:16,  1.09s/it] 32%|███▏      | 504/1565 [09:19<18:53,  1.07s/it] 32%|███▏      | 505/1565 [09:20<20:13,  1.15s/it] 32%|███▏      | 506/1565 [09:21<19:33,  1.11s/it] 32%|███▏      | 507/1565 [09:22<19:04,  1.08s/it] 32%|███▏      | 508/1565 [09:23<20:17,  1.15s/it] 33%|███▎      | 509/1565 [09:24<19:36,  1.11s/it] 33%|███▎      | 510/1565 [09:25<19:05,  1.09s/it] 33%|███▎      | 511/1565 [09:27<20:20,  1.16s/it] 33%|███▎      | 512/1565 [09:28<19:36,  1.12s/it] 33%|███▎      | 513/1565 [09:29<19:03,  1.09s/it] 33%|███▎      | 514/1565 [09:30<20:17,  1.16s/it] 33%|███▎      | 515/1565 [09:31<19:33,  1.12s/it] 33%|███▎      | 516/1565 [09:32<19:01,  1.09s/it] 33%|███▎      | 517/1565 [09:33<18:39,  1.07s/it] 33%|███▎      | 518/1565 [09:34<20:01,  1.15s/it] 33%|███▎      | 519/1565 [09:36<19:20,  1.11s/it] 33%|███▎      | 520/1565 [09:37<18:50,  1.08s/it] 33%|███▎      | 521/1565 [09:38<20:06,  1.16s/it] 33%|███▎      | 522/1565 [09:39<19:23,  1.12s/it] 33%|███▎      | 523/1565 [09:40<18:54,  1.09s/it] 33%|███▎      | 524/1565 [09:41<20:07,  1.16s/it] 34%|███▎      | 525/1565 [09:42<19:26,  1.12s/it] 34%|███▎      | 526/1565 [09:43<18:54,  1.09s/it] 34%|███▎      | 527/1565 [09:45<20:08,  1.16s/it] 34%|███▎      | 528/1565 [09:46<19:23,  1.12s/it] 34%|███▍      | 529/1565 [09:47<18:51,  1.09s/it] 34%|███▍      | 530/1565 [09:48<18:28,  1.07s/it] 34%|███▍      | 531/1565 [09:49<19:39,  1.14s/it] 34%|███▍      | 532/1565 [09:50<19:02,  1.11s/it] 34%|███▍      | 533/1565 [09:51<18:35,  1.08s/it] 34%|███▍      | 534/1565 [09:52<19:49,  1.15s/it] 34%|███▍      | 535/1565 [09:53<19:07,  1.11s/it] 34%|███▍      | 536/1565 [09:54<18:37,  1.09s/it] 34%|███▍      | 537/1565 [09:56<19:45,  1.15s/it] 34%|███▍      | 538/1565 [09:57<19:04,  1.11s/it] 34%|███▍      | 539/1565 [09:58<18:40,  1.09s/it] 35%|███▍      | 540/1565 [09:59<18:17,  1.07s/it] 35%|███▍      | 541/1565 [10:00<19:39,  1.15s/it] 35%|███▍      | 542/1565 [10:01<18:56,  1.11s/it] 35%|███▍      | 543/1565 [10:02<18:30,  1.09s/it] 35%|███▍      | 544/1565 [10:03<19:31,  1.15s/it] 35%|███▍      | 545/1565 [10:05<18:53,  1.11s/it] 35%|███▍      | 546/1565 [10:06<18:24,  1.08s/it] 35%|███▍      | 547/1565 [10:07<19:00,  1.12s/it] 35%|███▌      | 548/1565 [10:08<18:30,  1.09s/it] 35%|███▌      | 549/1565 [10:09<18:11,  1.07s/it] 35%|███▌      | 550/1565 [10:10<18:53,  1.12s/it] 35%|███▌      | 551/1565 [10:11<18:25,  1.09s/it] 35%|███▌      | 552/1565 [10:12<18:02,  1.07s/it] 35%|███▌      | 553/1565 [10:13<17:49,  1.06s/it] 35%|███▌      | 554/1565 [10:14<19:04,  1.13s/it] 35%|███▌      | 555/1565 [10:15<18:30,  1.10s/it] 36%|███▌      | 556/1565 [10:16<18:05,  1.08s/it] 36%|███▌      | 557/1565 [10:18<19:19,  1.15s/it] 36%|███▌      | 558/1565 [10:19<18:40,  1.11s/it] 36%|███▌      | 559/1565 [10:20<18:12,  1.09s/it] 36%|███▌      | 560/1565 [10:21<19:25,  1.16s/it] 36%|███▌      | 561/1565 [10:22<18:42,  1.12s/it] 36%|███▌      | 562/1565 [10:23<18:13,  1.09s/it] 36%|███▌      | 563/1565 [10:24<19:12,  1.15s/it] 36%|███▌      | 564/1565 [10:25<18:32,  1.11s/it] 36%|███▌      | 565/1565 [10:27<18:08,  1.09s/it] 36%|███▌      | 566/1565 [10:28<17:47,  1.07s/it] 36%|███▌      | 567/1565 [10:29<19:03,  1.15s/it] 36%|███▋      | 568/1565 [10:30<18:24,  1.11s/it] 36%|███▋      | 569/1565 [10:31<18:06,  1.09s/it] 36%|███▋      | 570/1565 [10:32<19:18,  1.16s/it] 36%|███▋      | 571/1565 [10:33<18:45,  1.13s/it] 37%|███▋      | 572/1565 [10:34<18:20,  1.11s/it] 37%|███▋      | 573/1565 [10:36<19:26,  1.18s/it] 37%|███▋      | 574/1565 [10:37<18:40,  1.13s/it] 37%|███▋      | 575/1565 [10:38<18:07,  1.10s/it] 37%|███▋      | 576/1565 [10:39<17:42,  1.07s/it] 37%|███▋      | 577/1565 [10:40<18:31,  1.13s/it] 37%|███▋      | 578/1565 [10:41<17:59,  1.09s/it] 37%|███▋      | 579/1565 [10:42<17:36,  1.07s/it] 37%|███▋      | 580/1565 [10:43<18:10,  1.11s/it] 37%|███▋      | 581/1565 [10:44<17:48,  1.09s/it] 37%|███▋      | 582/1565 [10:45<17:38,  1.08s/it] 37%|███▋      | 583/1565 [10:47<18:46,  1.15s/it] 37%|███▋      | 584/1565 [10:48<18:22,  1.12s/it] 37%|███▋      | 585/1565 [10:49<17:50,  1.09s/it] 37%|███▋      | 586/1565 [10:50<18:50,  1.15s/it] 38%|███▊      | 587/1565 [10:51<18:14,  1.12s/it] 38%|███▊      | 588/1565 [10:52<17:45,  1.09s/it] 38%|███▊      | 589/1565 [10:53<17:29,  1.08s/it] 38%|███▊      | 590/1565 [10:54<18:38,  1.15s/it] 38%|███▊      | 591/1565 [10:55<17:59,  1.11s/it] 38%|███▊      | 592/1565 [10:56<17:29,  1.08s/it] 38%|███▊      | 593/1565 [10:58<18:33,  1.15s/it] 38%|███▊      | 594/1565 [10:59<18:02,  1.12s/it] 38%|███▊      | 595/1565 [11:00<17:44,  1.10s/it] 38%|███▊      | 596/1565 [11:01<18:38,  1.15s/it] 38%|███▊      | 597/1565 [11:02<18:01,  1.12s/it] 38%|███▊      | 598/1565 [11:03<17:31,  1.09s/it] 38%|███▊      | 599/1565 [11:05<18:38,  1.16s/it] 38%|███▊      | 600/1565 [11:06<17:56,  1.12s/it] 38%|███▊      | 601/1565 [11:07<17:30,  1.09s/it] 38%|███▊      | 602/1565 [11:08<17:10,  1.07s/it] 39%|███▊      | 603/1565 [11:09<18:20,  1.14s/it] 39%|███▊      | 604/1565 [11:10<17:43,  1.11s/it] 39%|███▊      | 605/1565 [11:11<17:15,  1.08s/it] 39%|███▊      | 606/1565 [11:12<18:17,  1.14s/it] 39%|███▉      | 607/1565 [11:13<17:43,  1.11s/it] 39%|███▉      | 608/1565 [11:14<17:26,  1.09s/it] 39%|███▉      | 609/1565 [11:16<18:48,  1.18s/it] 39%|███▉      | 610/1565 [11:17<18:09,  1.14s/it] 39%|███▉      | 611/1565 [11:18<17:33,  1.10s/it] 39%|███▉      | 612/1565 [11:19<17:08,  1.08s/it] 39%|███▉      | 613/1565 [11:20<18:10,  1.15s/it] 39%|███▉      | 614/1565 [11:21<17:39,  1.11s/it] 39%|███▉      | 615/1565 [11:22<17:12,  1.09s/it] 39%|███▉      | 616/1565 [11:23<17:59,  1.14s/it] 39%|███▉      | 617/1565 [11:24<17:26,  1.10s/it] 39%|███▉      | 618/1565 [11:25<17:01,  1.08s/it] 40%|███▉      | 619/1565 [11:27<17:43,  1.12s/it] 40%|███▉      | 620/1565 [11:28<17:19,  1.10s/it] 40%|███▉      | 621/1565 [11:29<17:06,  1.09s/it] 40%|███▉      | 622/1565 [11:30<17:57,  1.14s/it] 40%|███▉      | 623/1565 [11:31<17:23,  1.11s/it] 40%|███▉      | 624/1565 [11:32<16:55,  1.08s/it] 40%|███▉      | 625/1565 [11:33<16:38,  1.06s/it] 40%|████      | 626/1565 [11:34<15:26,  1.01it/s] 40%|████      | 627/1565 [11:35<15:41,  1.00s/it] 40%|████      | 628/1565 [11:36<15:46,  1.01s/it] 40%|████      | 629/1565 [11:37<15:48,  1.01s/it] 40%|████      | 630/1565 [11:38<16:50,  1.08s/it] 40%|████      | 631/1565 [11:39<16:33,  1.06s/it] 40%|████      | 632/1565 [11:40<16:26,  1.06s/it] 40%|████      | 633/1565 [11:42<17:10,  1.11s/it] 41%|████      | 634/1565 [11:43<16:51,  1.09s/it] 41%|████      | 635/1565 [11:44<16:39,  1.07s/it] 41%|████      | 636/1565 [11:45<17:25,  1.13s/it] 41%|████      | 637/1565 [11:46<16:51,  1.09s/it] 41%|████      | 638/1565 [11:47<16:29,  1.07s/it] 41%|████      | 639/1565 [11:48<17:17,  1.12s/it] 41%|████      | 640/1565 [11:49<16:51,  1.09s/it] 41%|████      | 641/1565 [11:50<16:29,  1.07s/it] 41%|████      | 642/1565 [11:51<17:07,  1.11s/it] 41%|████      | 643/1565 [11:52<16:39,  1.08s/it] 41%|████      | 644/1565 [11:53<16:20,  1.06s/it] 41%|████      | 645/1565 [11:55<16:11,  1.06s/it] 41%|████▏     | 646/1565 [11:56<16:52,  1.10s/it] 41%|████▏     | 647/1565 [11:57<16:33,  1.08s/it] 41%|████▏     | 648/1565 [11:58<16:23,  1.07s/it] 41%|████▏     | 649/1565 [11:59<16:53,  1.11s/it] 42%|████▏     | 650/1565 [12:00<16:27,  1.08s/it] 42%|████▏     | 651/1565 [12:01<16:09,  1.06s/it] 42%|████▏     | 652/1565 [12:02<15:56,  1.05s/it] 42%|████▏     | 653/1565 [12:03<16:46,  1.10s/it] 42%|████▏     | 654/1565 [12:04<16:20,  1.08s/it] 42%|████▏     | 655/1565 [12:05<16:02,  1.06s/it] 42%|████▏     | 656/1565 [12:07<16:58,  1.12s/it] 42%|████▏     | 657/1565 [12:08<16:29,  1.09s/it] 42%|████▏     | 658/1565 [12:09<16:13,  1.07s/it] 42%|████▏     | 659/1565 [12:10<16:05,  1.07s/it] 42%|████▏     | 660/1565 [12:11<16:43,  1.11s/it] 42%|████▏     | 661/1565 [12:12<16:24,  1.09s/it] 42%|████▏     | 662/1565 [12:13<16:03,  1.07s/it] 42%|████▏     | 663/1565 [12:14<16:49,  1.12s/it] 42%|████▏     | 664/1565 [12:15<16:20,  1.09s/it] 42%|████▏     | 665/1565 [12:16<16:01,  1.07s/it] 43%|████▎     | 666/1565 [12:17<16:30,  1.10s/it] 43%|████▎     | 667/1565 [12:18<16:07,  1.08s/it] 43%|████▎     | 668/1565 [12:19<15:50,  1.06s/it] 43%|████▎     | 669/1565 [12:21<16:41,  1.12s/it] 43%|████▎     | 670/1565 [12:22<16:18,  1.09s/it] 43%|████▎     | 671/1565 [12:23<16:06,  1.08s/it] 43%|████▎     | 672/1565 [12:24<16:43,  1.12s/it] 43%|████▎     | 673/1565 [12:25<16:24,  1.10s/it] 43%|████▎     | 674/1565 [12:26<16:02,  1.08s/it] 43%|████▎     | 675/1565 [12:27<15:44,  1.06s/it] 43%|████▎     | 676/1565 [12:28<16:34,  1.12s/it] 43%|████▎     | 677/1565 [12:29<16:06,  1.09s/it] 43%|████▎     | 678/1565 [12:30<15:51,  1.07s/it] 43%|████▎     | 679/1565 [12:32<16:42,  1.13s/it] 43%|████▎     | 680/1565 [12:33<16:11,  1.10s/it] 44%|████▎     | 681/1565 [12:34<15:49,  1.07s/it] 44%|████▎     | 682/1565 [12:35<15:33,  1.06s/it] 44%|████▎     | 683/1565 [12:36<16:34,  1.13s/it] 44%|████▎     | 684/1565 [12:37<16:07,  1.10s/it] 44%|████▍     | 685/1565 [12:38<15:53,  1.08s/it] 44%|████▍     | 686/1565 [12:39<16:39,  1.14s/it] 44%|████▍     | 687/1565 [12:40<16:09,  1.10s/it] 44%|████▍     | 688/1565 [12:41<15:46,  1.08s/it] 44%|████▍     | 689/1565 [12:42<15:29,  1.06s/it] 44%|████▍     | 690/1565 [12:44<16:11,  1.11s/it] 44%|████▍     | 691/1565 [12:45<15:49,  1.09s/it] 44%|████▍     | 692/1565 [12:46<15:31,  1.07s/it] 44%|████▍     | 693/1565 [12:47<16:12,  1.12s/it] 44%|████▍     | 694/1565 [12:48<15:46,  1.09s/it] 44%|████▍     | 695/1565 [12:49<15:27,  1.07s/it] 44%|████▍     | 696/1565 [12:50<16:20,  1.13s/it] 45%|████▍     | 697/1565 [12:51<15:54,  1.10s/it] 45%|████▍     | 698/1565 [12:52<15:43,  1.09s/it] 45%|████▍     | 699/1565 [12:54<16:30,  1.14s/it] 45%|████▍     | 700/1565 [12:55<15:55,  1.10s/it] 45%|████▍     | 701/1565 [12:56<15:31,  1.08s/it] 45%|████▍     | 702/1565 [12:57<16:05,  1.12s/it] 45%|████▍     | 703/1565 [12:58<15:36,  1.09s/it] 45%|████▍     | 704/1565 [12:59<15:18,  1.07s/it] 45%|████▌     | 705/1565 [13:00<15:04,  1.05s/it] 45%|████▌     | 706/1565 [13:01<15:33,  1.09s/it] 45%|████▌     | 707/1565 [13:02<15:14,  1.07s/it] 45%|████▌     | 708/1565 [13:03<15:03,  1.05s/it] 45%|████▌     | 709/1565 [13:04<15:48,  1.11s/it] 45%|████▌     | 710/1565 [13:05<15:29,  1.09s/it] 45%|████▌     | 711/1565 [13:06<15:19,  1.08s/it] 45%|████▌     | 712/1565 [13:07<15:08,  1.07s/it] 46%|████▌     | 713/1565 [13:09<15:54,  1.12s/it] 46%|████▌     | 714/1565 [13:10<15:28,  1.09s/it] 46%|████▌     | 715/1565 [13:11<15:08,  1.07s/it] 46%|████▌     | 716/1565 [13:12<15:36,  1.10s/it] 46%|████▌     | 717/1565 [13:13<15:13,  1.08s/it] 46%|████▌     | 718/1565 [13:14<14:59,  1.06s/it] 46%|████▌     | 719/1565 [13:15<14:48,  1.05s/it] 46%|████▌     | 720/1565 [13:16<15:30,  1.10s/it] 46%|████▌     | 721/1565 [13:17<15:12,  1.08s/it] 46%|████▌     | 722/1565 [13:18<15:02,  1.07s/it] 46%|████▌     | 723/1565 [13:20<15:34,  1.11s/it] 46%|████▋     | 724/1565 [13:21<15:22,  1.10s/it] 46%|████▋     | 725/1565 [13:22<15:04,  1.08s/it] 46%|████▋     | 726/1565 [13:23<15:48,  1.13s/it] 46%|████▋     | 727/1565 [13:24<15:19,  1.10s/it] 47%|████▋     | 728/1565 [13:25<15:00,  1.08s/it] 47%|████▋     | 729/1565 [13:26<15:46,  1.13s/it] 47%|████▋     | 730/1565 [13:27<15:16,  1.10s/it] 47%|████▋     | 731/1565 [13:28<14:56,  1.07s/it] 47%|████▋     | 732/1565 [13:29<15:37,  1.13s/it] 47%|████▋     | 733/1565 [13:30<15:08,  1.09s/it] 47%|████▋     | 734/1565 [13:32<14:56,  1.08s/it] 47%|████▋     | 735/1565 [13:33<14:43,  1.06s/it] 47%|████▋     | 736/1565 [13:34<15:20,  1.11s/it] 47%|████▋     | 737/1565 [13:35<15:06,  1.09s/it] 47%|████▋     | 738/1565 [13:36<14:45,  1.07s/it] 47%|████▋     | 739/1565 [13:37<15:14,  1.11s/it] 47%|████▋     | 740/1565 [13:38<14:50,  1.08s/it] 47%|████▋     | 741/1565 [13:39<14:33,  1.06s/it] 47%|████▋     | 742/1565 [13:40<14:27,  1.05s/it] 47%|████▋     | 743/1565 [13:41<15:13,  1.11s/it] 48%|████▊     | 744/1565 [13:42<14:50,  1.08s/it] 48%|████▊     | 745/1565 [13:43<14:31,  1.06s/it] 48%|████▊     | 746/1565 [13:45<15:17,  1.12s/it] 48%|████▊     | 747/1565 [13:46<14:58,  1.10s/it] 48%|████▊     | 748/1565 [13:47<14:41,  1.08s/it] 48%|████▊     | 749/1565 [13:48<14:32,  1.07s/it] 48%|████▊     | 750/1565 [13:49<15:23,  1.13s/it] 48%|████▊     | 751/1565 [13:50<14:54,  1.10s/it] 48%|████▊     | 752/1565 [13:51<14:34,  1.08s/it] 48%|████▊     | 753/1565 [13:52<15:15,  1.13s/it] 48%|████▊     | 754/1565 [13:53<14:47,  1.09s/it] 48%|████▊     | 755/1565 [13:54<14:31,  1.08s/it] 48%|████▊     | 756/1565 [13:56<15:06,  1.12s/it] 48%|████▊     | 757/1565 [13:57<14:39,  1.09s/it] 48%|████▊     | 758/1565 [13:58<14:22,  1.07s/it] 48%|████▊     | 759/1565 [13:59<15:08,  1.13s/it] 49%|████▊     | 760/1565 [14:00<14:47,  1.10s/it] 49%|████▊     | 761/1565 [14:01<14:30,  1.08s/it] 49%|████▊     | 762/1565 [14:02<15:15,  1.14s/it] 49%|████▉     | 763/1565 [14:03<14:50,  1.11s/it] 49%|████▉     | 764/1565 [14:04<14:26,  1.08s/it] 49%|████▉     | 765/1565 [14:05<14:09,  1.06s/it] 49%|████▉     | 766/1565 [14:07<14:57,  1.12s/it] 49%|████▉     | 767/1565 [14:08<14:31,  1.09s/it] 49%|████▉     | 768/1565 [14:09<14:15,  1.07s/it] 49%|████▉     | 769/1565 [14:10<14:56,  1.13s/it] 49%|████▉     | 770/1565 [14:11<14:31,  1.10s/it] 49%|████▉     | 771/1565 [14:12<14:11,  1.07s/it] 49%|████▉     | 772/1565 [14:13<13:58,  1.06s/it] 49%|████▉     | 773/1565 [14:14<14:46,  1.12s/it] 49%|████▉     | 774/1565 [14:15<14:28,  1.10s/it] 50%|████▉     | 775/1565 [14:16<14:16,  1.08s/it] 50%|████▉     | 776/1565 [14:18<14:58,  1.14s/it] 50%|████▉     | 777/1565 [14:19<14:28,  1.10s/it] 50%|████▉     | 778/1565 [14:20<14:07,  1.08s/it] 50%|████▉     | 779/1565 [14:21<13:52,  1.06s/it] 50%|████▉     | 780/1565 [14:22<14:27,  1.11s/it] 50%|████▉     | 781/1565 [14:23<14:07,  1.08s/it] 50%|████▉     | 782/1565 [14:24<13:52,  1.06s/it] 50%|█████     | 783/1565 [14:25<14:32,  1.12s/it] 50%|█████     | 784/1565 [14:26<14:09,  1.09s/it] 50%|█████     | 785/1565 [14:27<13:58,  1.07s/it] 50%|█████     | 786/1565 [14:28<14:31,  1.12s/it] 50%|█████     | 787/1565 [14:30<14:15,  1.10s/it] 50%|█████     | 788/1565 [14:31<14:06,  1.09s/it] 50%|█████     | 789/1565 [14:32<14:31,  1.12s/it] 50%|█████     | 790/1565 [14:33<14:05,  1.09s/it] 51%|█████     | 791/1565 [14:34<13:48,  1.07s/it] 51%|█████     | 792/1565 [14:35<14:29,  1.13s/it] 51%|█████     | 793/1565 [14:36<14:05,  1.10s/it] 51%|█████     | 794/1565 [14:37<13:47,  1.07s/it] 51%|█████     | 795/1565 [14:38<13:32,  1.06s/it] 51%|█████     | 796/1565 [14:39<14:03,  1.10s/it] 51%|█████     | 797/1565 [14:40<13:44,  1.07s/it] 51%|█████     | 798/1565 [14:41<13:35,  1.06s/it] 51%|█████     | 799/1565 [14:43<14:03,  1.10s/it] 51%|█████     | 800/1565 [14:44<13:54,  1.09s/it] 51%|█████     | 801/1565 [14:45<13:41,  1.08s/it] 51%|█████     | 802/1565 [14:46<13:26,  1.06s/it] 51%|█████▏    | 803/1565 [14:47<14:09,  1.11s/it] 51%|█████▏    | 804/1565 [14:48<13:45,  1.08s/it] 51%|█████▏    | 805/1565 [14:49<13:30,  1.07s/it] 52%|█████▏    | 806/1565 [14:50<13:57,  1.10s/it] 52%|█████▏    | 807/1565 [14:51<13:37,  1.08s/it] 52%|█████▏    | 808/1565 [14:52<13:23,  1.06s/it] 52%|█████▏    | 809/1565 [14:53<13:10,  1.05s/it] 52%|█████▏    | 810/1565 [14:54<14:02,  1.12s/it] 52%|█████▏    | 811/1565 [14:56<13:43,  1.09s/it] 52%|█████▏    | 812/1565 [14:57<13:31,  1.08s/it] 52%|█████▏    | 813/1565 [14:58<14:07,  1.13s/it] 52%|█████▏    | 814/1565 [14:59<13:40,  1.09s/it] 52%|█████▏    | 815/1565 [15:00<13:22,  1.07s/it] 52%|█████▏    | 816/1565 [15:01<13:51,  1.11s/it] 52%|█████▏    | 817/1565 [15:02<13:30,  1.08s/it] 52%|█████▏    | 818/1565 [15:03<13:16,  1.07s/it] 52%|█████▏    | 819/1565 [15:04<13:52,  1.12s/it] 52%|█████▏    | 820/1565 [15:05<13:28,  1.09s/it] 52%|█████▏    | 821/1565 [15:06<13:11,  1.06s/it] 53%|█████▎    | 822/1565 [15:08<13:37,  1.10s/it] 53%|█████▎    | 823/1565 [15:09<13:22,  1.08s/it] 53%|█████▎    | 824/1565 [15:10<13:11,  1.07s/it] 53%|█████▎    | 825/1565 [15:11<13:06,  1.06s/it] 53%|█████▎    | 826/1565 [15:12<13:37,  1.11s/it] 53%|█████▎    | 827/1565 [15:13<13:18,  1.08s/it] 53%|█████▎    | 828/1565 [15:14<13:03,  1.06s/it] 53%|█████▎    | 829/1565 [15:15<13:31,  1.10s/it] 53%|█████▎    | 830/1565 [15:16<13:12,  1.08s/it] 53%|█████▎    | 831/1565 [15:17<13:01,  1.07s/it] 53%|█████▎    | 832/1565 [15:18<12:53,  1.05s/it] 53%|█████▎    | 833/1565 [15:19<13:35,  1.11s/it] 53%|█████▎    | 834/1565 [15:20<13:15,  1.09s/it] 53%|█████▎    | 835/1565 [15:22<12:59,  1.07s/it] 53%|█████▎    | 836/1565 [15:23<13:39,  1.12s/it] 53%|█████▎    | 837/1565 [15:24<13:19,  1.10s/it] 54%|█████▎    | 838/1565 [15:25<13:09,  1.09s/it] 54%|█████▎    | 839/1565 [15:26<12:58,  1.07s/it]
