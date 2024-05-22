@@ -1216,8 +1216,8 @@ class DeployT5ForConditionalGeneration(T5ForConditionalGeneration):
             decoder_input_ids = self._shift_right(labels)
             
         if past_key_values is None and len(self.decoder.stack_conf_all) > 0 and self.bmm_update_iter < self.bmm_update_max_iter:
-            X = np.hstack(self.decoder.stack_conf_all)
-            Y = np.hstack(self.decoder.stack_ident_all)
+            X = np.hstack([tensor.cpu().numpy() for tensor in self.decoder.stack_conf_all])
+            Y = np.hstack([tensor.cpu().numpy() for tensor in self.decoder.stack_ident_all])
             self.decoder.bmm_model.fit(X, Y)
             
             self.decoder.bmm_threshold = self.decoder.bmm_model.predict_proba(0.3, 0.9)
