@@ -45,6 +45,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --exit_conf_type meta \
     --exit_position_temp 4 \
     --train_meta_cm_head \
+    --exit_conf_threshold 0.9 \
     --num_train_epochs 5
 
 # Last Three Hidden States Classifier
@@ -71,6 +72,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --exit_conf_type last_three_hiddens_classifier \
     --exit_position_temp 4 \
     --train_meta_cm_head \
+    --exit_conf_threshold 0.9 \
     --num_train_epochs 5
 
 # Recurrent Classifier
@@ -97,6 +99,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --exit_conf_type recurrent_classifier \
     --exit_position_temp 4 \
     --train_meta_cm_head \
+    --exit_conf_threshold 0.9 \
     --num_train_epochs 5
 
 # Softmax Heuristic
@@ -120,6 +123,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --source_lang "de" \
     --target_lang "en" \
     --exit_conf_type softmax \
+    --exit_conf_threshold 0.9 \
     --exit_position_temp 4
 
 # Hidden State Saturation Heuristic
@@ -143,6 +147,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --source_lang "de" \
     --target_lang "en" \
     --exit_conf_type hidden_state_saturation \
+    --exit_conf_threshold 0.9 \
     --exit_position_temp 4
 
 # Last Three Top Probabilities Heuristic
@@ -166,4 +171,5 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --source_lang "de" \
     --target_lang "en" \
     --exit_conf_type last_three_top_prob_heuristic \
+    --exit_conf_threshold 0.9 \
     --exit_position_temp 4
