@@ -1,12 +1,12 @@
 # no early exit
 python -m torch.distributed.run --nproc_per_node=1 \
-    ../src/run_summarization.py \
-    --model_name_or_path ../checkpoints/CNNDM \
+    src/run_summarization.py \
+    --model_name_or_path checkpoints/CNNDM \
     --tokenizer_name t5-large \
     --do_eval \
     --dataset_name cnn_dailymail \
     --dataset_config_name "3.0.0" \
-    --output_dir ../src/save/cnndm_t5_large/ \
+    --output_dir src/save/cnndm_t5_large/ \
     --deploy_scenario True \
     --use_synchronize True \
     --per_device_train_batch_size 2 \
@@ -21,13 +21,13 @@ python -m torch.distributed.run --nproc_per_node=1 \
 
 # last_three_hiddens_classifier
 python -m torch.distributed.run --nproc_per_node=1 \
-    ../src/run_summarization.py \
-    --model_name_or_path ../checkpoints/CNNDM \
+    src/run_summarization.py \
+    --model_name_or_path checkpoints/CNNDM \
     --tokenizer_name t5-large \
     --do_eval \
     --dataset_name cnn_dailymail \
     --dataset_config_name "3.0.0" \
-    --output_dir ../src/save/cnndm_t5_large/ \
+    --output_dir src/save/cnndm_t5_large/ \
     --deploy_scenario True \
     --use_synchronize True \
     --per_device_train_batch_size 32 \
@@ -47,13 +47,13 @@ python -m torch.distributed.run --nproc_per_node=1 \
     
 # meta
 python -m torch.distributed.run --nproc_per_node=1 \
-    ../src/run_summarization.py \
-    --model_name_or_path ../checkpoints/CNNDM \
+    src/run_summarization.py \
+    --model_name_or_path checkpoints/CNNDM \
     --tokenizer_name t5-large \
     --do_eval \
     --dataset_name cnn_dailymail \
     --dataset_config_name "3.0.0" \
-    --output_dir ../src/save/cnndm_t5_large/ \
+    --output_dir src/save/cnndm_t5_large/ \
     --deploy_scenario True \
     --use_synchronize True \
     --per_device_train_batch_size 2 \
@@ -72,13 +72,13 @@ python -m torch.distributed.run --nproc_per_node=1 \
 
 # recurrent classifier
 python -m torch.distributed.run --nproc_per_node=1 \
-    ../src/run_summarization.py \
-    --model_name_or_path ../checkpoints/CNNDM \
+    src/run_summarization.py \
+    --model_name_or_path checkpoints/CNNDM \
     --tokenizer_name t5-large \
     --do_eval \
     --dataset_name cnn_dailymail \
     --dataset_config_name "3.0.0" \
-    --output_dir ../src/save/cnndm_t5_large/ \
+    --output_dir src/save/cnndm_t5_large/ \
     --deploy_scenario True \
     --use_synchronize True \
     --per_device_train_batch_size 32 \
@@ -98,13 +98,13 @@ python -m torch.distributed.run --nproc_per_node=1 \
 
 # softmax
 python -m torch.distributed.run --nproc_per_node=1 \
-    ../src/run_summarization.py \
-    --model_name_or_path ../checkpoints/CNNDM \
+    src/run_summarization.py \
+    --model_name_or_path checkpoints/CNNDM \
     --tokenizer_name t5-large \
     --do_eval \
     --dataset_name cnn_dailymail \
     --dataset_config_name "3.0.0" \
-    --output_dir ../src/save/cnndm_t5_large/ \
+    --output_dir src/save/cnndm_t5_large/ \
     --deploy_scenario True \
     --use_synchronize True \
     --per_device_train_batch_size 2 \
@@ -120,13 +120,13 @@ python -m torch.distributed.run --nproc_per_node=1 \
 
 # hidden_state_saturation
 python -m torch.distributed.run --nproc_per_node=1 \
-    ../src/run_summarization.py \
-    --model_name_or_path ../checkpoints/CNNDM \
+    src/run_summarization.py \
+    --model_name_or_path checkpoints/CNNDM \
     --tokenizer_name t5-large \
     --do_eval \
     --dataset_name cnn_dailymail \
     --dataset_config_name "3.0.0" \
-    --output_dir ../src/save/cnndm_t5_large/ \
+    --output_dir src/save/cnndm_t5_large/ \
     --deploy_scenario True \
     --use_synchronize True \
     --per_device_train_batch_size 2 \
@@ -142,13 +142,13 @@ python -m torch.distributed.run --nproc_per_node=1 \
 
 # last_three_top_prob_heuristic
 python -m torch.distributed.run --nproc_per_node=1 \
-    ../src/run_summarization.py \
-    --model_name_or_path ../checkpoints/CNNDM \
+    src/run_summarization.py \
+    --model_name_or_path checkpoints/CNNDM \
     --tokenizer_name t5-large \
     --do_eval \
     --dataset_name cnn_dailymail \
     --dataset_config_name "3.0.0" \
-    --output_dir ../src/save/cnndm_t5_large/ \
+    --output_dir src/save/cnndm_t5_large/ \
     --deploy_scenario True \
     --use_synchronize True \
     --per_device_train_batch_size 2 \

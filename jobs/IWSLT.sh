@@ -3,7 +3,7 @@
 # No Early Exit
 python -m torch.distributed.run --nproc_per_node=1 \
     src/run_translation.py \
-    --model_name_or_path ../checkpoints/IWSLT \
+    --model_name_or_path checkpoints/IWSLT \
     --tokenizer_name t5-large \
     --do_eval \
     --dataset_name iwslt2017 \
@@ -24,7 +24,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
 # Normal Classifier
 python -m torch.distributed.run --nproc_per_node=1 \
     src/run_translation.py \
-    --model_name_or_path ../checkpoints/IWSLT \
+    --model_name_or_path checkpoints/IWSLT \
     --tokenizer_name t5-large \
     --do_eval \
     --do_train \
@@ -50,7 +50,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
 # Last Three Hidden States Classifier
 python -m torch.distributed.run --nproc_per_node=1 \
     src/run_translation.py \
-    --model_name_or_path ../checkpoints/IWSLT \
+    --model_name_or_path checkpoints/IWSLT \
     --tokenizer_name t5-large \
     --do_eval \
     --do_train \
@@ -76,7 +76,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
 # Recurrent Classifier
 python -m torch.distributed.run --nproc_per_node=1 \
     src/run_translation.py \
-    --model_name_or_path ../checkpoints/IWSLT \
+    --model_name_or_path checkpoints/IWSLT \
     --tokenizer_name t5-large \
     --do_eval \
     --do_train \
@@ -102,7 +102,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
 # Softmax Heuristic
 python -m torch.distributed.run --nproc_per_node=1 \
     src/run_translation.py \
-    --model_name_or_path ../checkpoints/IWSLT \
+    --model_name_or_path checkpoints/IWSLT \
     --tokenizer_name t5-large \
     --do_eval \
     --dataset_name iwslt2017 \
@@ -125,7 +125,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
 # Hidden State Saturation Heuristic
 python -m torch.distributed.run --nproc_per_node=1 \
     src/run_translation.py \
-    --model_name_or_path ../checkpoints/IWSLT \
+    --model_name_or_path checkpoints/IWSLT \
     --tokenizer_name t5-large \
     --do_eval \
     --dataset_name iwslt2017 \
@@ -148,7 +148,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
 # Last Three Top Probabilities Heuristic
 python -m torch.distributed.run --nproc_per_node=1 \
     src/run_translation.py \
-    --model_name_or_path ../checkpoints/IWSLT \
+    --model_name_or_path checkpoints/IWSLT \
     --tokenizer_name t5-large \
     --do_eval \
     --dataset_name iwslt2017 \

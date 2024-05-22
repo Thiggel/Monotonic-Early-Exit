@@ -2,8 +2,8 @@
 
 # no early exit
 CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
-    ../run_question_answering.py \
-    --model_name_or_path ../checkpoints/SQUAD \
+    run_question_answering.py \
+    --model_name_or_path checkpoints/SQUAD \
     --tokenizer_name t5-large \
     --do_eval \
     --dataset_name squad \
@@ -23,8 +23,8 @@ CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
 
 # softmax
 CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
-    ../run_question_answering.py \
-    --model_name_or_path ../checkpoints/SQUAD \
+    run_question_answering.py \
+    --model_name_or_path checkpoints/SQUAD \
     --tokenizer_name t5-large \
     --do_eval \
     --dataset_name squad \
@@ -47,8 +47,8 @@ CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
 
 # hidden_state_saturation
 CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
-    ../run_question_answering.py \
-    --model_name_or_path ../checkpoints/SQUAD \
+    run_question_answering.py \
+    --model_name_or_path checkpoints/SQUAD \
     --tokenizer_name t5-large \
     --do_eval \
     --dataset_name squad \
@@ -71,8 +71,8 @@ CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
 
 #last_three_prob_heuristic
 CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
-    ../run_question_answering.py \
-    --model_name_or_path ../checkpoints/SQUAD \
+    run_question_answering.py \
+    --model_name_or_path checkpoints/SQUAD \
     --tokenizer_name t5-large \
     --do_eval \
     --dataset_name squad \
@@ -95,15 +95,15 @@ CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
 
 # meta
 CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
-    ../src/run_question_answering.py \
-    --model_name_or_path ../checkpoints/SQUAD \
+    src/run_question_answering.py \
+    --model_name_or_path checkpoints/SQUAD \
     --tokenizer_name t5-large \
     --do_eval \
     --dataset_name squad \
     --context_column context \
     --question_column question \
     --answer_column answers \
-    --output_dir ../src/save/squad_t5_large/ \
+    --output_dir src/save/squad_t5_large/ \
     --per_device_train_batch_size 16 \
     --per_device_eval_batch_size 16 \
     --overwrite_output_dir \
@@ -123,15 +123,15 @@ CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
     
 # three hidden states classifier
 CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
-    ../src/run_question_answering.py \
-    --model_name_or_path ../checkpoints/SQUAD \
+    src/run_question_answering.py \
+    --model_name_or_path checkpoints/SQUAD \
     --tokenizer_name t5-large \
     --do_eval \
     --dataset_name squad \
     --context_column context \
     --question_column question \
     --answer_column answers \
-    --output_dir ../src/save/squad_t5_large/ \
+    --output_dir src/save/squad_t5_large/ \
     --per_device_train_batch_size 16 \
     --per_device_eval_batch_size 16 \
     --overwrite_output_dir \
@@ -151,15 +151,15 @@ CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
     
 # recurrent classifier
 CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
-    ../src/run_question_answering.py \
-    --model_name_or_path ../checkpoints/SQUAD \
+    src/run_question_answering.py \
+    --model_name_or_path checkpoints/SQUAD \
     --tokenizer_name t5-large \
     --do_eval \
     --dataset_name squad \
     --context_column context \
     --question_column question \
     --answer_column answers \
-    --output_dir ../src/save/squad_t5_large/ \
+    --output_dir src/save/squad_t5_large/ \
     --per_device_train_batch_size 16 \
     --per_device_eval_batch_size 16 \
     --overwrite_output_dir \
