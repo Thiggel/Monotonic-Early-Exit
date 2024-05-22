@@ -45,7 +45,8 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --exit_position_temp 4 \
     --train_meta_cm_head \
     --exit_conf_threshold 0.9 \
-    --num_train_epochs 5
+    --num_train_epochs 5 \
+    --max_train_samples 10000
 
 # Last Three Hidden States Classifier
 python -m torch.distributed.run --nproc_per_node=1 \
@@ -72,7 +73,9 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --exit_position_temp 4 \
     --train_meta_cm_head \
     --exit_conf_threshold 0.9 \
-    --num_train_epochs 5
+    --num_train_epochs 5 \
+    --max_train_samples 10000
+
 
 # Recurrent Classifier
 python -m torch.distributed.run --nproc_per_node=1 \
@@ -99,7 +102,9 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --exit_position_temp 4 \
     --train_meta_cm_head \
     --exit_conf_threshold 0.9 \
-    --num_train_epochs 5
+    --num_train_epochs 5 \
+    --max_train_samples 10000
+
 
 # Softmax Heuristic
 python -m torch.distributed.run --nproc_per_node=1 \
