@@ -1130,8 +1130,7 @@ class DeployT5ForConditionalGeneration(T5ForConditionalGeneration):
         if self.config.use_synchronize: torch.cuda.synchronize()
         self.deploy_time['time_decoder_forward'] += (datetime.datetime.now() - start)
 
-        if self.decoder.shallow2deep: 
-            self.decoder.stack_conf, self.decoder.stack_pred = (), ()
+        self.decoder.stack_conf, self.decoder.stack_pred = (), ()
         if self.config.rollback_conf_threshold is None:
             lm_logits = lm_logits[:, [-1], :]
         loss = self.compute_model_loss(lm_logits, labels)
