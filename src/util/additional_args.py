@@ -147,6 +147,9 @@ def update_autoconfig(config, additional_args, **kwargs):
         'train_meta_cm_head': additional_args.train_meta_cm_head,
         'parallel_gen_token': additional_args.parallel_gen_token,
         'max_answer_length': kwargs.get('max_answer_length', None),
+        'copy_skipped_hidden_states': additional_args.copy_skipped_hidden_states,  
+        'rollback_conf_threshold': additional_args.rollback_conf_threshold,
+        'parallel_causal_mask': additional_args.parallel_causal_mask
     }
     config.update(early_exit_config)
     
@@ -154,11 +157,7 @@ def update_autoconfig(config, additional_args, **kwargs):
         'use_shallow_deep': additional_args.use_shallow_deep,
         'shallow_exit_layer': additional_args.shallow_exit_layer,
         'shallow2deep_conf_type': additional_args.shallow2deep_conf_type,
-        'shallow2deep_conf_threshold': additional_args.shallow2deep_conf_threshold,  
-        'parallel_gen_token': additional_args.parallel_gen_token,  
-        'copy_skipped_hidden_states': additional_args.copy_skipped_hidden_states,  
-        'rollback_conf_threshold': additional_args.rollback_conf_threshold,
-        'parallel_causal_mask': additional_args.parallel_causal_mask
+        'shallow2deep_conf_threshold': additional_args.shallow2deep_conf_threshold
     }
     config.update(shallow_deep_config)
     
