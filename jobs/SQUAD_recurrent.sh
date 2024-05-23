@@ -27,5 +27,4 @@ CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
     --num_train_epochs 5 \
     --deploy_scenario False \
     --dataloader_drop_last True \
-    --max_train_samples 320 \
-    --max_eval_samples 160
+    --max_train_samples 10000
