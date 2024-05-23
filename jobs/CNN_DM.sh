@@ -9,7 +9,6 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --dataset_name cnn_dailymail \
     --dataset_config_name "3.0.0" \
     --output_dir src/save/cnndm_t5_large/ \
-    --deploy_scenario True \
     --use_synchronize True \
     --per_device_train_batch_size 32 \
     --per_device_eval_batch_size 32 \
@@ -32,7 +31,6 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --dataset_name cnn_dailymail \
     --dataset_config_name "3.0.0" \
     --output_dir src/save/cnndm_t5_large/ \
-    --deploy_scenario True \
     --use_synchronize True \
     --per_device_train_batch_size 32 \
     --per_device_eval_batch_size 32 \
@@ -62,7 +60,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --dataset_name cnn_dailymail \
     --dataset_config_name "3.0.0" \
     --output_dir src/save/cnndm_t5_large/ \
-    --deploy_scenario True \
+    --deploy_scenario False \
     --use_synchronize True \
     --per_device_train_batch_size 32 \
     --per_device_eval_batch_size 32 \
@@ -91,7 +89,6 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --dataset_name cnn_dailymail \
     --dataset_config_name "3.0.0" \
     --output_dir src/save/cnndm_t5_large/ \
-    --deploy_scenario True \
     --use_synchronize True \
     --per_device_train_batch_size 32 \
     --per_device_eval_batch_size 32 \
@@ -120,7 +117,6 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --dataset_name cnn_dailymail \
     --dataset_config_name "3.0.0" \
     --output_dir src/save/cnndm_t5_large/ \
-    --deploy_scenario True \
     --use_synchronize True \
     --per_device_train_batch_size 32 \
     --per_device_eval_batch_size 32 \
@@ -146,7 +142,6 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --dataset_name cnn_dailymail \
     --dataset_config_name "3.0.0" \
     --output_dir src/save/cnndm_t5_large/ \
-    --deploy_scenario True \
     --use_synchronize True \
     --per_device_train_batch_size 32 \
     --per_device_eval_batch_size 32 \
@@ -172,7 +167,6 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --dataset_name cnn_dailymail \
     --dataset_config_name "3.0.0" \
     --output_dir src/save/cnndm_t5_large/ \
-    --deploy_scenario True \
     --use_synchronize True \
     --per_device_train_batch_size 32 \
     --per_device_eval_batch_size 32 \
