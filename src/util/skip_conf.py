@@ -184,8 +184,7 @@ def get_skip_mask(
         key = config.exit_conf_type
         if adapt_threshold: 
             threshold = adapt_threshold
-            if threshold != 0.3:
-                print(threshold)
+            print(threshold)
         elif config.exit_position_temp is not None:
             # decays the confidence threshold with decoding time stp.        
             correct_by_pos = lambda i: config.exit_conf_threshold * np.exp(
