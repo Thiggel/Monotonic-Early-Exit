@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 
-def plot_hidden_state_similarities(sequences, similarity_thereshold=0.9):
+def plot_hidden_state_similarities(sequences, similarity_thereshold=0.9, save_path=None):
     # Plot the hidden state similarities
     plt.figure(figsize=(15, 5))
     plt.axhline(similarity_thereshold, color="r", linestyle="--")
@@ -11,3 +11,6 @@ def plot_hidden_state_similarities(sequences, similarity_thereshold=0.9):
     plt.xlabel("Layer")
     plt.ylabel("Similarity with the last hidden state")
     plt.title("Similarities between the last and every other hidden state")
+
+    if save_path:
+        plt.savefig(save_path, format='pdf', bbox_inches='tight')
