@@ -598,7 +598,9 @@ class EffT5Stack(T5Stack):
         all_softmax_values = []
 
         skip_mask, self.skip_mask_cache = None, None
+        num_layers = len(self.block)
         for i, (layer_module, past_key_value) in enumerate(zip(self.block, past_key_values)):
+            last_layer = (num_layers == (i+1))
             if self.is_decoder and self.config.static_exit_layer is not None:
                 if i == self.config.static_exit_layer: break
 
@@ -700,6 +702,7 @@ class EffT5Stack(T5Stack):
                             all_hidden_states=all_hidden_states,
                             all_softmax_values=all_softmax_values,
                             layer_index=i,
+                            should_reset=last_layer,
                         )
                         if (not skip_mask == None) and (torch.all(skip_mask)):
                             break
