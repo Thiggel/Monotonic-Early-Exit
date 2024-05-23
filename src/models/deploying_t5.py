@@ -10,6 +10,7 @@ import time
 import datetime
 import warnings
 import numpy as np
+from models.modeling_t5 import LSTMClassifier
 import torch
 # torch.set_num_threads(4)
 # torch.set_num_interop_threads(4)
@@ -107,6 +108,8 @@ class DeployT5Attention(T5Attention):
         batch_size, seq_length = hidden_states.shape[:2]
 
         real_seq_length = seq_length        
+
+
 
         if past_key_value is not None:
             assert (
@@ -906,9 +909,10 @@ class DeployT5Stack(T5Stack):
                             break
 
                 # Early-Exit framework
-                elif self.use_early_exit:
+                elif self.use_early_exit and not skip_mask:
                     if self.exit_min_layer is not None and i < self.exit_min_layer: 
                         self.block_op[i] += 1
+                    
                     else:
                         if self.config.use_synchronize: torch.cuda.synchronize()
                         start = datetime.datetime.now()
@@ -931,15 +935,35 @@ class DeployT5Stack(T5Stack):
                         if skip_mask: self.lm_logits = lm_logits
                         if self.config.use_synchronize: torch.cuda.synchronize()
                         self.deploy_time['time_confidence'] += (datetime.datetime.now() - start)
-                        if self.config.use_adapt_threshold:
-                            # Calibration Set Update
-                            self.lm_logits = self.lm_head(self.dropout(self.final_layer_norm(hidden_states)))
-                            deep_pred = self.lm_logits.argmax(-1)
-                            shallow_pred = torch.cat(self.stack_pred).argmax(-1).view(-1)
+                        if self.config.parallel_gen_token and len(self.stack_hidden_states):
+                            self.parallel_tokens_shallow += len(self.stack_hidden_states)
+                            self.parallel_tokens_deep += 1
+                            
+                            # in Shallow-Deep decoder, generate the next token in a non-autoregressive manner
+                            hidden_states, present_key_value_states = self.parallel_gen_token(
+                                hidden_states,
+                                attention_mask=extended_attention_mask,
+                                position_bias=position_bias,
+                                encoder_hidden_states=encoder_hidden_states,
+                                encoder_extended_attention_mask=encoder_extended_attention_mask,
+                                encoder_decoder_position_bias=encoder_decoder_position_bias,
+                                head_mask=head_mask,
+                                cross_attn_head_mask=cross_attn_head_mask,
+                                past_key_values=past_key_values,
+                                present_key_value_states=present_key_value_states,
+                                use_cache=use_cache,
+                                output_attentions=output_attentions,
+                                layer_idx=self.shallow_exit_layer,
+                            )
+                            if self.config.use_adapt_threshold:
+                                # Calibration Set Update
+                                self.lm_logits = self.lm_head(self.dropout(self.final_layer_norm(hidden_states)))
+                                deep_pred = self.lm_logits.argmax(-1)
+                                shallow_pred = torch.cat(self.stack_pred).argmax(-1).view(-1)
 
-                            self.stack_conf_all += self.stack_conf
-                            self.stack_ident_all += ((deep_pred.view(-1) == shallow_pred.view(-1)).long().cpu().numpy(),)
-                            self.stack_conf, self.stack_pred = (), ()
+                                self.stack_conf_all += self.stack_conf
+                                self.stack_ident_all += ((deep_pred.view(-1) == shallow_pred.view(-1)).long().cpu().numpy(),)
+                                self.stack_conf, self.stack_pred = (), ()
                     
                 # Normal framework
                 elif (not self.use_shallow_deep and not self.use_early_exit):
@@ -1042,11 +1066,24 @@ class DeployT5ForConditionalGeneration(T5ForConditionalGeneration):
 
         self.lm_head = nn.Linear(config.d_model, config.vocab_size, bias=False)
         self.decoder.lm_head = self.lm_head
-        if self.config.exit_conf_type == 'meta' or self.config.shallow2deep_conf_type == "meta" or self.config.exit_conf_type == "meta_n" or self.config.shallow2deep_conf_type == "meta_n":
+        if self.config.exit_conf_type == 'meta' or self.config.shallow2deep_conf_type == "meta":
             self.cm_head = nn.Sequential(
                 nn.Linear(config.d_model, config.d_model, bias=True),
                 nn.ReLU(),
                 nn.Linear(config.d_model, 2, bias=True),
+            )
+        elif self.config.exit_conf_type == 'recurrent_classifier':
+            self.cm_head = LSTMClassifier(
+                input_size=config.d_model,
+                hidden_size=250,
+                output_size=2
+            )
+
+        elif self.config.exit_conf_type == 'last_three_hiddens_classifier':
+            self.cm_head = nn.Sequential(
+                nn.Linear(config.d_model * 3, config.d_model, bias=False),
+                nn.ReLU(),
+                nn.Linear(config.d_model, 2, bias=False),
             )
         else:
             self.cm_head = None
