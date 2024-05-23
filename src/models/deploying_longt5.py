@@ -227,7 +227,7 @@ class DeployLongT5Stack(LongT5Stack):
         
         self.local_radius = config.local_radius
         self.block_len = self.local_radius + 1
-
+        config.parallel_gen_token = True
         self.block = nn.ModuleList(
             [DeployLongT5Block(config, has_relative_attention_bias=bool(i == 0)) for i in range(config.num_layers)]
         )
