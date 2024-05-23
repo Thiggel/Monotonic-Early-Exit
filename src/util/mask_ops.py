@@ -28,6 +28,7 @@ def restore_tensors_by_mask(
     ids_restore: Optional[torch.IntTensor] = None,
 ):  
     # when using this function with skip_mask for early-exit
+    skip_tensors = skip_tensors.to(keep_tensors.device)
     if not len(keep_tensors.shape):
         keep_tensors = keep_tensors.reshape(-1,)
     if not len(skip_tensors.shape):
@@ -39,7 +40,8 @@ def restore_tensors_by_mask(
     ids_restore = ids_restore.to(device)
     tensors_ = torch.cat([keep_tensors, skip_tensors], dim=0)
     t_shape = tensors_.shape
-    ids_restore = ids_restore.to(torch.int64)
+    ids_restore = ids_restore.to(torch.int64).to(tensors_.device)
+
 
     if len(t_shape) == 1:
         tensors = torch.gather(tensors_, 0, index=ids_restore)
@@ -50,4 +52,5 @@ def restore_tensors_by_mask(
     elif len(t_shape) == 4:
         tensors = torch.gather(tensors_, 0, index=ids_restore.reshape(-1, 1, 1, 1).repeat(1, t_shape[-3], t_shape[-2], t_shape[-1]))
 
-    return tensors 
+
+    return tensors

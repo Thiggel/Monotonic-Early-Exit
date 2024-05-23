@@ -612,15 +612,12 @@ if __name__ == "__main__":
     else:
         model_args, data_args, training_args, additional_args = parser.parse_args_into_dataclasses()
     
-    if 't5' in model_args.model_name_or_path:
-        if data_args.dataset_name in ["cnn_dailymail", "xsum", "samsum"]:
-            model_cls = T5ForConditionalGeneration if not additional_args.deploy_scenario \
-                else DeployT5ForConditionalGeneration
-        elif data_args.dataset_name in ["multi_news", "big_patent"]:
-            model_cls = LongT5ForConditionalGeneration if not additional_args.deploy_scenario \
-                else DeployLongT5ForConditionalGeneration
-    else:
-        raise NotImplemented
+    if data_args.dataset_name in ["cnn_dailymail", "xsum", "samsum"]:
+        model_cls = T5ForConditionalGeneration if not additional_args.deploy_scenario \
+            else DeployT5ForConditionalGeneration
+    elif data_args.dataset_name in ["multi_news", "big_patent"]:
+        model_cls = LongT5ForConditionalGeneration if not additional_args.deploy_scenario \
+            else DeployLongT5ForConditionalGeneration
 
     trainer_cls = SumTrainer
 
