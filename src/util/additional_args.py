@@ -145,6 +145,7 @@ def update_autoconfig(config, additional_args, **kwargs):
         'exit_position_temp': additional_args.exit_position_temp,
         'exit_min_layer': additional_args.exit_min_layer,
         'train_meta_cm_head': additional_args.train_meta_cm_head,
+        'parallel_gen_token': additional_args.parallel_gen_token,
         'max_answer_length': kwargs.get('max_answer_length', None),
     }
     config.update(early_exit_config)
