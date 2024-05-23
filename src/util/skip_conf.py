@@ -15,7 +15,7 @@ def recurrent_classifier(
     assert hidden_states is not None
     assert classifier is not None
     
-    if layer_index == 0:
+    if layer_index == 1:
         classifier.reset()
 
     preds = classifier(hidden_states)
