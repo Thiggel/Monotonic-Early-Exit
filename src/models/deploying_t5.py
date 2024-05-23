@@ -909,7 +909,7 @@ class DeployT5Stack(T5Stack):
                             break
 
                 # Early-Exit framework
-                elif self.use_early_exit and not skip_mask:
+                elif self.use_early_exit:
                     if self.exit_min_layer is not None and i < self.exit_min_layer: 
                         self.block_op[i] += 1
                     
