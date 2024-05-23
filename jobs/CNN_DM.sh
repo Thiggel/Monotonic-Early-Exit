@@ -20,6 +20,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --output_hidden_states_decoder True \
     --use_early_exit False \
     --deploy_scenario False \
+    --dataloader_drop_last True \
     --max_eval_samples 3000
 
 # last_three_hiddens_classifier
@@ -48,6 +49,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --exit_conf_threshold 0.7 \
     --deploy_scenario False \
     --max_eval_samples 3000 \
+    --dataloader_drop_last True \
     --max_train_samples 7000
     
     
@@ -77,6 +79,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --exit_conf_threshold 0.7 \
     --deploy_scenario False \
     --max_eval_samples 3000 \
+    --dataloader_drop_last True \
     --max_train_samples 7000
 
 # recurrent classifier
@@ -105,6 +108,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --deploy_scenario False \
     --exit_conf_threshold 0.7 \
     --max_eval_samples 3000 \
+    --dataloader_drop_last True \
     --max_train_samples 7000
 
 # softmax
@@ -130,6 +134,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --exit_conf_threshold 0.7 \
     --deploy_scenario False \
     --max_eval_samples 3000 \
+    --dataloader_drop_last True \
     --max_train_samples 7000
 
 # hidden_state_saturation
@@ -155,6 +160,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --exit_conf_threshold 0.7 \
     --deploy_scenario False \
     --max_eval_samples 3000 \
+    --dataloader_drop_last True \
     --max_train_samples 7000
 
 # last_three_top_prob_heuristic
@@ -180,4 +186,5 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --exit_conf_threshold 0.7 \
     --deploy_scenario False \
     --max_eval_samples 3000 \
+    --dataloader_drop_last True \
     --max_train_samples 7000

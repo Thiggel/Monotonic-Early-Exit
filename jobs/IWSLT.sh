@@ -17,6 +17,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --source_prefix "translate german to english: " \
     --output_hidden_states_decoder true \
     --use_early_exit false \
+    --dataloader_drop_last True \
     --source_lang "de" \
     --target_lang "en"
 
@@ -46,6 +47,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --train_meta_cm_head \
     --exit_conf_threshold 0.7 \
     --num_train_epochs 5 \
+    --dataloader_drop_last True \
     --max_train_samples 10000
 
 # Last Three Hidden States Classifier
@@ -74,6 +76,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --train_meta_cm_head \
     --exit_conf_threshold 0.7 \
     --num_train_epochs 5 \
+    --dataloader_drop_last True \
     --max_train_samples 10000
 
 
@@ -103,6 +106,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --train_meta_cm_head \
     --exit_conf_threshold 0.7 \
     --num_train_epochs 5 \
+    --dataloader_drop_last True \
     --max_train_samples 10000
 
 
@@ -128,6 +132,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --target_lang "en" \
     --exit_conf_type softmax \
     --exit_conf_threshold 0.7 \
+    --dataloader_drop_last True \
     --exit_position_temp 4
 
 # Hidden State Saturation Heuristic
@@ -152,6 +157,7 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --target_lang "en" \
     --exit_conf_type hidden_state_saturation \
     --exit_conf_threshold 0.7 \
+    --dataloader_drop_last True \
     --exit_position_temp 4
 
 # Last Three Top Probabilities Heuristic
@@ -176,4 +182,5 @@ python -m torch.distributed.run --nproc_per_node=1 \
     --target_lang "en" \
     --exit_conf_type last_three_top_prob_heuristic \
     --exit_conf_threshold 0.7 \
+    --dataloader_drop_last True \
     --exit_position_temp 4

@@ -26,6 +26,7 @@ CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
     --train_meta_cm_head \
     --num_train_epochs 5 \
     --deploy_scenario False \
+    --dataloader_drop_last True \
     --max_train_samples 10000
     
 # three hidden states classifier
@@ -54,6 +55,7 @@ CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
     --num_train_epochs 5 \
     --exit_conf_type last_three_hiddens_classifier \
     --deploy_scenario False \
+    --dataloader_drop_last True \
     --max_train_samples 10000
     
 # recurrent classifier
@@ -82,6 +84,7 @@ CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
     --train_meta_cm_head \
     --num_train_epochs 5 \
     --deploy_scenario False \
+    --dataloader_drop_last True \
     --max_train_samples 10000
 
 # no early exit
@@ -102,6 +105,7 @@ CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
     --learning_rate 1e-4 \
     --num_train_epochs 5 \
     --output_hidden_states_decoder True \
+    --dataloader_drop_last True \
     --use_early_exit False
 
 # softmax
@@ -126,6 +130,7 @@ CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
     --intermediate_loss_fn weighted_ce \
     --use_early_exit True \
     --exit_conf_type softmax \
+    --dataloader_drop_last True \
     --exit_position_temp 4
 
 # hidden_state_saturation
@@ -150,6 +155,7 @@ CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
     --intermediate_loss_fn weighted_ce \
     --use_early_exit True \
     --exit_conf_type hidden_state_saturation \
+    --dataloader_drop_last True \
     --exit_position_temp 4
 
 #last_three_prob_heuristic
@@ -174,5 +180,6 @@ CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 \
     --intermediate_loss_fn weighted_ce \
     --use_early_exit True \
     --exit_conf_type last_three_top_prob_heuristic \
+    --dataloader_drop_last True \
     --exit_position_temp 4
 
