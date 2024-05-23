@@ -599,7 +599,6 @@ class EffT5Stack(T5Stack):
 
         skip_mask, self.skip_mask_cache = None, None
         for i, (layer_module, past_key_value) in enumerate(zip(self.block, past_key_values)):
-            print(f"Layer {i}")
             if self.is_decoder and self.config.static_exit_layer is not None:
                 if i == self.config.static_exit_layer: break
 
