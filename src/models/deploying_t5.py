@@ -518,7 +518,7 @@ class DeployT5Stack(T5Stack):
         
         self.embed_tokens = embed_tokens
         self.is_decoder = config.is_decoder
-
+        config.parallel_gen_token = True
         self.block = nn.ModuleList(
             [DeployT5Block(config, has_relative_attention_bias=bool(i == 0)) for i in range(config.num_layers)]
         )
@@ -909,7 +909,7 @@ class DeployT5Stack(T5Stack):
                             break
 
                 # Early-Exit framework
-                elif self.use_early_exit:
+                elif self.use_early_exit and not skip_mask:
                     if self.exit_min_layer is not None and i < self.exit_min_layer: 
                         self.block_op[i] += 1
                     
