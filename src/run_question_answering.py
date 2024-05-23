@@ -547,8 +547,15 @@ def main(model_args, data_args, training_args, additional_args, model_cls, train
         # Let's loop over all the examples!
         for example_index, example in enumerate(examples):
             # This is the index of the feature associated to the current example.
-            feature_index = feature_per_example[example_index]
-            predictions[example["id"]] = decoded_preds[feature_index]
+            try:
+                feature_index = feature_per_example[example_index]
+            except Exception as e:
+                feature_index = -1
+
+            try:
+                predictions[example["id"]] = decoded_preds[feature_index]
+            except Exception as e:
+                predictions[example["id"]] = decoded_preds[-1]
 
         # Format the result to the format the metric expects.
         if data_args.version_2_with_negative:

@@ -11,14 +11,19 @@ def recurrent_classifier(
     all_hidden_states: list[torch.Tensor] = None,
     all_softmax_values: list[torch.Tensor] = None,
     layer_index: int = None,
+    should_reset: bool = False,
 ):
     assert hidden_states is not None
     assert classifier is not None
     
-    if layer_index == 0:
+    if layer_index == 1 or should_reset:
         classifier.reset()
 
-    preds = classifier(hidden_states)
+    try:
+        preds = classifier(hidden_states)
+    except Exception as e:
+        classifier.reset()
+        preds = classifier(hidden_states)
 
     probs = torch.softmax(preds, dim=-1)
     return probs[..., 1].squeeze()
@@ -31,6 +36,7 @@ def last_three_hiddens_classifier(
     all_hidden_states: list[torch.Tensor] = None,
     all_softmax_values: list[torch.Tensor] = None,
     layer_index: int = None,
+    should_reset: bool = False,
 ):
     assert classifier is not None
 
@@ -50,6 +56,7 @@ def hidden_state_saturation(
     all_hidden_states: list[torch.Tensor] = None,
     all_softmax_values: list[torch.Tensor] = None,
     layer_index: int = None,
+    should_reset: bool = False,
 ):
     if all_hidden_states is None or len(all_hidden_states) < 2:
         return torch.zeros(hidden_states.shape[0])
@@ -69,6 +76,7 @@ def last_three_top_prob_heuristic(
     all_hidden_states: list[torch.Tensor] = None,
     all_softmax_values: list[torch.Tensor] = None,
     layer_index: int = None,
+    should_reset: bool = False,
 ):
     if (
         all_softmax_values is None 
@@ -99,6 +107,7 @@ def softmax_confidence(
     all_hidden_states: list[torch.Tensor] = None,
     all_softmax_values: list[torch.Tensor] = None,
     layer_index: int = None,
+    should_reset: bool = False,
 ):
     assert logits is not None
     probs = torch.softmax(logits, dim=-1)
@@ -116,6 +125,7 @@ def meta_confidence(
     all_hidden_states: list[torch.Tensor] = None,
     all_softmax_values: list[torch.Tensor] = None,
     layer_index: int = None,
+    should_reset: bool = False,
 ):
     assert hidden_states is not None
     assert classifier is not None
@@ -131,6 +141,7 @@ def meta_n_confidence(
     all_hidden_states: list[torch.Tensor] = None,
     all_softmax_values: list[torch.Tensor] = None,
     layer_index: int = None,
+    should_reset: bool = False,
 ):
     assert hidden_states is not None
     assert classifier is not None
@@ -177,6 +188,7 @@ def get_skip_mask(
     all_hidden_states: list[torch.Tensor] = None,
     all_softmax_values: list[torch.Tensor] = None,
     layer_index: int = None,
+    should_reset: bool = False,
 ):
     assert config.exit_conf_type is not None or config.shallow2deep_conf_type is not None
 
@@ -202,6 +214,7 @@ def get_skip_mask(
         all_hidden_states=all_hidden_states,
         all_softmax_values=all_softmax_values,
         layer_index=layer_index,
+        should_reset=should_reset,
     )
     mask = torch.where(conf <= threshold, 0., 1.).bool()
     if not return_conf:
