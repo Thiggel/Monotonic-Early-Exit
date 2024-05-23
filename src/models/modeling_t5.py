@@ -481,7 +481,6 @@ class EffT5Stack(T5Stack):
 
         # Minimum sequence length for early exiting
         self.min_exit_seq_len = config.min_exit_seq_len or 0
-        print(self.min_exit_seq_len)
 
         # Early-Exit framework
         self.use_early_exit = False
