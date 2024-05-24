@@ -613,6 +613,7 @@ if __name__ == "__main__":
         model_args, data_args, training_args, additional_args = parser.parse_args_into_dataclasses()
     
     if data_args.dataset_name in ["cnn_dailymail", "xsum", "samsum"]:
+        print(additional_args.deploy_scenario)
         model_cls = T5ForConditionalGeneration if not additional_args.deploy_scenario \
             else DeployT5ForConditionalGeneration
     elif data_args.dataset_name in ["multi_news", "big_patent"]:

@@ -444,6 +444,7 @@ class DeployT5Block(T5Block):
             cross_attn_past_key_value = past_key_value[2:]
         else:
             self_attn_past_key_value, cross_attn_past_key_value = None, None
+        print(parallel_mask)
 
         self_attention_outputs = self.layer[0](
             hidden_states,
