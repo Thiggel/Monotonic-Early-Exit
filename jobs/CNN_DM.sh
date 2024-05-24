@@ -1,4 +1,4 @@
-. environment.sh
+. jobs/environment.sh
 
 # no early exit
 python -m torch.distributed.run --nproc_per_node=1 \
