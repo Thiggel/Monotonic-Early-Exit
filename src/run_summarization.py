@@ -614,6 +614,7 @@ if __name__ == "__main__":
     
     if data_args.dataset_name in ["cnn_dailymail", "xsum", "samsum"]:
         additional_args.deploy_scenario = True
+        print("please arrive here atleast")
         model_cls = T5ForConditionalGeneration if not additional_args.deploy_scenario \
             else DeployT5ForConditionalGeneration
     elif data_args.dataset_name in ["multi_news", "big_patent"]:
