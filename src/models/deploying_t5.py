@@ -1259,6 +1259,8 @@ class DeployT5ForConditionalGeneration(T5ForConditionalGeneration):
                 tensor.cpu().numpy() if isinstance(tensor, torch.Tensor) else tensor
                 for tensor in self.decoder.stack_ident_all
             ])
+            print(X)
+            print(Y)
             self.decoder.bmm_model.fit(X, Y)
             
             self.decoder.bmm_threshold = self.decoder.bmm_model.predict_proba(0.3, 0.9)
