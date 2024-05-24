@@ -872,8 +872,6 @@ class DeployT5Stack(T5Stack):
                         break
 
                     if not skip_mask:
-                        self.shallow2deep = True
-                        # if self.config.parallel_gen_token:
                         if self.config.parallel_gen_token and len(self.stack_hidden_states):
                             self.parallel_tokens_shallow += len(self.stack_hidden_states)
                             self.parallel_tokens_deep += 1
@@ -1163,8 +1161,8 @@ class DeployT5ForConditionalGeneration(T5ForConditionalGeneration):
         self.deploy_time['time_others'] += (datetime.datetime.now() - start)
         if self.config.use_synchronize: torch.cuda.synchronize()
         self.deploy_time['time_decoder_forward'] += (datetime.datetime.now() - start)
-
-        self.decoder.stack_conf, self.decoder.stack_pred = (), ()
+        if self.decoder.shallow2deep:
+            self.decoder.stack_conf, self.decoder.stack_pred = (), ()
         if self.config.rollback_conf_threshold is None:
             lm_logits = lm_logits[:, [-1], :]
         loss = self.compute_model_loss(lm_logits, labels)

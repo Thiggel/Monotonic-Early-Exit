@@ -179,7 +179,6 @@ def get_skip_mask(
     layer_index: int = None,
 ):
     assert config.exit_conf_type is not None or config.shallow2deep_conf_type is not None
-    print(adapt_threshold)
     if config.exit_conf_type is not None:
         key = config.exit_conf_type
         if adapt_threshold: 
