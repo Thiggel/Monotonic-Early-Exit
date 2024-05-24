@@ -196,6 +196,7 @@ def get_skip_mask(
     elif config.shallow2deep_conf_type is not None:
         key = config.shallow2deep_conf_type
         threshold = config.shallow2deep_conf_threshold if adapt_threshold is None else adapt_threshold
+        print(adapt_threshold)
 
     conf_measure = get_confidence_class(key=key)    
     conf = conf_measure(
