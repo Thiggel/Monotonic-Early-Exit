@@ -143,7 +143,7 @@ class PlotMonotonicity:
             fig = plt.gcf()
             ax = fig.gca()
 
-            white_blue = '#F3F9F9'
+            white_blue = '#cee0e0'
             ax.set_facecolor(white_blue)
             ax.spines['right'].set_visible(False)
             ax.spines['top'].set_visible(False)
