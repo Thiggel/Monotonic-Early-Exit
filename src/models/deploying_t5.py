@@ -935,10 +935,9 @@ class DeployT5Stack(T5Stack):
                         if skip_mask: self.lm_logits = lm_logits
                         if self.config.use_synchronize: torch.cuda.synchronize()
                         self.deploy_time['time_confidence'] += (datetime.datetime.now() - start)
-                        if self.config.parallel_gen_token:
-                            if len(self.stack_hidden_states):
-                                self.parallel_tokens_shallow += len(self.stack_hidden_states)
-                                self.parallel_tokens_deep += 1
+                        if self.config.parallel_gen_token and len(self.stack_hidden_states):
+                            self.parallel_tokens_shallow += len(self.stack_hidden_states)
+                            self.parallel_tokens_deep += 1
                             
                             # in Shallow-Deep decoder, generate the next token in a non-autoregressive manner
                             hidden_states, present_key_value_states = self.parallel_gen_token(
