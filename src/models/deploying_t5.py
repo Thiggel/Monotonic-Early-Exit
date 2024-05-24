@@ -10,7 +10,6 @@ import time
 import datetime
 import warnings
 import numpy as np
-from models.modeling_t5 import LSTMClassifier
 import torch
 # torch.set_num_threads(4)
 # torch.set_num_interop_threads(4)
@@ -108,8 +107,6 @@ class DeployT5Attention(T5Attention):
         batch_size, seq_length = hidden_states.shape[:2]
 
         real_seq_length = seq_length        
-
-
 
         if past_key_value is not None:
             assert (
@@ -518,7 +515,7 @@ class DeployT5Stack(T5Stack):
         
         self.embed_tokens = embed_tokens
         self.is_decoder = config.is_decoder
-        config.parallel_gen_token = True
+
         self.block = nn.ModuleList(
             [DeployT5Block(config, has_relative_attention_bias=bool(i == 0)) for i in range(config.num_layers)]
         )
@@ -821,6 +818,7 @@ class DeployT5Stack(T5Stack):
         self.lm_logits = None  # to prevent calculating logits twice
 
         for i, layer_module in enumerate(self.block):
+                
             # Static framework
             if self.is_decoder and self.config.static_exit_layer is not None:
                 if i == self.config.static_exit_layer: break
@@ -833,6 +831,7 @@ class DeployT5Stack(T5Stack):
             if self.is_decoder and auto_reg and i == 0: self.block_op[i] += 1
                             
             if self.is_decoder and auto_reg and i > 0:
+                
                 # Shallow-Deep framework 
                 if self.use_shallow_deep and i == self.shallow_exit_layer:
                     if self.config.use_synchronize: torch.cuda.synchronize()
@@ -872,6 +871,8 @@ class DeployT5Stack(T5Stack):
                         break
 
                     if not skip_mask:
+                        self.shallow2deep = True
+                        # if self.config.parallel_gen_token:
                         if self.config.parallel_gen_token and len(self.stack_hidden_states):
                             self.parallel_tokens_shallow += len(self.stack_hidden_states)
                             self.parallel_tokens_deep += 1
@@ -910,7 +911,6 @@ class DeployT5Stack(T5Stack):
                 elif self.use_early_exit and not skip_mask:
                     if self.exit_min_layer is not None and i < self.exit_min_layer: 
                         self.block_op[i] += 1
-                    
                     else:
                         if self.config.use_synchronize: torch.cuda.synchronize()
                         start = datetime.datetime.now()
@@ -918,50 +918,17 @@ class DeployT5Stack(T5Stack):
                         lm_logits = lm_head(_hidden_states) if not self.config.tie_word_embeddings \
                             else lm_head(_hidden_states * (self.config.d_model ** -0.5))
                             
-                        skip_mask, conf = get_skip_mask(
+                        skip_mask = get_skip_mask(
                             lm_logits,
                             _hidden_states,
                             cm_head,
                             config=self.config,
-                            adapt_threshold=self.bmm_threshold,
-                            pos_time=past_key_values[i][0].shape[2] + 1 if past_key_values[i] is not None else 1,
-                            return_conf=True
+                            pos_time=past_key_values[i][0].shape[2] + 1 if past_key_values[i] is not None else 1
                         )
-                        self.stack_conf = self.stack_conf + (conf,)
-                        self.stack_pred = self.stack_pred + (lm_logits,)
                         if not skip_mask: self.block_op[i] += 1                    
                         if skip_mask: self.lm_logits = lm_logits
                         if self.config.use_synchronize: torch.cuda.synchronize()
                         self.deploy_time['time_confidence'] += (datetime.datetime.now() - start)
-                        if self.config.parallel_gen_token and len(self.stack_hidden_states):
-                            self.parallel_tokens_shallow += len(self.stack_hidden_states)
-                            self.parallel_tokens_deep += 1
-                            
-                            # in Shallow-Deep decoder, generate the next token in a non-autoregressive manner
-                            hidden_states, present_key_value_states = self.parallel_gen_token(
-                                hidden_states,
-                                attention_mask=extended_attention_mask,
-                                position_bias=position_bias,
-                                encoder_hidden_states=encoder_hidden_states,
-                                encoder_extended_attention_mask=encoder_extended_attention_mask,
-                                encoder_decoder_position_bias=encoder_decoder_position_bias,
-                                head_mask=head_mask,
-                                cross_attn_head_mask=cross_attn_head_mask,
-                                past_key_values=past_key_values,
-                                present_key_value_states=present_key_value_states,
-                                use_cache=use_cache,
-                                output_attentions=output_attentions,
-                                layer_idx=self.shallow_exit_layer,
-                            )
-                            if self.config.use_adapt_threshold:
-                                # Calibration Set Update
-                                self.lm_logits = self.lm_head(self.dropout(self.final_layer_norm(hidden_states)))
-                                deep_pred = self.lm_logits.argmax(-1)
-                                shallow_pred = torch.cat(self.stack_pred).argmax(-1).view(-1)
-
-                                self.stack_conf_all += self.stack_conf
-                                self.stack_ident_all += ((deep_pred.view(-1) == shallow_pred.view(-1)).long().cpu().numpy(),)
-                                self.stack_conf, self.stack_pred = (), ()
                     
                 # Normal framework
                 elif (not self.use_shallow_deep and not self.use_early_exit):
@@ -1064,24 +1031,11 @@ class DeployT5ForConditionalGeneration(T5ForConditionalGeneration):
 
         self.lm_head = nn.Linear(config.d_model, config.vocab_size, bias=False)
         self.decoder.lm_head = self.lm_head
-        if self.config.exit_conf_type == 'meta' or self.config.shallow2deep_conf_type == "meta":
+        if self.config.exit_conf_type == 'meta' or self.config.shallow2deep_conf_type == "meta" or self.config.exit_conf_type == "meta_n" or self.config.shallow2deep_conf_type == "meta_n":
             self.cm_head = nn.Sequential(
                 nn.Linear(config.d_model, config.d_model, bias=True),
                 nn.ReLU(),
                 nn.Linear(config.d_model, 2, bias=True),
-            )
-        elif self.config.exit_conf_type == 'recurrent_classifier':
-            self.cm_head = LSTMClassifier(
-                input_size=config.d_model,
-                hidden_size=250,
-                output_size=2
-            )
-
-        elif self.config.exit_conf_type == 'last_three_hiddens_classifier':
-            self.cm_head = nn.Sequential(
-                nn.Linear(config.d_model * 3, config.d_model, bias=False),
-                nn.ReLU(),
-                nn.Linear(config.d_model, 2, bias=False),
             )
         else:
             self.cm_head = None
@@ -1161,7 +1115,8 @@ class DeployT5ForConditionalGeneration(T5ForConditionalGeneration):
         self.deploy_time['time_others'] += (datetime.datetime.now() - start)
         if self.config.use_synchronize: torch.cuda.synchronize()
         self.deploy_time['time_decoder_forward'] += (datetime.datetime.now() - start)
-        if self.decoder.shallow2deep:
+
+        if self.decoder.shallow2deep: 
             self.decoder.stack_conf, self.decoder.stack_pred = (), ()
         if self.config.rollback_conf_threshold is None:
             lm_logits = lm_logits[:, [-1], :]
@@ -1251,15 +1206,8 @@ class DeployT5ForConditionalGeneration(T5ForConditionalGeneration):
             decoder_input_ids = self._shift_right(labels)
             
         if past_key_values is None and len(self.decoder.stack_conf_all) > 0 and self.bmm_update_iter < self.bmm_update_max_iter:
-            X = np.hstack([
-                tensor.cpu().numpy() if isinstance(tensor, torch.Tensor) else tensor
-                for tensor in self.decoder.stack_conf_all
-            ])
-
-            Y = np.hstack([
-                tensor.cpu().numpy() if isinstance(tensor, torch.Tensor) else tensor
-                for tensor in self.decoder.stack_ident_all
-            ])
+            X = np.hstack(self.decoder.stack_conf_all)
+            Y = np.hstack(self.decoder.stack_ident_all)
             self.decoder.bmm_model.fit(X, Y)
             
             self.decoder.bmm_threshold = self.decoder.bmm_model.predict_proba(0.3, 0.9)
