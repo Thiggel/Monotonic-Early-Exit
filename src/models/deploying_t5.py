@@ -906,7 +906,7 @@ class DeployT5Stack(T5Stack):
                             break
 
                 # Early-Exit framework
-                elif self.use_early_exit and not skip_mask:
+                elif self.use_early_exit:
                     if self.exit_min_layer is not None and i < self.exit_min_layer: 
                         self.block_op[i] += 1
                     
@@ -932,6 +932,9 @@ class DeployT5Stack(T5Stack):
                         if skip_mask: self.lm_logits = lm_logits
                         if self.config.use_synchronize: torch.cuda.synchronize()
                         self.deploy_time['time_confidence'] += (datetime.datetime.now() - start)
+                        print("hd")
+                        print(self.stack_hidden_states)
+                        print("dg")
                         if self.config.parallel_gen_token and len(self.stack_hidden_states):
                             self.parallel_tokens_shallow += len(self.stack_hidden_states)
                             self.parallel_tokens_deep += 1
