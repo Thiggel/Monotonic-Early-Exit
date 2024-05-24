@@ -952,15 +952,15 @@ class DeployT5Stack(T5Stack):
                                 output_attentions=output_attentions,
                                 layer_idx=self.shallow_exit_layer,
                             )
-                            if self.config.use_adapt_threshold:
-                                # Calibration Set Update
-                                self.lm_logits = self.lm_head(self.dropout(self.final_layer_norm(hidden_states)))
-                                deep_pred = self.lm_logits.argmax(-1)
-                                shallow_pred = torch.cat(self.stack_pred).argmax(-1).view(-1)
+                        if self.config.use_adapt_threshold:
+                            # Calibration Set Update
+                            self.lm_logits = self.lm_head(self.dropout(self.final_layer_norm(hidden_states)))
+                            deep_pred = self.lm_logits.argmax(-1)
+                            shallow_pred = torch.cat(self.stack_pred).argmax(-1).view(-1)
 
-                                self.stack_conf_all += self.stack_conf
-                                self.stack_ident_all += ((deep_pred.view(-1) == shallow_pred.view(-1)).long().cpu().numpy(),)
-                                self.stack_conf, self.stack_pred = (), ()
+                            self.stack_conf_all += self.stack_conf
+                            self.stack_ident_all += ((deep_pred.view(-1) == shallow_pred.view(-1)).long().cpu().numpy(),)
+                            self.stack_conf, self.stack_pred = (), ()
                     
                 # Normal framework
                 elif (not self.use_shallow_deep and not self.use_early_exit):
