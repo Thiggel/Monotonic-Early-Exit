@@ -98,11 +98,13 @@ def last_three_top_prob_heuristic(
 
     if len(cache['last_top_probs']) > 2:
         cache['last_top_probs'].pop(0)
-
+    increasing_for_3_layers = False
     if len(cache['last_top_probs']) > 1:
-        cache['increasing'] = (current_top_prob > cache['last_top_probs'][-2]) and cache['increasing']
+        current_increasing = (current_top_prob >= cache['last_top_probs'][-2])
+        increasing_for_3_layers = current_increasing and cache['increasing']
+        cache['increasing'] =  current_increasing
 
-    if cache['increasing'] and current_top_prob > threshold:
+    if increasing_for_3_layers and current_top_prob > threshold:
         print("early exit at:" + str(layer_index))
         return torch.ones(hidden_states.shape[0], device=hidden_states.device), cache
     if layer_index > 20:
