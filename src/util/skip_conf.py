@@ -93,7 +93,6 @@ def last_three_top_prob_heuristic(
             'last_top_probs': [],
             'increasing': False
         }
-    print(all_softmax_values[-1].max(dim=-1)[0])
     current_top_prob = all_softmax_values[0].max(dim=-1)[0]
     cache['last_top_probs'].append(current_top_prob)
 
@@ -104,6 +103,7 @@ def last_three_top_prob_heuristic(
         cache['increasing'] = (current_top_prob > cache['last_top_probs'][-2]) and cache['increasing']
 
     if cache['increasing'] and current_top_prob > threshold:
+        print("early exit at:" + str(layer_index))
         return torch.ones(hidden_states.shape[0], device=hidden_states.device), cache
     return torch.zeros(hidden_states.shape[0], device=hidden_states.device), cache
 
