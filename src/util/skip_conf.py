@@ -199,7 +199,7 @@ def get_skip_mask(
         all_softmax_values=all_softmax_values,
         layer_index=layer_index,
         should_reset=should_reset,
-        threshold=threshold
+        threshold=threshold,
         cache=cache
     )
     mask = torch.where(conf <= threshold, 0., 1.).bool()
