@@ -93,7 +93,7 @@ def last_three_top_prob_heuristic(
             'last_top_probs': [],
             'increasing': False
         }
-    print(all_softmax_values[0].max(dim=-1)[0])
+    print(all_softmax_values[-1].max(dim=-1)[0])
     current_top_prob = all_softmax_values[0].max(dim=-1)[0]
     cache['last_top_probs'].append(current_top_prob)
 
