@@ -596,7 +596,10 @@ class EffT5Stack(T5Stack):
         hidden_states = self.dropout(inputs_embeds)
         
         all_softmax_values = []
-        heuristic_cache = {}
+        heuristic_cache = {
+            'last_top_probs': [],
+            'increasing': False
+        }
 
         skip_mask, self.skip_mask_cache = None, None
         num_layers = len(self.block)
