@@ -93,14 +93,14 @@ def last_three_top_prob_heuristic(
             'last_top_probs': [],
             'increasing': False
         }
-    current_top_prob = all_softmax_values[0].max(dim=-1)[0]
+    current_top_prob = all_softmax_values[-1].max(dim=-1)[0]
     cache['last_top_probs'].append(current_top_prob)
 
     if len(cache['last_top_probs']) > 2:
         cache['last_top_probs'].pop(0)
     increasing_for_3_layers = False
     if len(cache['last_top_probs']) > 1:
-        current_increasing = (current_top_prob >= cache['last_top_probs'][-2])
+        current_increasing = (current_top_prob > cache['last_top_probs'][-2])
         increasing_for_3_layers = current_increasing and cache['increasing']
         cache['increasing'] =  current_increasing
 
