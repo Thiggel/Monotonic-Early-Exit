@@ -105,10 +105,10 @@ def last_three_top_prob_heuristic(
     if cache['increasing'] and current_top_prob > threshold:
         print("early exit at:" + str(layer_index))
         return torch.ones(hidden_states.shape[0], device=hidden_states.device), cache
-    if layer_index > 5:
-        print(print("early exit at:" + str(layer_index)))
+    if layer_index > 20:
+        print("no early exit at:" + str(layer_index))
         print(cache['increasing'])
-        print("over threshold: " + str(current_top_prob > threshold))
+        print("threshold: " + str(current_top_prob))
     return torch.zeros(hidden_states.shape[0], device=hidden_states.device), cache
 
 def softmax_confidence(
