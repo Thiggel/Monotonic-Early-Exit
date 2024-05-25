@@ -596,6 +596,7 @@ class EffT5Stack(T5Stack):
         hidden_states = self.dropout(inputs_embeds)
         
         all_softmax_values = []
+        heuristic_cache = {}
 
         skip_mask, self.skip_mask_cache = None, None
         num_layers = len(self.block)
@@ -673,7 +674,7 @@ class EffT5Stack(T5Stack):
                         pos_time=past_key_value[0].shape[2] + 1 if past_key_value is not None else 1,
                         all_hidden_states=all_hidden_states,
                         all_softmax_values=all_softmax_values,
-                        layer_index=i,
+                        layer_index=i
                     )
                     
                     self.block_op[i] += (skip_mask.shape[0] - skip_mask.sum().item())
@@ -693,7 +694,7 @@ class EffT5Stack(T5Stack):
                         if self.config.exit_conf_type == 'last_three_top_prob_heuristic':
                             all_softmax_values.append(F.softmax(logits, dim=-1))
 
-                        skip_mask = get_skip_mask(
+                        skip_mask, heuristic_cache = get_skip_mask(
                             logits,
                             hidden_,
                             cm_head,
@@ -703,6 +704,8 @@ class EffT5Stack(T5Stack):
                             all_softmax_values=all_softmax_values,
                             layer_index=i,
                             should_reset=last_layer,
+                            cache=heuristic_cache
+                            
                         )
                         if (not skip_mask == None) and (torch.all(skip_mask)):
                             break
@@ -855,7 +858,7 @@ class EffT5ForConditionalGeneration(T5ForConditionalGeneration):
                 param.requires_grad = False
         
         
-        if self.config.exit_conf_type == 'meta' or self.config.shallow2deep_conf_type or self.config.exit_conf_type == "meta_n":
+        if self.config.exit_conf_type == 'meta' or self.config.shallow2deep_conf_type:
             self.cm_head = nn.Sequential(
                 nn.Linear(config.d_model, config.d_model, bias=False),
                 nn.ReLU(),

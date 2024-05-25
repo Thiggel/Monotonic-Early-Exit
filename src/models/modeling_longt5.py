@@ -537,7 +537,7 @@ class EffLongT5ForConditionalGeneration(LongT5ForConditionalGeneration):
         self.device_map = None
         self.gradient_checkpointing = False
         
-        if self.config.exit_conf_type == 'meta' or self.config.shallow2deep_conf_type or self.config.exit_conf_type == "meta_n":
+        if self.config.exit_conf_type == 'meta' or self.config.shallow2deep_conf_type:
             self.cm_head = nn.Sequential(
                 nn.Linear(config.d_model, config.d_model, bias=False),
                 nn.ReLU(),
