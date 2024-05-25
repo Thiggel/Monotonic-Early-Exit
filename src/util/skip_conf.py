@@ -78,8 +78,10 @@ def last_three_top_prob_heuristic(
     logits: torch.Tensor = None,
     hidden_states: torch.Tensor = None,
     classifier: torch.nn.Linear = None,
+    all_hidden_states: list[torch.Tensor] = None,
     all_softmax_values: list[torch.Tensor] = None,
     layer_index: int = None,
+    should_reset: bool = False,
     threshold: float = None,
     cache: dict = None,
 ):
