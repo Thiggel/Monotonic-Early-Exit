@@ -106,7 +106,11 @@ def last_three_top_prob_heuristic(
     # Stack the padded softmax values
     all_softmax_values = torch.stack(fully_padded_softmax_values, dim=1)
 
-    top_probs = torch.max(all_softmax_values, dim=-1)[0].squeeze()
+    top_probs = all_softmax_values.max(dim=-1).values
+
+    # Ensure top_probs is at least 2D (necessary for batch size 1)
+    if top_probs.dim() == 1:
+        top_probs = top_probs.unsqueeze(0)
 
     # along dimension 1, is top_probs increasing?
     increasing = torch.all(top_probs[:, 1:] > top_probs[:, :-1], dim=1)
@@ -119,8 +123,8 @@ def last_three_top_prob_heuristic(
         print("at: " + str(layer_index) + " it looks like " + str(confidence))
         print("increasing: " + str(increasing))
         print("value: " + str(top_probs[:, -1]))
-    elif layer_index > 20:
-        print("at: " + str(layer_index) + " it looks like " + str(confidence))
+    elif layer_index > 22:
+        print("at: " + str(layer_index) + " NO EARLY EXIT " + str(confidence))
         print("increasing: " + str(increasing))
         print("value: " + str(top_probs[:, -1]))
 
