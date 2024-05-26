@@ -104,11 +104,12 @@ def last_three_top_prob_heuristic(
     ]
 
     # Stack the padded softmax values
-    all_softmax_values = torch.stack(fully_padded_softmax_values, dim=1)
+    softmax_stack = torch.stack(fully_padded_softmax_values, dim=1)
 
-    top_probs = all_softmax_values.max(dim=-1).values
+    # Compute the max probability across the softmax dimension
+    top_probs = softmax_stack.max(dim=-1).values.squeeze(-1)
 
-    # along dimension 1, is top_probs increasing?
+    # Check if the probabilities are increasing across the last three
     increasing = torch.all(top_probs[:, 1:] > top_probs[:, :-1], dim=1)
 
     # last confidence must be above 0.9
