@@ -48,7 +48,7 @@ $$
 \mathcal{L}_{\mathrm{KD}}= \frac{1}{\left|L_S\right|} \sum _{i=1}^{L_S} \text{MSE}\left(\mathbf{H}_S^i, \mathbf{H}_D^{m(i)}\right)
 $$
 
-where $\mathbf{H}_{S}^{i}$ refers to the hidden state in the shallow module, i.e., the hidden state after layer smaller than the total number of layers, and $\mathbf{H}_{D}^{m(i)}$ refers to the hidden state in the deep module, i.e., the hidden state after the full network pass. $m(i)$ either (1) maps the last layer, $(2)$ is a uniform mapping from shallow to deep layers, or (3) maps to the closest hidden state in the deep module, i.e., $m(i)=\underset{j}{\arg \min } \operatorname{MSE}\left(\mathbf{H}_{S}^{i}, \mathbf{H}_{D}^{j}\right)$.
+where $\mathbf{H}_S^i$ refers to a layer in the shallow module, i.e., the layers before the early exit point, and $\mathbf{H}_D^{m(i)}$ refers to a layer in the deep module, i.e., the layers after the early exit point. $m(i)$ either (1) maps the last layer, (2) is a uniform mapping from shallow to deep layers, or (3) maps to the closest hidden state in the deep module, i.e., $m(i)=\underset{j}{\arg \min } \text{MSE}\left(\mathbf{H}_S^i, \mathbf{H}_D^j\right)$.
 
 ## 3 Do Early-Exiting Networks Behave Monotonically?
 
