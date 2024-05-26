@@ -59,8 +59,9 @@ FREE extends CALM by balancing computational adaptability with reduced overhead.
 FREE also replaces the calibrated confidence thresholds in CALM with learned ones. In addition to the weighted cross-entropy objective, FREE incorporates a layer-wise knowledge distillation loss:
 
 $$
-\mathcal{L}_{\mathrm{KD}}= \frac{1}{\left|L_S\right|} \sum _{i=1}^{L_S} \text{MSE}\left(\mathbf{H}_S^i, \mathbf{H}_D^{m(i)}\right)
+\mathcal{L}_{KD}= \frac{1}{L_S} \sum _{i=1}^{L_S} \text{MSE} \left( \mathbf{H}_S^i, \mathbf{H}_D^{m(i)} \right)  
 $$
+
 [TODO: make equation simpler]
 
 
@@ -70,9 +71,9 @@ In this equation, $\mathbf{H}_S^i$ denotes the hidden state in the shallow modul
 
 ### Do Early-Exiting Networks Behave Monotonically?
 
-Now, let's dive deeper into a key assumption underlying early exiting methods: the monotonicity assumption. This assumption posits that as a model processes a token through more layers, its confidence in the prediction for that token should steadily increase. In simpler terms, the more computation the model performs on a token, the more certain it becomes about its prediction.
+Now, let's dive deeper into a key assumption underlying early exiting methods: the monotonicity assumption. This assumption posits that as a model processes a token through more layers, its confidence in the prediction for that token should steadily increase. In simpler terms, the more computation the model performs on a token, the more certain it becomes about a prediction.
 
-But why is this assumption so important? Imagine if a model's confidence didn't increase with more processing. It would be like [...........]. For early exiting to work effectively, we need to be sure that additional computation actually helps the model become more confident.
+But why is this assumption so important? Imagine if a model's confidence didn't increase with more processing. Then it would not make sense to exit the network early - the model could be confident of a token at one layer, and then change its prediction entirely in the next layer. That is to say, there would be no way of being sure that the model's prediction at a certain layer is truly reliable. On the other hand, it seems intuitive that, the more the model thinks about something, the more reliable its prediction is.
 
 ### Testing the Monotonicity Assumption
 
@@ -86,7 +87,7 @@ We evaluate these models using the BigPatent dataset, which is commonly used for
 
 1. **Fraction of Stable Predictions**: We measure the fraction of tokens for which the top-1 prediction remains unchanged after each layer. If a model can make a correct prediction early on and maintain it, this suggests that the model's confidence is indeed increasing with more computation.
 
-The results shown in Figure 1, indicate that the CALM model rapidly gains confidence. By the second layer, CALM's top-1 prediction stabilizes for a significant fraction of tokens. By the fourth layer, it maintains its prediction for most tokens. In contrast, the default T5 and FREE models exhibit much less certainty, indicating less monotonic behavior.
+The results shown in Figure 1 indicate that the CALM model rapidly gains confidence. By the second layer, CALM's top-1 prediction stabilizes for a significant fraction of tokens. By the fourth layer, it maintains its prediction for most tokens. In contrast, the default T5 and FREE models exhibit much less certainty, indicating less monotonic behavior.
 
 
 2. **Confidence Over Layers**: We plot the mean and standard deviation of the model's confidence in its final prediction across layers. This helps us visualize how the model's confidence evolves as it processes more layers.
@@ -105,7 +106,7 @@ In the previous section, we explored how a Transformer model, trained with a wei
 
 ### Investigating Hidden States: Easy vs. Difficult Sequences
 
-To understand the properties of hidden states in a monotonic network and their relation to sequence difficulty, we conducted an experiment. We used the CNN Daily Mail summarization dataset, selecting 2500 examples from the validation set. These sequences were fed into a T5 model in an autoregressive manner, recording the hidden states at each layer. This procedure generated 24 hidden states per sequence, given the T5 model has 24 layers.
+To understand the properties of hidden states in a monotonic network and their relation to sequence difficulty, we conducted a second experiment. We used the CNN Daily Mail summarization dataset, selecting 2500 examples from the validation set. These sequences were fed into a T5 model in an autoregressive manner, recording the hidden states at each layer. This procedure generated 24 hidden states per sequence, given the T5 model has 24 layers.
 
 #### Experiment Details
 
