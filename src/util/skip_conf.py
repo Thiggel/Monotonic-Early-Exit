@@ -101,7 +101,7 @@ def last_three_top_prob_heuristic(
     increasing_for_3_layers = False
     if len(cache['last_top_probs']) > 1:
         current_increasing = (current_top_prob > cache['last_top_probs'][-2])
-        increasing_for_3_layers = current_increasing and cache['increasing']
+        increasing_for_3_layers = current_increasing & cache['increasing']
         cache['increasing'] =  current_increasing
 
     if increasing_for_3_layers and current_top_prob > threshold:
