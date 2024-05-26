@@ -81,19 +81,30 @@ def last_three_top_prob_heuristic(
     if (
         all_softmax_values is None 
         or len(all_softmax_values) < 3
+        or layer_index < 3 # minimum exit is layer 4
     ):
         return torch.zeros(hidden_states.shape[0])
-  # Determine the maximum length in the last three softmax outputs
     max_length = max(sm.size(1) for sm in all_softmax_values[-3:])
 
-    # Pad each softmax output in the last three to this maximum length
+    # Pad each softmax tensor in the last three to have the same sequence length
     padded_softmax_values = [
         F.pad(sm, (0, 0, 0, max_length - sm.size(1)), "constant", 0)
+        if sm.size(1) < max_length else sm
         for sm in all_softmax_values[-3:]
     ]
 
+    # Ensure all tensors have the same batch size and softmax dimension
+    max_dim_0 = max(sm.size(0) for sm in padded_softmax_values)  # max batch size
+    max_dim_2 = max(sm.size(2) for sm in padded_softmax_values)  # max softmax dimension
+
+    # Final padding for batch size and softmax dimension
+    fully_padded_softmax_values = [
+        F.pad(sm, (0, max_dim_2 - sm.size(2), 0, max_length - sm.size(1), 0, max_dim_0 - sm.size(0)), "constant", 0)
+        for sm in padded_softmax_values
+    ]
+
     # Stack the padded softmax values
-    all_softmax_values = torch.stack(padded_softmax_values, dim=1)
+    all_softmax_values = torch.stack(fully_padded_softmax_values, dim=1)
 
     top_probs = torch.max(all_softmax_values, dim=-1)[0].squeeze()
 
