@@ -84,7 +84,6 @@ def last_three_top_prob_heuristic(
         or layer_index < 3 # minimum exit is layer 4
     ):
         return torch.zeros(hidden_states.shape[0])
-
     all_softmax_values = torch.stack(all_softmax_values[-3:], dim=1)
 
     top_probs = torch.max(all_softmax_values, dim=-1)[0].squeeze()
@@ -98,7 +97,7 @@ def last_three_top_prob_heuristic(
     confidence = increasing & above_threshold
 
     
-    if layer_index > 20:
+    if True in confidence:
         print("at: " + str(layer_index) + " it looks like " + str(confidence))
         print("increasing: " + str(increasing))
         print("value: " + str(top_probs[:, -1]))
