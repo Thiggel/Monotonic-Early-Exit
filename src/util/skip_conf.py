@@ -97,9 +97,9 @@ def last_three_top_prob_heuristic(
 
     confidence = increasing & above_threshold
 
-    print("at: " + str(layer_index) + " it looks like " + str(confidence))
+    
     if layer_index > 20:
-        print("at: " + str(confidence))
+        print("at: " + str(layer_index) + " it looks like " + str(confidence))
         print("increasing: " + str(increasing))
         print("value: " + str(top_probs[:, -1]))
 
