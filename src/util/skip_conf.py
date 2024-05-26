@@ -81,7 +81,6 @@ def last_three_top_prob_heuristic(
     if (
         all_softmax_values is None 
         or len(all_softmax_values) < 3
-        or layer_index < 3 # minimum exit is layer 4
     ):
         return torch.zeros(hidden_states.shape[0])
   # Determine the maximum length in the last three softmax outputs
