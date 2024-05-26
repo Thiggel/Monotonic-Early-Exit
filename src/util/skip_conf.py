@@ -115,6 +115,7 @@ def last_three_top_prob_heuristic(
 
     if layer_index > 2:
         confidence = increasing_for_3_layers & (current_top_prob > threshold)
+        print(confidence)
         if confidence.any():
             print("Early exit at layer:", layer_index)
             print("Increasing condition across three layers:", increasing_for_3_layers)
