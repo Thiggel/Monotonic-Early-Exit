@@ -41,7 +41,7 @@ The authors further experiment with three different confidence measures: (1) com
 FREE 4 extend CALM, trading compute adaptability for decreased overhead. Specifically, the authors reduce the number of exit points to two compared to every layer so that the model can either exit at, e.g., the fourth layer or use the entire network. Accordingly, FREE can copy missing hidden states in parallel to reduce overhead. Lastly, FREE replaces the expensively calibrated confidence thresholds used in CALM by learned ones. In addition to the weighted cross-entropy objective, FREE uses a layerwise knowledge distillation loss
 
 $$
-\mathcal{L}_{\mathrm{KD}}=\frac{1}{\left|L_{S}\right|} \sum_{i=1}^{L_{S}} \operatorname{MSE}\left(\mathbf{H}_{S}^{i}, \mathbf{H}_{D}^{m(i)}\right)
+\mathcal{L}_{\mathrm{KD}}= \frac{1}{\left|L_S\right|} \sum _{i=1}^{L_S} \text{MSE}\left(\mathbf{H}_S^i, \mathbf{H}_D^{m(i)}\right)
 $$
 
 where $\mathbf{H}_{S}^{i}$ refers to the hidden state in the shallow module, i.e., the hidden state after layer smaller than the total number of layers, and $\mathbf{H}_{D}^{m(i)}$ refers to the hidden state in the deep module, i.e., the hidden state after the full network pass. $m(i)$ either (1) maps the last layer, $(2)$ is a uniform mapping from shallow to deep layers, or (3) maps to the closest hidden state in the deep module, i.e., $m(i)=\underset{j}{\arg \min } \operatorname{MSE}\left(\mathbf{H}_{S}^{i}, \mathbf{H}_{D}^{j}\right)$.
