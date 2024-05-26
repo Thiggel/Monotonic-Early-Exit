@@ -25,7 +25,9 @@ def split_tensors_by_mask(
 
     # Expanding skip_mask to match the dimensions of tensors
     if tensors.dim() > skip_mask.dim():
-        expanded_size = list(skip_mask.shape) + [1] * (tensors.dim() - skip_mask.dim())
+        expanded_size = [1] * tensors.dim()  # start with singletons for all tensor dimensions
+        expanded_size[0] = skip_mask.size(0)  # match the batch size dimension
+        expanded_size[1] = skip_mask.size(1)  # match the second dimension, if it exists
         skip_mask = skip_mask.expand(*expanded_size)
 
     keep_tensors = tensors[~skip_mask]
