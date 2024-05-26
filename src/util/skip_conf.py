@@ -85,6 +85,7 @@ def last_three_top_prob_heuristic(
     threshold: float = None,
     cache: dict = None,
 ):
+    print(hidden_states.shape[0])
     if all_softmax_values is None:
         return torch.zeros(hidden_states.shape[0], device=hidden_states.device), cache
 
