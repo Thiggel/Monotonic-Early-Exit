@@ -15,7 +15,12 @@ def split_tensors_by_mask(
     if ids_restore is None:
         ids_shuffle = torch.argsort(skip_mask.long(), stable=True)
         ids_restore = torch.argsort(ids_shuffle)
-
+    # Ensure skip_mask has the same dimensions as tensors
+    if skip_mask.dim() == 2 and skip_mask.shape[1] == 1:
+        # Assuming tensors have shape [batch_size, sequence_length, heads, features]
+        skip_mask = skip_mask.expand(-1, tensors.shape[1])  # Expand to match sequence_length
+        skip_mask = skip_mask.unsqueeze(-1).unsqueeze(-1)  # Add dimensions for 'heads' and 'features'
+        skip_mask = skip_mask.expand(-1, -1, tensors.shape[2], tensors.shape[3])  # Expand across all heads and features
     keep_tensors = tensors[~skip_mask]
     skip_tensors = tensors[skip_mask]
 
