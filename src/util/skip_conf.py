@@ -68,6 +68,15 @@ def hidden_state_saturation(
 
     return similarity
 
+def pad_and_stack(all_softmax_values, max_len):
+    """Pad each softmax tensor to max_len and stack them."""
+    padded_values = []
+    for sm in all_softmax_values:
+        pad_size = max_len - sm.size(1)
+        padded = F.pad(sm, (0, pad_size), "constant", 0)  # Pad along sequence length
+        padded_values.append(padded)
+    return torch.stack(padded_values, dim=1)
+
 
 def last_three_top_prob_heuristic(
     logits: torch.Tensor = None,
@@ -86,9 +95,10 @@ def last_three_top_prob_heuristic(
         return torch.zeros(hidden_states.shape[0])
     max_length = max(sm.size(1) for sm in all_softmax_values[-3:])
 
-    padded_softmax_values = [F.pad(sm, (0, max_length - sm.size(1)), "constant", 0) for sm in all_softmax_values[-3:]]
+    # Pad and stack the softmax values
+    stacked_softmax_values = pad_and_stack(all_softmax_values[-3:], max_length)
 
-    all_softmax_values = torch.stack(padded_softmax_values, dim=1)
+    all_softmax_values = torch.stack(stacked_softmax_values, dim=1)
 
     top_probs = torch.max(all_softmax_values, dim=-1)[0].squeeze()
 
