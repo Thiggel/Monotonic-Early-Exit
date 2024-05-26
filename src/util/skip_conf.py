@@ -78,60 +78,36 @@ def last_three_top_prob_heuristic(
     layer_index: int = None,
     should_reset: bool = False,
 ):
-    if (
-        all_softmax_values is None 
-        or len(all_softmax_values) < 3
-        or layer_index < 3 # minimum exit is layer 4
-    ):
-        return torch.zeros(hidden_states.shape[0])
-    max_length = max(sm.size(1) for sm in all_softmax_values[-3:])
+    if all_softmax_values is None or len(all_softmax_values) < 3 or layer_index < 3:
+        return torch.zeros(hidden_states.shape[0], dtype=torch.float, device=hidden_states.device)
 
-    # Pad each softmax tensor in the last three to have the same sequence length
+    # Pad softmax tensors to have the same second dimension
+    max_length = max(sm.size(1) for sm in all_softmax_values[-3:])
     padded_softmax_values = [
-        F.pad(sm, (0, 0, 0, max_length - sm.size(1)), "constant", 0)
-        if sm.size(1) < max_length else sm
+        F.pad(sm, (0, 0, 0, max_length - sm.size(1)), "constant", 0) if sm.size(1) < max_length else sm
         for sm in all_softmax_values[-3:]
     ]
 
-    # Ensure all tensors have the same batch size and softmax dimension
-    max_dim_0 = max(sm.size(0) for sm in padded_softmax_values)  # max batch size
-    max_dim_2 = max(sm.size(2) for sm in padded_softmax_values)  # max softmax dimension
+    # Stack and calculate the maximum probability across the last dimension
+    softmax_stack = torch.stack(padded_softmax_values, dim=1)
+    top_probs = softmax_stack.max(dim=-1)[0]  # Max across the softmax probabilities
 
-    # Final padding for batch size and softmax dimension
-    fully_padded_softmax_values = [
-        F.pad(sm, (0, max_dim_2 - sm.size(2), 0, max_length - sm.size(1), 0, max_dim_0 - sm.size(0)), "constant", 0)
-        for sm in padded_softmax_values
-    ]
-
-    # Stack the padded softmax values
-    all_softmax_values = torch.stack(fully_padded_softmax_values, dim=1)
-
-    top_probs = all_softmax_values.max(dim=-1).values
-
-    # Ensure top_probs is at least 2D (necessary for batch size 1)
+    # Ensure that top_probs has enough dimensions to compare properly
     if top_probs.dim() == 1:
         top_probs = top_probs.unsqueeze(0)
 
-    # along dimension 1, is top_probs increasing?
+    # Determine if probabilities are increasing and the last is above the threshold
     increasing = torch.all(top_probs[:, 1:] > top_probs[:, :-1], dim=1)
-
-    # last confidence must be above 0.9
     above_threshold = top_probs[:, -1] > 0.9
-
     confidence = increasing & above_threshold
+
+    # Debugging prints
     if True in confidence:
-        print("at: " + str(layer_index) + " it looks like " + str(confidence))
-        print("increasing: " + str(increasing))
-        print("value: " + str(top_probs[:, -1]))
-    elif layer_index > 22:
-        print("at: " + str(layer_index) + " NO EARLY EXIT " + str(confidence))
-        print("increasing: " + str(increasing))
-        print("value: " + str(top_probs[:, -1]))
+        print(f"Layer {layer_index}: Early exit detected. Confidences: {confidence}")
+        print("Increasing trends:", increasing)
+        print("Latest probabilities:", top_probs[:, -1])
 
-
-    confidence = confidence.float()
-    
-    return confidence
+    return confidence.float()
 
 def softmax_confidence(
     logits: torch.Tensor = None,
