@@ -12,7 +12,7 @@ def split_tensors_by_mask(
     """
     0 and 1 values in skip_mask denote the index for tensors to keep and skip, respectively.
     """
-   if skip_mask.dim() == 1:
+    if skip_mask.dim() == 1:
         skip_mask = skip_mask.unsqueeze(-1)  # Add a dimension to make it [batch_size, 1]
 
     # If ids_restore is provided, use it to shuffle tensors according to some prior state
