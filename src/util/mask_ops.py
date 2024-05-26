@@ -29,8 +29,8 @@ def split_tensors_by_mask(
         print("mask shape 2: " + str(skip_mask.shape))
 
 
-    keep_tensors = tensors[~skip_mask]
-    skip_tensors = tensors[skip_mask]
+    keep_tensors = tensors[~skip_mask,:,:,:]
+    skip_tensors = tensors[skip_mask,:,:,:]
 
     return keep_tensors, skip_tensors, ids_restore
 
