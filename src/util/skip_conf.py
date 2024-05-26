@@ -1,6 +1,6 @@
 import numpy as np
 import torch
-
+import torch.nn.functional as F
 from transformers import AutoConfig
 
 
@@ -84,7 +84,11 @@ def last_three_top_prob_heuristic(
         or layer_index < 3 # minimum exit is layer 4
     ):
         return torch.zeros(hidden_states.shape[0])
-    all_softmax_values = torch.stack(all_softmax_values[-3:], dim=1)
+    max_length = max(sm.size(1) for sm in all_softmax_values[-3:])
+
+    padded_softmax_values = [F.pad(sm, (0, max_length - sm.size(1)), "constant", 0) for sm in all_softmax_values[-3:]]
+
+    all_softmax_values = torch.stack(padded_softmax_values, dim=1)
 
     top_probs = torch.max(all_softmax_values, dim=-1)[0].squeeze()
 
