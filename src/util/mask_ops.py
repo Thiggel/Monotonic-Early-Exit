@@ -12,19 +12,17 @@ def split_tensors_by_mask(
     """
     0 and 1 values in skip_mask denote the index for tensors to keep and skip, respectively.
     """
-    if tensors.dim() > skip_mask.dim():
-        expanded_size = list(tensors.shape)
-        expanded_size[-1] = 1  # We do not expand the last dimension
-        skip_mask = skip_mask.view(*([1] * (tensors.dim() - skip_mask.dim())), *skip_mask.shape)
-        skip_mask = skip_mask.expand(*expanded_size)
 
     if ids_restore is None:
         ids_shuffle = torch.argsort(skip_mask.long(), dim=1, stable=True)
         ids_restore = torch.argsort(ids_shuffle, dim=1)
 
-    # Apply mask to split the tensors
-    keep_tensors = tensors.masked_select(~skip_mask).view(-1, tensors.size(-1))  # Reshape to keep the feature dimension intact
-    skip_tensors = tensors.masked_select(skip_mask).view(-1, tensors.size(-1))
+    if tensors.dim() > skip_mask.dim():
+        expanded_size = [tensors.size(0), tensors.size(1)] + [1] * (tensors.dim() - 2)
+        skip_mask = skip_mask.expand(*expanded_size)
+
+    keep_tensors = tensors[~skip_mask]
+    skip_tensors = tensors[skip_mask]
 
     return keep_tensors, skip_tensors, ids_restore
 
