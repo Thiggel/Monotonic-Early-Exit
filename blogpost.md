@@ -31,7 +31,11 @@ We specifically look at two works that aim to model the confidence or uncertaint
 CALM 32 fine-tune an LLM with a weighted cross-entropy objective that optimizes each layer to output the correct output probabilities given a shared LM-head:
 
 $$
-\mathcal{L}=\sum_{i=1}^{L} \alpha_{i} \mathcal{L}_{i} \quad \text { where } \quad \alpha_{i}=\frac{i}{\sum_{j=1}^{L} j}
+    \mathcal{L} = \sum^L_{i=1} \alpha_i \mathcal{L}_i
+    \ \ \ 
+    \text{where }
+    \ \ \ 
+    \alpha_i = i \bigg({\sum _{j=1}^{L} j }\bigg)^{-1}
 $$
 
 where $\mathcal{L}_{i}$ is the cross entropy loss using each layer's hidden state, and $\alpha_{i}$ favors higher layers according to the equation above.
