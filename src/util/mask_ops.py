@@ -8,6 +8,7 @@ def split_tensors_by_mask(
     tensors: Optional[torch.FloatTensor] = None, 
     skip_mask: Optional[torch.BoolTensor] = None,
     ids_restore: Optional[torch.LongTensor] = None,
+    change_dims=False
 ):
     """
     0 and 1 values in skip_mask denote the index for tensors to keep and skip, respectively.
@@ -17,13 +18,13 @@ def split_tensors_by_mask(
         ids_restore = torch.argsort(ids_shuffle)
     print("mask shape: " + str(skip_mask.shape))
     print("tensor shape: " + str(tensors.shape))
-    if skip_mask.dim() < tensors.dim():
+    if skip_mask.dim() < tensors.dim() and change_dims:
         # Add singleton dimensions to skip_mask until it matches tensors dimensions
         expand_shape = list(skip_mask.shape) + [1] * (tensors.dim() - skip_mask.dim())
         skip_mask = skip_mask.reshape(expand_shape)
         
     # Broadcast skip_mask to match the exact shape of tensors
-    if skip_mask.shape != tensors.shape:
+    if skip_mask.shape != tensors.shape and change_dims:
         skip_mask = skip_mask.expand_as(tensors)
 
     keep_tensors = tensors[~skip_mask]

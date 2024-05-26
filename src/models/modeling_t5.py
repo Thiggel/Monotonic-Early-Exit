@@ -173,8 +173,8 @@ class EffT5Attention(T5Attention):
             hidden_states, _, ids_restore = split_tensors_by_mask(hidden_states, skip_mask)
 
             # key and value
-            key_states, skip_key_states, _ = split_tensors_by_mask(key_states, skip_mask, ids_restore=ids_restore)
-            value_states, skip_value_states, _ = split_tensors_by_mask(value_states, skip_mask, ids_restore=ids_restore)
+            key_states, skip_key_states, _ = split_tensors_by_mask(key_states, skip_mask, ids_restore=ids_restore,change_dims=True)
+            value_states, skip_value_states, _ = split_tensors_by_mask(value_states, skip_mask, ids_restore=ids_restore,change_dims=True)
 
         # get query states
         query_states = shape(self.q(hidden_states))  # (batch_size, n_heads, seq_length, dim_per_head)
