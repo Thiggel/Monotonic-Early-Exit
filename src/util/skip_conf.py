@@ -108,10 +108,6 @@ def last_three_top_prob_heuristic(
 
     top_probs = all_softmax_values.max(dim=-1).values
 
-    # Ensure top_probs is at least 2D (necessary for batch size 1)
-    if top_probs.dim() == 1:
-        top_probs = top_probs.unsqueeze(0)
-
     # along dimension 1, is top_probs increasing?
     increasing = torch.all(top_probs[:, 1:] > top_probs[:, :-1], dim=1)
 
