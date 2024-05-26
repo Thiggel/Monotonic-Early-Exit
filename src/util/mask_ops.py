@@ -12,10 +12,21 @@ def split_tensors_by_mask(
     """
     0 and 1 values in skip_mask denote the index for tensors to keep and skip, respectively.
     """
+   if skip_mask.dim() == 1:
+        skip_mask = skip_mask.unsqueeze(-1)  # Add a dimension to make it [batch_size, 1]
 
-    if ids_restore is None:
-        ids_shuffle = torch.argsort(skip_mask.long(), stable=True)
-        ids_restore = torch.argsort(ids_shuffle)
+    # If ids_restore is provided, use it to shuffle tensors according to some prior state
+    if ids_restore is not None:
+        tensors = torch.index_select(tensors, 0, ids_restore)
+    else:
+        # Calculate ids_restore based on the skip_mask to reorder tensors back to their original order later
+        ids_shuffle = torch.argsort(skip_mask.long(), dim=0, stable=True)  # Only one dimension to sort
+        ids_restore = torch.argsort(ids_shuffle, dim=0)  # Inverse permutation
+
+    # Expanding skip_mask to match the dimensions of tensors
+    if tensors.dim() > skip_mask.dim():
+        expanded_size = list(skip_mask.shape) + [1] * (tensors.dim() - skip_mask.dim())
+        skip_mask = skip_mask.expand(*expanded_size)
 
     keep_tensors = tensors[~skip_mask]
     skip_tensors = tensors[skip_mask]
