@@ -23,9 +23,8 @@ def split_tensors_by_mask(
         
     # Broadcast skip_mask to match the exact shape of tensors
     if skip_mask.shape != tensors.shape:
-        print("mask shape: " + str(skip_mask.shape))
-        print("tensor shape: " + str(tensors.shape))
         skip_mask = skip_mask.expand_as(tensors)
+        print(print("new mask shape: " + str(skip_mask.shape)))
     keep_tensors = tensors[~skip_mask]
     skip_tensors = tensors[skip_mask]
 
