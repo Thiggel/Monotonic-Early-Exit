@@ -178,6 +178,7 @@ class EffT5Attention(T5Attention):
 
         # get query states
         query_states = shape(self.q(hidden_states))  # (batch_size, n_heads, seq_length, dim_per_head)
+        print(query_states.shape)
 
         # compute scores
         scores = torch.matmul(
