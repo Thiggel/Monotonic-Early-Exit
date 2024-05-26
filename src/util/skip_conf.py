@@ -86,32 +86,47 @@ def last_three_top_prob_heuristic(
     cache: dict = None,
 ):
     if all_softmax_values is None:
-        return torch.zeros(hidden_states.shape[0], device=hidden_states.device)
+        return torch.zeros(hidden_states.shape[0], device=hidden_states.device), cache
 
     if layer_index == 0 or cache is None:
         cache = {
             'last_top_probs': [],
-            'increasing': False
+            'increasing': torch.zeros(hidden_states.shape[0], dtype=torch.bool, device=hidden_states.device)
         }
+
     current_top_prob = all_softmax_values[-1].max(dim=-1)[0]
     cache['last_top_probs'].append(current_top_prob)
 
     if len(cache['last_top_probs']) > 2:
         cache['last_top_probs'].pop(0)
-    increasing_for_3_layers = False
-    if len(cache['last_top_probs']) > 1:
-        current_increasing = (current_top_prob > cache['last_top_probs'][-2])
-        increasing_for_3_layers = current_increasing and cache['increasing']
-        cache['increasing'] =  current_increasing
 
-    if increasing_for_3_layers and current_top_prob > threshold:
-        print("early exit at:" + str(layer_index))
-        return torch.ones(hidden_states.shape[0], device=hidden_states.device), cache
-    if layer_index > 22:
-        print("no early exit at:" + str(layer_index))
-        print(cache['increasing'])
-        print("threshold: " + str(current_top_prob))
-    return torch.zeros(hidden_states.shape[0], device=hidden_states.device), cache
+    if len(cache['last_top_probs']) > 1:
+        # Compare the last two top probabilities
+        previous_top_prob = cache['last_top_probs'][-2]
+        current_increasing = current_top_prob > previous_top_prob
+        # Element-wise 'and' across batches
+        increasing_for_3_layers = current_increasing & cache['increasing']
+        cache['increasing'] = current_increasing
+
+    else:
+        increasing_for_3_layers = torch.zeros(hidden_states.shape[0], dtype=torch.bool, device=hidden_states.device)
+
+    if layer_index > 2:
+        confidence = increasing_for_3_layers & (current_top_prob > threshold)
+        if confidence.any():
+            print("Early exit at layer:", layer_index)
+            print("Increasing condition across three layers:", increasing_for_3_layers)
+            print("Current top probabilities above threshold:", current_top_prob)
+        else:
+            if layer_index > 22:
+                print("No early exit at layer:", layer_index)
+                print("Increasing condition failed or threshold not met")
+                print("Threshold:", threshold)
+                print("Current top probabilities:", current_top_prob)
+    else:
+        confidence = torch.zeros(hidden_states.shape[0], dtype=torch.float, device=hidden_states.device)
+
+    return confidence, cache
 
 def softmax_confidence(
     logits: torch.Tensor = None,
