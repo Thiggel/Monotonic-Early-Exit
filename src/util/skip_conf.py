@@ -85,7 +85,7 @@ def last_three_top_prob_heuristic(
     ):
         return torch.zeros(hidden_states.shape[0])
 
-    all_softmax_values = torch.stack(all_softmax_values[:3], dim=1)
+    all_softmax_values = torch.stack(all_softmax_values[-3:], dim=1)
 
     top_probs = torch.max(all_softmax_values, dim=-1)[0].squeeze()
 
