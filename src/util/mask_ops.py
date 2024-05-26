@@ -14,8 +14,8 @@ def split_tensors_by_mask(
     """
 
     if ids_restore is None:
-        ids_shuffle = torch.argsort(skip_mask.long(), dim=1, stable=True)
-        ids_restore = torch.argsort(ids_shuffle, dim=1)
+        ids_shuffle = torch.argsort(skip_mask.long(), stable=True)
+        ids_restore = torch.argsort(ids_shuffle)
 
     if tensors.dim() > skip_mask.dim():
         expanded_size = [tensors.size(0), tensors.size(1)] + [1] * (tensors.dim() - 2)
