@@ -85,8 +85,9 @@ def last_three_top_prob_heuristic(
     threshold: float = None,
     cache: dict = None,
 ):
-    print("shape" + str(hidden_states.shape[0]))
+    print("shape " + str(hidden_states.shape))
     if all_softmax_values is None:
+        print("reached nowhere")
         return torch.zeros(hidden_states.shape[0], device=hidden_states.device), cache
 
     if layer_index == 0 or cache is None:
@@ -125,6 +126,7 @@ def last_three_top_prob_heuristic(
                 print("Threshold:", threshold)
                 print("Current top probabilities:", current_top_prob)
     else:
+        print("reached here")
         confidence = torch.zeros(hidden_states.shape[0], dtype=torch.float, device=hidden_states.device)
 
     return confidence, cache
