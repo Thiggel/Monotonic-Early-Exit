@@ -9,9 +9,9 @@ Large Language Models (LLMs) exhibit exceptional performance. The primary factor
 
 However, this progress comes at a significant cost. Training these massive models requires an enormous amount of energy and resources, which in turn leads to substantial environmental impact. For example, GPT-3 consumed 1,287 MWh of energy and emitted 552 tonnes of CO₂ equivalents during its training process. That's about as much carbon dioxide as 120 average cars emit in a year. [this is also important for latency-critical applications]
 
-This brings us to a crucial question: How can we continue to advance AI without further straining our planet’s resources? One promising direction is to make these models more efficient. Imagine if we could teach a model to be smart about how it uses its computational power—only activating certain parts of its network when needed, or knowing when it’s done processing a piece of information early. This concept is known as adaptive computation allocation.
+This brings us to a crucial question: How can we continue to advance AI without further straining our planet’s resources? One promising direction is to make these models more efficient. Imagine we could teach a model to be smart about how it uses its computational power—only activating certain parts of its network when needed, or knowing when it’s done processing a piece of information early. This concept is known as adaptive computation allocation.
 
-One fascinating approach within this concept is called early exiting. The idea is simple but powerful: instead of running every piece of input through every layer of a model, the model can decide to "exit" early if it’s confident enough in its prediction. This way, we save computational resources by not over-processing data. 
+One fascinating approach within this concept is called early exiting. Instead of running every piece of input through every layer of a model, the model can decide to "exit" early if it’s confident enough in its prediction. This way, we save computational resources by not over-processing data. 
 
 In this work, we focus on Transformer models, the backbone of most state-of-the-art language models. For early exiting to work effectively, there’s an underlying assumption: the more a model processes a token, the more confident it becomes in its prediction. This is called the monotonicity assumption. Essentially, it means that as the model processes information layer by layer, its confidence should steadily increase.
 
@@ -35,7 +35,7 @@ $$
 \ \ \
 \text{where }
 \ \ \
-\alpha_i = i \bigg({\sum _{j=1}^{L} j }\bigg)^{-1}
+\alpha_i = i \ / \ {\sum _{j=1}^{L} j }
 $$
 
 [TODO: check whether all of the formulas are correct]
