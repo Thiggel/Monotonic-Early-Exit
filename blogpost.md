@@ -5,15 +5,15 @@
 ---
 **Exploring Efficiency in Large Language Models: A Journey into Adaptive Computation and Monotonic Early Exiting**
 
-Large Language Models (LLMs) exhibit exceptional performance. The primary factor behind this rapid advancement is the substantial increase in the size of the models and datasets used. By expanding the models and providing them with larger datasets, we have been able to achieve unprecedented levels of performance.
+Large Language Models (LLMs) exhibit exceptional performance, with prominent LLMs able to do things we all thought were impossible two years ago (e.g. have a look at GPT[^1] or Gemini[^2]). The primary factor behind this rapid advancement is the substantial increase in the size of the models and datasets used. By expanding the models and providing them with larger datasets, we have been able to achieve unprecedented levels of performance.
 
-However, this progress comes at a significant cost. Training these massive models requires an enormous amount of energy and resources, which in turn leads to substantial environmental impact. For example, GPT-3 consumed 1,287 MWh of energy and emitted 552 tonnes of CO₂ equivalents during its training process. That's about as much carbon dioxide as 120 average cars emit in a year. Furthermore, many applications, such as autonomous driving or real-time voice assistants, cannot afford high latency when generating predictions.
+However, this progress comes at a significant cost. Training these massive models requires an enormous amount of energy and resources, which in turn leads to substantial environmental impact. For example, GPT-3 consumed 1,287 MWh of energy and emitted 552 tonnes of CO₂ equivalents during its training process[^3][^4]. That's about as much carbon dioxide as 120 average cars emit in a year[^5] (We also direct the interested reader towards [^6]. On another note, many applications, such as autonomous driving or real-time voice assistants, cannot afford high latency when generating predictions.
 
 How can we continue to advance AI while avoiding a high-latency bottleneck? One promising direction is to make models allocate their resources more efficiently. Imagine we could teach a model to be smart about how it uses its computational power — only activating certain parts of its network when needed, or knowing when it’s done processing a piece of information early. Drawing an analogy to the human brain, you might think of it as the model being able to choose how long it ponders about a certain decision. This concept is known as adaptive computation allocation.
 
 One promising approach within this concept is called early exiting. Instead of running every piece of input through every layer of a model, the model can decide to "exit" early if it’s confident enough in its prediction. This way, we save computational resources by not over-processing data. 
 
-In this work, we focus on Transformer models, the backbone of most state-of-the-art language models. For early exiting to work effectively, there’s an underlying assumption: the more a model processes a token, the more confident it becomes in its prediction. We call this the *monotonicity assumption*. Essentially, it means that as the model processes information layer by layer, confidence should steadily increase without decreasing again. [also, say that it shouldnt change its prediction]
+In this work, we focus on Transformer models, the backbone of most state-of-the-art language models. For early exiting to work effectively, there’s an underlying assumption: the more a model processes a token, the more confident it becomes in its prediction. We call this the *monotonicity assumption*. Essentially, it means that as the model processes information layer by layer, confidence should steadily increase without decreasing again.
 
 In the first part of this blog post, we want to give an introduction to early exiting, explaining it and its evolution in more depth. 
 Moreover, we performed interesting investigations into the inner workings of common early exiting architectures, presented in the second part. 
@@ -46,7 +46,7 @@ We struture the rest of this blog post into three parts:
 In traditional neural networks, input tokens pass sequentially through many layers, each adding more processing and refining the output. However, early exiting suggests that not all inputs require the same level of computation. Some "easy" token sequences might be confidently processed by the earlier layers, while more "difficult" sequences need to go through the entire network. This idea isn't new—it was first explored in convolutional neural networks (CNNs) and has since been applied to Transformer models as well.
 Two notable studies that delve into early exiting by modeling the confidence or uncertainty of a model when generating tokens are CALM and FREE.
 
-#### CALM: Confident Adaptive Language Modelling
+#### CALM: Confident Adaptive Language Modelling[^7]
 
 The CALM method fine-tunes a large language model (LLM) using a weighted cross-entropy objective. This objective optimizes each layer to output the correct probabilities for the next token, using a shared language model head across all layers. The loss function for this method is given by:
 
@@ -123,7 +123,7 @@ CALM explores three different ways to measure confidence:
 
 A challenge with CALM is handling attention between tokens when some have exited earlier than others, requiring individual copying of hidden states.
 
-#### FREE: Fast and Robust Early Exiting
+#### FREE: Fast and Robust Early Exiting[^8]
 
 FREE extends CALM by balancing computational adaptability with reduced overhead. Instead of providing an exit point after every layer, FREE restricts it to two specific points—early and at the end of the network. For instance, the model might exit at the fourth layer or use the entire network. This approach allows for copying of missing hidden states in parallel, reducing the computational burden.
 
@@ -149,7 +149,7 @@ But why is this assumption so important? Imagine if a model's confidence didn't 
 
 The early exiting methods implicitly assume the monotonicity property, but they don’t test whether it actually holds. So to see if this monotonicity assumption holds, we conduct experiments with three different versions of the T5 model.
 We test the monotonicity assumption on the default T5 model, which does not use early exiting, the CALM model, and the FREE model. 
-We use the BigPatent dataset, which is commonly used for summarization tasks. 
+We use the BigPatent dataset[^9], which is commonly used for summarization tasks. 
  
 The monotonicity assumption states that when a model makes a top prediction at a given layer, this prediction will persist as top prediction through subsequent layers, with the model becoming increasingly confident in this prediction as it progresses.
 In other words, there are two parts to this assumption: the prediction remains the same after a given layer, and the model (monotonically) becomes more confident in that prediction with each additional layer. We test both parts of the monotonicity assumption with the following two experiments. 
@@ -304,7 +304,7 @@ We design, train, and test three new confidence measures to put this theory to t
    <br />
 </p>
 
-**LSTM-based Classifier**: This method employs a two-layered LSTM network. This is similar to the Three-Previous-Hidden-States Classifier, but it utilizes the recurrent architecture to look at all of the previous hidden states. 
+**LSTM-based Classifier**: This method employs a two-layered LSTM network[^10]. This is similar to the Three-Previous-Hidden-States Classifier, but it utilizes the recurrent architecture to look at all of the previous hidden states. 
 
 <p 
    align='center'
@@ -346,9 +346,9 @@ We design, train, and test three new confidence measures to put this theory to t
 We use T5 models pre-trained with a weighted cross-entropy objective, tuned for monotonic behavior, to evaluate our methods. 
 To get insight into how our proposed new early-exiting methods work in various scenarios, we want to test them on Question-Answering, Summarization, and Translation, which are the most popular tasks for LLMs.
 
-1. **Open-book SQuAD 1.1**: A Question-Answering dataset sourced from Wikipedia articles, supplemented with questions and corresponding answers from the context.
-2. **WMT15 EN-FR**: This dataset contains English sentences paired with their French translations.
-3. **CNN/DM**: A summarization dataset composed of news articles and their target summaries.
+1. **Open-book SQuAD 1.1**[^11]: A Question-Answering dataset sourced from Wikipedia articles, supplemented with questions and corresponding answers from the context.
+2. **WMT15 EN-FR**[^12]: This dataset contains English sentences paired with their French translations.
+3. **CNN/DM**[^13]: A summarization dataset composed of news articles and their target summaries.
 
 #### Baselines and Novel Measures
 
@@ -423,95 +423,39 @@ Where does this leave us? We've gained the insight that making use of monotonici
 In this blog post, we deep-dove into the monotonous behavior of early-exiting models, first hypothesizing and then showing how and in what situations they become increasingly more confident of a prediction over time. Based on this, we designed new confidence mechanisms that make use of this property and actually ended up displaying much higher accuracy compared to other confidence measures. Nonetheless, there are still questions remaining that should be addressed through further research:
 
 1. Can we make use of monotonicity and still have the performance benefits of CALM's confidence methods that only look at the current hidden state? This is most likely an engineering problem which requires many additional optimizations that we did not have the time to implement yet.
-2. Is early exiting the best way of making a model more efficient? We showed that early-exiting crucially depends on this assumption, and that making the model decide on a decision as early as possible benefits the exit mechanism. In other words, we are restricting the model to steer its thinking process into one direction quickly, which takes away the ability to freely ponder. Perhaps, models could benefit from being able to randomly contemplate many different things. There is two further directions we want to mention here: (1) This blogpost^[1] and this paper^[2] show that the first few layers of LLMs exhibit quite random behavior while the rest is more predictable. This leads us to hypothesize that it would be better to constrain the weighted cross entropy objective to just optimizing the last 70% of the model's layers, restricting it less and giving it more time to ponder and explore different directions at first. (2) A very different approach is Mixture-of-Depths^[3] which skips layers instead of exiting altogether. This alleviates the model of having to be monotonous and hence doesn't restrict it at all. It can exhibit completely random behavior, think in many different ways, and at the same time decide to skip certain parts, "specializing" different stages for different processing steps of a token.
+2. Is early exiting the best way of making a model more efficient? We showed that early-exiting crucially depends on this assumption, and that making the model decide on a decision as early as possible benefits the exit mechanism. In other words, we are restricting the model to steer its thinking process into one direction quickly, which takes away the ability to freely ponder. Perhaps, models could benefit from being able to randomly contemplate many different things. There is two further directions we want to mention here: (1) This blogpost[^14] and this paper[^15] show that the first few layers of LLMs exhibit quite random behavior while the rest is more predictable. This leads us to hypothesize that it would be better to constrain the weighted cross entropy objective to just optimizing the last 70% of the model's layers, restricting it less and giving it more time to ponder and explore different directions at first. (2) A very different approach is Mixture-of-Depths[^16] which skips layers instead of exiting altogether. This alleviates the model of having to be monotonous and hence doesn't restrict it at all. It can exhibit completely random behavior, think in many different ways, and at the same time decide to skip certain parts, "specializing" different stages for different processing steps of a token.
 
 ## References
 
-[1] Nostalgebraist, “interpreting GPT: the logit lens,” Aug. 31, 2020. https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens
+[^1]: OpenAI et al., “GPT-4 Technical Report,” arXiv.org, Mar. 15, 2023. https://arxiv.org/abs/2303.08774
 
-[2] C. Wendler, V. Veselovsky, G. Monea, and R. West, “Do llamas work in English? on the latent language of multilingual transformers,” arXiv.org, Feb. 16, 2024. https://arxiv.org/abs/2402.10588
+[^2]: G. Team et al., “Gemini: a family of highly capable multimodal models,” arXiv.org, Dec. 19, 2023. https://arxiv.org/abs/2312.11805
 
-[3] D. Raposo, S. Ritter, B. Richards, T. Lillicrap, P. C. Humphreys, and A. Santoro, “Mixture-of-Depths: Dynamically allocating compute in transformer-based language models,” arXiv.org, Apr. 02, 2024. https://arxiv.org/abs/2404.02258
+[^3]: D. Patterson et al., “Carbon emissions and large neural network training,” arXiv.org, Apr. 21, 2021. https://arxiv.org/abs/2104.10350
+
+[^4]: A. S. Luccioni, S. Viguier, and A.-L. Ligozat, “Estimating the carbon footprint of BLOOM, a 176B parameter language model,” arXiv.org, Nov. 03, 2022. https://arxiv.org/abs/2211.02001
+
+[^5]: United States Environmental Protection Agency EPA. “Greenhouse Gas Emissions from a Typical Passenger Vehicle | US EPA,” US EPA, Aug. 28, 2023. https://www.epa.gov/greenvehicles/greenhouse-gas-emissions-typical-passenger-vehicle
+
+[^6]: P. Li, J. Yang, M. A. Islam, and S. Ren, “Making AI Less ‘Thirsty’: Uncovering and addressing the secret water footprint of AI models,” arXiv.org, Apr. 06, 2023. https://arxiv.org/abs/2304.03271
+
+[^7]: T. Schuster et al., “Confident adaptive language modeling,” arXiv.org, Jul. 14, 2022. https://arxiv.org/abs/2207.07061
+
+[^8]: S. Bae, J. Ko, H. Song, and S.-Y. Yun, “Fast and Robust Early-Exiting Framework for Autoregressive Language Models with Synchronized Parallel Decoding,” arXiv.org, Oct. 09, 2023. https://arxiv.org/abs/2310.05424
+
+[^9]: E. Sharma, C. Li, and L. Wang, “BIGPATENT: a Large-Scale dataset for abstractive and coherent summarization,” arXiv.org, Jun. 10, 2019. https://arxiv.org/abs/1906.03741
+
+[^10]: Sepp Hochreiter and Jürgen Schmidhuber. “Long Short-Term memory,” MIT Press Journals & Magazine | IEEE Xplore, Nov. 15, 1997. https://ieeexplore.ieee.org/abstract/document/6795963
+
+[^11]: P. Rajpurkar, J. Zhang, K. Lopyrev, and P. Liang, “SQUAD: 100,000+ questions for machine comprehension of text,” arXiv.org, Jun. 16, 2016. https://arxiv.org/abs/1606.05250
+
+[^12]: K. M. Hermann et al., “Teaching machines to read and comprehend,” arXiv.org, Jun. 10, 2015. https://arxiv.org/abs/1506.03340 
+
+[^13]: M. Cettolo et al., “Overview of the IWSLT 2017 Evaluation campaign,” ACL Anthology, 2017. https://aclanthology.org/2017.iwslt-1.1/
 
 
+[^14]: Nostalgebraist, “interpreting GPT: the logit lens,” Aug. 31, 2020. https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens
 
-[1] Josh Achiam et al. GPT-4 Technical Report. 2024. arXiv: 2303.08774 [cs.CL].
+[^15]: C. Wendler, V. Veselovsky, G. Monea, and R. West, “Do llamas work in English? on the latent language of multilingual transformers,” arXiv.org, Feb. 16, 2024. https://arxiv.org/abs/2402.10588
 
-[2] Abien Fred Agarap. "Deep Learning using Rectified Linear Units (ReLU)". In: CoRR abs/1803.08375 (2018). arXiv: 1803.08375, URL: http://arxiv.org/abs/1803.08375.
-
-[3] Rohan Anil et al. Gemini: A Family of Highly Capable Multimodal Models. 2024. arXiv: $2312.11805[$ cs.CL],
-
-[4] Sangmin Bae et al. "Fast and robust early-exiting framework for autoregressive language models with synchronized parallel decoding". In: arXiv preprint arXiv:2310.05424 (2023).
-
-[5] Dzmitry Bahdanau, Kyunghyun Cho, and Yoshua Bengio. "Neural machine translation by jointly learning to align and translate". In: arXiv preprint arXiv:1409.0473 (2014).
-
-[6] Ondřej Bojar et al. "Findings of the 2014 workshop on statistical machine translation". In: Proceedings of the ninth workshop on statistical machine translation. 2014, pp. 12-58.
-
-[7] Tim Brooks et al. Video generation models as world simulators. https://openai . com/ index/video-generation-models-as-world-simulators. [Accessed 06-05-2024]. 2024.
-
-[8] Tom Brown et al. "Language models are few-shot learners". In: Advances in neural information processing systems 33 (2020), pp. 1877-1901.
-
-[9] Luciano Del Corro et al. "Skipdecode: Autoregressive skip decoding with batching and caching for efficient llm inference". In: arXiv preprint arXiv:2307.02628 (2023).
-
-[10] Jacob Devlin et al. "Bert: Pre-training of deep bidirectional transformers for language understanding". In: arXiv preprint arXiv:1810.04805 (2018).
-
-[11] Alexey Dosovitskiy et al. "An image is worth 16x16 words: Transformers for image recognition at scale". In: arXiv preprint arXiv:2010.11929 (2020).
-
-[12] Maha Elbayad et al. "Depth-adaptive transformer". In: arXiv preprint arXiv:1910.10073 $(2019)$.
-
-[13] Mostafa Elhoushi et al. "Layer Skip: Enabling Early Exit Inference and Self-Speculative Decoding". In: arXiv preprint arXiv:2404.16710 (2024).
-
-[14] United States Environmental Protection Agency EPA. Greenhouse Gas Emissions from a Typical Passenger Vehicle - US EPA - epa.gov. [Accessed 13-05-2024]. 2023. URL: https: //www . epa . gov/greenvehicles/greenhouse-gas - emissions - typical - passenger vehicle\#typical-passenger.
-
-[15] Mor Geva et al. "Transformer feed-forward layers build predictions by promoting concepts in the vocabulary space". In: arXiv preprint arXiv:2203.14680 (2022).
-
-[16] Rohit Girdhar et al. "Imagebind: One embedding space to bind them all". In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2023, pp. 1518015190.
-
-[17] Ian Goodfellow, Yoshua Bengio, and Aaron Courville. Deep Learning.http://www.deeplearningbook. org. MIT Press, 2016.
-
-[18] Karl Moritz Hermann et al. "Teaching machines to read and comprehend". In: Advances in neural information processing systems 28 (2015).
-
-[19] Sepp Hochreiter and Jürgen Schmidhuber. "Long Short-term Memory". In: Neural computation 9 (Dec. 1997), pp. 1735-80. DOI: $10.1162 /$ neco.1997.9.8.1735
-
-[20] Albert Q. Jiang et al. Mixtral of Experts. 2024. arXiv: 2401.04088 [cs.LG]
-
-[21] Pengfei Li et al. "Making ai less" thirsty": Uncovering and addressing the secret water footprint of ai models". In: arXiv preprint arXiv:2304.03271 (2023).
-
-[22] Alexandra Sasha Luccioni, Sylvain Viguier, and Anne-Laure Ligozat. "Estimating the carbon footprint of bloom, a 176b parameter language model". In: Journal of Machine Learning Research 24.253 (2023), pp. 1-15.
-
-[23] Sourab Mangrulkar, Ankith MS, and Vivek Sembium. "BE3R: BERT based Early-Exit Using Expert Routing". In: Proceedings of the 28th ACM SIGKDD Conference on Knowledge Discovery and Data Mining. 2022, pp. 3504-3512.
-
-[24] Brandon McKinzie et al. MM1: Methods, Analysis Insights from Multimodal LLM Pretraining. 2024. arXiv: 2403.09611 [cs.CV].
-
-[25] Sachin Mehta et al. OpenELM: An Efficient Language Model Family with Open Training and Inference Framework. 2024. URL: https://arxiv.org/abs/2404.14619.
-
-[26] Priyadarshini Panda, Abhronil Sengupta, and Kaushik Roy. "Conditional deep learning for energy-efficient and enhanced pattern recognition". In: 2016 Design, Automation & Test in Europe Conference & Exhibition (DATE). IEEE. 2016, pp. 475-480.
-
-[27] David Patterson et al. "Carbon emissions and large neural network training". In: arXiv preprint arXiv:2104.10350 (2021).
-
-[28] Alec Radford et al. "Improving language understanding by generative pre-training". In: $(2018)$.
-
-[29] Colin Raffel et al. "Exploring the limits of transfer learning with a unified text-to-text transformer". In: Journal of machine learning research 21.140 (2020), pp. 1-67.
-
-[30] Pranav Rajpurkar et al. "Squad: 100,000+ questions for machine comprehension of text". In: arXiv preprint arXiv:1606.05250 (2016).
-
-[31] David Raposo et al. Mixture-of-Depths: Dynamically allocating compute in transformer-based language models. 2024. arXiv: 2404.02258 [cs.LG],
-
-[32] Tal Schuster et al. "Confident adaptive language modeling". In: Advances in Neural Information Processing Systems 35 (2022), pp. 17456-17472.
-
-[33] Abigail See, Peter J. Liu, and Christopher D. Manning. "Get To The Point: Summarization with Pointer-Generator Networks". In: Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers). Vancouver, Canada: Association for Computational Linguistics, July 2017, pp. 1073-1083. DOI: 10.18653/v1/P17-1099. URL: https://www.aclweb.org/anthology/P17-1099.
-
-[34] Eva Sharma, Chen Li, and Lu Wang. "BIGPATENT: A large-scale dataset for abstractive and coherent summarization". In: arXiv preprint arXiv:1906.03741 (2019).
-
-[35] Emma Strubell, Ananya Ganesh, and Andrew McCallum. "Energy and policy considerations for deep learning in NLP". In: arXiv preprint arXiv:1906.02243 (2019).
-
-[36] Surat Teerapittayanon, Bradley McDanel, and Hsiang-Tsung Kung. "Branchynet: Fast inference via early exiting from deep neural networks". In: 2016 23rd international conference on pattern recognition (ICPR). IEEE. 2016, pp. 2464-2469.
-
-[37] Hugo Touvron et al. "Llama: Open and efficient foundation language models". In: arXiv preprint arXiv:2302.13971 (2023).
-
-[38] Ashish Vaswani et al. "Attention is all you need". In: Advances in neural information processing systems $30(2017)$.
-
-[39] Jason Wei et al. "Emergent abilities of large language models". In: arXiv preprint arXiv:2206.07682 $(2022)$.
-
-[40] Ji Xin et al. "BERxiT: Early exiting for BERT with better fine-tuning and extension to regression". In: Proceedings of the 16th conference of the European chapter of the association for computational linguistics: Main Volume. 2021, pp. 91-104.
-
+[^16]: D. Raposo, S. Ritter, B. Richards, T. Lillicrap, P. C. Humphreys, and A. Santoro, “Mixture-of-Depths: Dynamically allocating compute in transformer-based language models,” arXiv.org, Apr. 02, 2024. https://arxiv.org/abs/2404.02258
