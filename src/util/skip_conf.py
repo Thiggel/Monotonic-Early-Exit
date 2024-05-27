@@ -114,7 +114,7 @@ def last_three_top_prob_heuristic(
     top_probs = softmax_stack.max(dim=-1).values.squeeze(-1)
 
     # Check if the probabilities are increasing across the last three
-    increasing = torch.all(top_probs[:, 1:] > top_probs[:, :-1], dim=1)
+    increasing = torch.all(top_probs[:, 1:] >= top_probs[:, :-1], dim=1)
 
     # last confidence must be above 0.9
     above_threshold = top_probs[:, -1] > threshold
