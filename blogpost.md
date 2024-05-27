@@ -7,18 +7,18 @@
 
 Large Language Models (LLMs) are capable of things we all thought were impossible two years ago (see GPT[^1] or Gemini[^2]). A primary factor behind this rapid advancement is the substantial increase in the size of the models and datasets used. By expanding the models and providing them with larger datasets, we have been able to achieve unprecedented levels of performance.
 
-However, this progress comes at a significant cost. Training these massive models requires an enormous amount of energy and resources, which in turn leads to substantial environmental impact. For example, GPT-3 consumed 1,287 MWh of energy and emitted 552 tonnes of CO₂ equivalents during its training process[^3][^4]. That's about as much carbon dioxide as 120 average cars emit in a year[^5] (We also direct the interested reader towards [^6]).
-On another note, there are many applications where inference speed is crucial. Examples include autonomous driving or real-time voice assistants, which cannot afford high latency when generating predictions. We do not want our cars to process for two minutes before deciding not to run over a kid.
+However, this progress comes at a significant cost. Training these massive models requires an enormous amount of energy and resources, which in turn leads to substantial environmental impact. For example, GPT-3 consumed 1,287 MWh of energy and emitted 552 tonnes of CO₂ equivalents during its training process[^3][^4]. That's about as much carbon dioxide as 120 average cars emit in a year[^5]. Inference is similarly costly (We also direct the interested reader towards [^6]). 
+In addition to that, there are many applications where inference speed is crucial. Examples include autonomous driving or real-time voice assistants, which cannot afford high latency when generating predictions. We do not want our cars to process for two minutes before deciding not to run over a kid.
 
 How can we make AI models faster? One promising direction is to make models allocate their resources more efficiently. Imagine we could teach a model to be smart about how it uses its computational power — only activating certain parts of its network when needed, or knowing when it’s done processing a piece of information early. Drawing an analogy to the human brain, you might think of it as the model being able to choose how long it ponders about a certain decision. This concept is known as adaptive computation allocation. 
 
 One promising approach within this concept is called early exiting. Instead of running every piece of input through every layer of a model, the model can decide to "exit" early if it’s confident enough in its prediction. This way, we save computational resources by not over-processing data. 
-In this work, we focus on Transformer models, the backbone of most state-of-the-art language models. For early exiting to work effectively, there’s an underlying assumption: the more a model processes a sequence, the more confident it becomes in its prediction. We call this the *monotonicity assumption*. Essentially, it means that as the model processes information layer by layer, confidence should steadily increase without decreasing again, and the prediction of the model should remain unchanged.
+In this article, we focus on Transformer models, the backbone of most state-of-the-art language models. For early exiting to work effectively, there’s an underlying assumption: the more a model processes a sequence, the more confident it becomes in its prediction. We call this the *monotonicity assumption*. Essentially, it means that as the model processes information layer by layer, confidence should steadily increase without decreasing again, and the prediction of the model should remain unchanged.
 
 We structure the rest of this blog post into three parts: 
-1. The first part explains early exiting and its evolution.
-2. In the second part, we investigate deeper into early exiting and its monotonicity assumption. We specifically test for which architectures and loss functions it holds and for which it doesn't. We then delve into how neural networks process "easy" and "hard" sentences, gaining insight into when early exiting makes sense and when it doesn't.
-3. Based on our insights from section 2, we experiment with new early exiting methods.
+1. The first part explains early exiting.
+2. In the second part, we investigate early exiting and its monotonicity assumption. We specifically test for which architectures and loss functions it holds. We then delve into how neural networks process "easy" and "hard" sentences, gaining insight into when early exiting makes sense and when it doesn't.
+3. Based on our insights from part 2, we experiment with new early exiting methods.
 
 ## 1. What is Early-Exiting in Neural Networks?
 
@@ -39,12 +39,13 @@ We structure the rest of this blog post into three parts:
    <br />
 </p>
 
-In traditional neural networks, input tokens pass sequentially through many layers, each doing more computation and refining the output. However, early exiting suggests that not all inputs require the same level of computation. Some "easy" token sequences might be confidently predicted by the earlier layers, while more "difficult" sequences need to go through the entire network. This idea isn't new—it was first explored in convolutional neural networks (CNNs) and has since been applied to Transformer models as well.
-Two notable studies that delve into early exiting by modeling the confidence or uncertainty of a model when generating tokens are CALM[^7] and FREE[^8].
+In traditional neural networks, input tokens pass sequentially through many layers, each doing more computation and refining the output. However, early exiting suggests that not all inputs require the same amount of computation. Some "easy" token sequences might be correctly predicted by the earlier layers, while more "difficult" sequences need to go through the entire network. This idea isn't new—it was first explored in convolutional neural networks (CNNs) and has since been applied to Transformer models as well.
+Two notable studies that delve into early exiting are CALM[^7] and FREE[^8].
 
-#### CALM: Confident Adaptive Language Modelling[^7]
+#### CALM: Confident Adaptive Language Modelling
 
-The CALM method fine-tunes a large language model (LLM) using a weighted cross-entropy objective. This objective optimizes each layer to output the correct probabilities for the next token, using a shared language model head across all layers. The loss function for this method is given by:
+The CALM method fine-tunes a large language model (LLM) using a layerwise weighted cross-entropy objective. 
+This objective optimizes each layer to output the correct probabilities for the next token, using a shared language model head across all layers. The loss function for this method is given by:
 
 $$
 \mathcal{L} = \sum^L_{i=1} \alpha_i \mathcal{L}_i
@@ -54,9 +55,7 @@ $$
 \alpha_i = i \ / \ {\sum _{j=1}^{L} j }
 $$
 
-[TODO: check whether all of the formulas are correct]
-
-Here, $\mathcal{L}_i$ represents the cross-entropy loss at layer $i$, and $\alpha_i$ are weights that favor higher layers.
+Here, $\mathcal{L}_i$ represents the cross-entropy loss at layer $i$, and $\alpha_i$ favors higher layers.
 
 CALM explores three different ways to measure confidence:
 
@@ -113,15 +112,16 @@ CALM explores three different ways to measure confidence:
       "
    />
    <br />
-   <em><b>Figure 1:</b> The overview of the early exiting framwork.</em>
+   <em><b>Figure 1:</b> The overview of the early exiting framework.</em>
    <br />
 </p>
 
-A challenge with CALM is handling attention between tokens when some have exited earlier than others, requiring individual copying of hidden states.
+Even though [...], a challenge with CALM is handling attention between tokens when some have exited earlier than others, requiring individual copying of hidden states. This slows down the computation. 
 
-#### FREE: Fast and Robust Early Exiting[^8]
 
-FREE extends CALM by balancing computational adaptability with reduced overhead. Instead of providing an exit point after every layer, FREE restricts it to two specific points—early and at the end of the network. For instance, the model might exit at the fourth layer or use the entire network. This approach allows for copying of missing hidden states in parallel, reducing the computational burden.
+#### FREE: Fast and Robust Early Exiting
+
+FREE extends CALM by balancing computational adaptability with reduced overhead. Instead of providing an exit point after every layer, FREE restricts it to two specific points—early in the network and after the final layer. For instance, the model might exit at the fourth layer or use the entire network. This approach allows for copying of missing hidden states in parallel, reducing the computational burden.
 
 FREE also replaces the calibrated confidence thresholds in CALM with learned ones. In addition to the weighted cross-entropy objective, FREE incorporates a layer-wise knowledge distillation loss:
 
@@ -137,21 +137,20 @@ In this equation, $\mathbf{H}_S^i$ denotes the hidden state in the shallow modul
 
 ### Do Early-Exiting Networks Behave Monotonically?
 
-Now, let's dive deeper into a key assumption underlying early exiting methods: the monotonicity assumption. This assumption posits that as a model processes a token through more layers, its confidence in the prediction for that token should steadily increase. In simpler terms, the more computation the model performs on a token, the more certain it becomes about a prediction.
+Now, let's dive deeper into a key assumption underlying early exiting methods: the monotonicity assumption. This assumption posits that as a model processes a token through more layers, its confidence in the prediction for that token should steadily increase. In simpler terms, the more computation the model performs on a token sequence, the more certain it becomes about its prediction.
 
-But why is this assumption so important? Imagine if a model's confidence didn't increase with more processing. Then it would not make sense to exit the network early - the model could be confident of a token at one layer, and then change its prediction entirely in the next layer. That is to say, there would be no way of being sure that the model's prediction at a certain layer is truly reliable. On the other hand, it seems intuitive that, the more the model thinks about something, the more reliable its prediction is.
+But why is this assumption so important? Imagine if a model's confidence didn't increase with more processing. Then it would not make sense to exit the network early - the model could be confident of a token at one layer, and then change its prediction entirely in the next layer. That is to say, there would be no way of being sure that the model's prediction at a certain layer is truly reliable.
 
 ### Testing the Monotonicity Assumption
 
-The early exiting methods implicitly assume the monotonicity property, but they don’t test whether it actually holds. So to see if this monotonicity assumption holds, we conduct experiments with three different versions of the T5 model.
-We test the monotonicity assumption on the default T5 model, which does not use early exiting, the CALM model, and the FREE model. 
+The early exiting methods implicitly assume the monotonicity property, but they don’t test whether it actually holds. So to see if this monotonicity assumption holds, we conduct experiments with three different versions of the T5 model. The T5 model is a common encoder-decoder architecture with 24 layers. 
+We test the monotonicity assumption on a T5 model which doesn't use early exiting, one which uses the CALM method, and one which uses the FREE method. 
 We use the BigPatent dataset[^9], which is commonly used for summarization tasks. 
  
 The monotonicity assumption states that when a model makes a top prediction at a given layer, this prediction will persist as top prediction through subsequent layers, with the model becoming increasingly confident in this prediction as it progresses.
 In other words, there are two parts to this assumption: the prediction remains the same after a given layer, and the model (monotonically) becomes more confident in that prediction with each additional layer. We test both parts of the monotonicity assumption with the following two experiments. 
 
-
-**Fraction of Stable Predictions**: We measure the fraction of tokens for which the top-1 prediction remains unchanged after each layer. If this fraction is high for a certain layer, it means that at that layer the model has often made a prediction and doesn't change it in later layers.
+**Fraction of Stable Predictions**: We measure the fraction of tokens for which the top-1 prediction remains unchanged after each layer. If this fraction is high for a certain layer, it means that at that layer the model has often made a final prediction and doesn't change it in later layers.
 
 <p 
    align='center'
@@ -170,13 +169,13 @@ In other words, there are two parts to this assumption: the prediction remains t
    <br />
 </p>
 
-[change it so that in both plots the default network is called either "Default" or "Vanilla"]
+[change it so that in both plots the default network is called "no early exit(ing)"]
 
 From the results, we can see that the CALM model often makes a final prediction very early on in the network, and rarely changes its prediction. 
-In contrast, the default and FREE models change their predictions much more often in later layers. This indicates that the CALM model may be a better candidate for using early exiting, because exiting early is much less likely to change the prediction for a given token. 
+In contrast, the default (no early exit) and FREE models change their predictions much more often in later layers. This indicates that the CALM model may be a better candidate for using early exiting, because it is much less likely to change the prediction for a given token. 
 
 
-**Confidence Over Layers**: We also plot the mean and standard deviation of the model's confidence in its final prediction across layers. This helps us visualize how the model's confidence evolves as it processes more layers.
+**Confidence Over Layers**: We also plot the mean and standard deviation of the model's confidence in its final prediction across layers. This helps us visualize how the model's confidence evolves as the input goes through more layers.
 
 <p 
    align='center'
@@ -194,7 +193,7 @@ In contrast, the default and FREE models change their predictions much more ofte
    <br />
 </p>
 
-Figure 2 demonstrates that CALM shows a clear monotonic increase in confidence as it processes more layers. The default model, however, gains confidence much later in the network, while FREE shows a more complex pattern: its confidence increases until the first exit point, drops slightly, and then increases again towards the end. Technically speaking, this means that the monotonicity assumption holds for both the default and CALM models, but the CALM model gains confidence much earlier in the network and therefore seems to be more fit for being used with early exiting. 
+Figure 2 demonstrates that CALM shows a clear monotonic increase in confidence through the layers. The default model, however, gains confidence much later in the network, and FREE shows a more complex pattern: its confidence increases until the first exit point, drops slightly, and then increases again towards the end. Technically speaking, this means that the monotonicity assumption holds for both the default and CALM models, but the CALM model gains confidence much earlier in the network and therefore seems to be more fit for being used with early exiting. 
 
 The results of these experiments show that the monotonicity assumption holds best for the CALM method. 
 This suggests that CALM with its cross-entropy objective may be the best candidate for early exiting. 
