@@ -23,6 +23,23 @@ the last n layers while employing a minimum exit layer.
 
 ### Early Exiting in Neural Networks
 
+<p 
+   align='center'
+>
+   <img 
+      src="img/diagrams/early_exit_framework.png" 
+      alt="Fraction of predictions that do not change after each respective layer" 
+      style="
+        width: 800px; 
+        max-width: 100%;
+        height: auto;
+      "
+   />
+   <br />
+   <em><b>Figure 1:</b> The overview of the early exiting framwork.</em>
+   <br />
+</p>
+
 In traditional neural networks, input tokens pass sequentially through many layers, each adding more processing and refining the output. However, early exiting suggests that not all inputs require the same level of computation. Some "easy" token sequences might be confidently processed by the earlier layers, while more "difficult" sequences need to go through the entire network. This idea isn't new—it was first explored in convolutional neural networks (CNNs) and has since been applied to Transformer models as well.
 Two notable studies that delve into early exiting by modeling the confidence or uncertainty of a model when generating tokens are CALM and FREE.
 
@@ -44,11 +61,62 @@ Here, $\mathcal{L}_i$ represents the cross-entropy loss at layer $i$, and $\alph
 
 CALM explores three different ways to measure confidence:
 
-1. **Probability Thresholding**: After each Transformer layer, the model calculates word probabilities from the current hidden state and exits if the difference between the top two probabilities exceeds a calibrated threshold.
+**Probability Thresholding**: After each Transformer layer, the model calculates word probabilities from the current hidden state and exits if the difference between the top two probabilities exceeds a calibrated threshold.
+
+<p 
+   align='center'
+>
+   <img 
+      src="img/diagrams/early_exit_softmax.png" 
+      alt="Fraction of predictions that do not change after each respective layer" 
+      style="
+        width: 800px; 
+        max-width: 100%;
+        height: auto;
+      "
+   />
+   <br />
+   <em><b>Figure 1:</b> The overview of the early exiting framwork.</em>
+   <br />
+</p>
    
-2. **Hidden State Similarity**: The model computes the similarity between the current hidden state and the previous one, exiting if the similarity surpasses a calibrated threshold.
+**Hidden State Similarity**: The model computes the similarity between the current hidden state and the previous one, exiting if the similarity surpasses a calibrated threshold.
+
+<p 
+   align='center'
+>
+   <img 
+      src="img/diagrams/early_exit_hidden_similarity.png" 
+      alt="Fraction of predictions that do not change after each respective layer" 
+      style="
+        width: 800px; 
+        max-width: 100%;
+        height: auto;
+      "
+   />
+   <br />
+   <em><b>Figure 1:</b> The overview of the early exiting framwork.</em>
+   <br />
+</p>
    
-3. **Classifier Prediction**: A classifier predicts the probability of exiting based on the current hidden state.
+**Classifier Prediction**: A classifier predicts the probability of exiting based on the current hidden state.
+
+<p 
+   align='center'
+>
+   <img 
+      src="img/diagrams/early_exit_mlp.png" 
+      alt="Fraction of predictions that do not change after each respective layer" 
+      style="
+        width: 800px; 
+        max-width: 100%;
+        height: auto;
+      "
+   />
+   <br />
+   <em><b>Figure 1:</b> The overview of the early exiting framwork.</em>
+   <br />
+</p>
 
 A challenge with CALM is handling attention between tokens when some have exited earlier than others, requiring individual copying of hidden states.
 
@@ -187,13 +255,62 @@ After our deep dive into the behavior of hidden states, we realized there’s a 
 
 We designed, trained, and tested three new confidence measures to put this theory to the test:
 
-1. **Three-Previous-Hidden-States Classifier**: Here, we use a two-layered MLP. The input comprises three times the transformer's hidden dimensionality, corresponding to three consecutive hidden states. This is the same as what was used in the [....CALM/FREE.....] paper, but here the classifier looks at the last three hidden states instead of only the last one. With ReLU activation and a hidden layer matching the transformer's dimensionality, this classifier aims to leverage more context from the model's internal states.
+**Three-Previous-Hidden-States Classifier**: Here, we use a two-layered MLP. The input comprises three times the transformer's hidden dimensionality, corresponding to three consecutive hidden states. This is the same as what was used in the [....CALM/FREE.....] paper, but here the classifier looks at the last three hidden states instead of only the last one. With ReLU activation and a hidden layer matching the transformer's dimensionality, this classifier aims to leverage more context from the model's internal states.
 
-2. **LSTM-based Classifier**: This method employs a two-layered LSTM network. This is similar to the Three-Previous-Hidden-States Classifier, but it utilizes the recurrent architecture to look at all of the previous hidden states. 
+<p 
+   align='center'
+>
+   <img 
+      src="img/diagrams/early_exit_3_mlp.png" 
+      alt="Fraction of predictions that do not change after each respective layer" 
+      style="
+        width: 800px; 
+        max-width: 100%;
+        height: auto;
+      "
+   />
+   <br />
+   <em><b>Figure 1:</b> The overview of the early exiting framwork.</em>
+   <br />
+</p>
 
-3. **Heuristic Based on Top-1 Softmax Scores**: This heuristic exits if the last three layers' top-1 softmax scores are monotonically increasing and the current top-1 confidence exceeds 0.9. This heuristic is grounded in our observations from the monotonicity experiments, where such patterns almost always indicated a stable prediction.
+**LSTM-based Classifier**: This method employs a two-layered LSTM network. This is similar to the Three-Previous-Hidden-States Classifier, but it utilizes the recurrent architecture to look at all of the previous hidden states. 
 
-[Make schematic drawings for this]
+<p 
+   align='center'
+>
+   <img 
+      src="img/diagrams/early_exit_lstm.png" 
+      alt="Fraction of predictions that do not change after each respective layer" 
+      style="
+        width: 800px; 
+        max-width: 100%;
+        height: auto;
+      "
+   />
+   <br />
+   <em><b>Figure 1:</b> The overview of the early exiting framwork.</em>
+   <br />
+</p>
+
+**Heuristic Based on Top-1 Softmax Scores**: This heuristic exits if the last three layers' top-1 softmax scores are monotonically increasing and the current top-1 confidence exceeds 0.9. This heuristic is grounded in our observations from the monotonicity experiments, where such patterns almost always indicated a stable prediction.
+
+<p 
+   align='center'
+>
+   <img 
+      src="img/diagrams/early_exit_3_softmax.png" 
+      alt="Fraction of predictions that do not change after each respective layer" 
+      style="
+        width: 800px; 
+        max-width: 100%;
+        height: auto;
+      "
+   />
+   <br />
+   <em><b>Figure 1:</b> The overview of the early exiting framwork.</em>
+   <br />
+</p>
 
 For each confidence measure, we set a minimum exit layer at four, based on our understanding that even the simplest sequences need a few initial layers to build confidence.
 
