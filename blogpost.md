@@ -426,9 +426,20 @@ In this blog post, we deep-dove into the monotonic behavior of early exiting mod
 
 [^13]: M. Cettolo et al., “Overview of the IWSLT 2017 Evaluation campaign,” ACL Anthology, 2017. https://aclanthology.org/2017.iwslt-1.1/
 
-
 [^14]: Nostalgebraist, “interpreting GPT: the logit lens,” Aug. 31, 2020. https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens
 
 [^15]: C. Wendler, V. Veselovsky, G. Monea, and R. West, “Do llamas work in English? on the latent language of multilingual transformers,” arXiv.org, Feb. 16, 2024. https://arxiv.org/abs/2402.10588
 
 [^16]: D. Raposo, S. Ritter, B. Richards, T. Lillicrap, P. C. Humphreys, and A. Santoro, “Mixture-of-Depths: Dynamically allocating compute in transformer-based language models,” arXiv.org, Apr. 02, 2024. https://arxiv.org/abs/2404.02258
+
+## Author Contributions
+
+Denys Sheremet: Ideation, participation in meetings, writing and improving blog post, meme creation, writing of new confidence measures
+
+Max Belitsky: Ideation, participation in meetings, sequence type experiments, writing and improving blog post, writing of new confidence measures
+
+Oliver Savolainen: Ideation, participation in meetings, exploration of code, initial experimentation with new confidence measures, writing of new confidence measures
+
+Mark Bodracska: Ideation, participation in meetings, exploration of code, writing of new confidence measures
+
+Filipe Laitenberger: Ideation, participation in meetings, monotonicity experiment, writing initial draft of report, writing and improving blog post, writing of new confidence measures
