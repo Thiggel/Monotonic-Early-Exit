@@ -434,7 +434,7 @@ In this blog post, we deep-dove into the monotonic behavior of early exiting mod
 
 ## Author Contributions
 
-Denys Sheremet: Ideation, participation in meetings, writing and improving blog post, meme creation, writing of new confidence measures
+Denys Sheremet: Ideation, participation in meetings, writing and improving blog post, writing job files and debugging code for running experiments, writing of new confidence measures
 
 Max Belitsky: Ideation, participation in meetings, sequence type experiments, writing and improving blog post, writing of new confidence measures
 
@@ -442,4 +442,4 @@ Oliver Savolainen: Ideation, participation in meetings, exploration of code, ini
 
 Mark Bodracska: Ideation, participation in meetings, exploration of code, writing of new confidence measures
 
-Filipe Laitenberger: Ideation, participation in meetings, monotonicity experiment, writing initial draft of report, writing and improving blog post, writing of new confidence measures
+Filipe Laitenberger: Ideation, participation in meetings, monotonicity experiment, writing initial draft of report, writing and improving blog post, writing of new confidence measures, running experiments
