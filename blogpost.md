@@ -254,6 +254,7 @@ To better illustrate these findings, we plotted the hidden state similarities fo
 
 Our analysis indicates that an early exit mechanism can benefit from considering sequence length and the early layers’ computation. Even the easiest sequences require a few initial layers before reaching high confidence, suggesting that the first few layers should not be used for early exits to avoid unnecessary computation on confidence measures. This understanding helps refine early exiting mechanisms, optimizing resource use without sacrificing performance.
 
+## 3. Experimenting with New Early Exiting Methods Based on Our Insights
 ### Making use of the monotonicity assumption for early exiting
 
 After our deep dive into the behavior of hidden states, we realized there’s a lot of potential in leveraging multiple layers' hidden states to improve the early exit decision process. If we train our model with a weighted cross-entropy objective, it encourages a sort of "confidence buildup" layer by layer. This observation led us to hypothesize that using a combination of hidden states from previous layers, rather than just the current one, could make our exit mechanism more reliable.
