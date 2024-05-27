@@ -19,7 +19,7 @@ In the first part of this blog post, we want to give an introduction to early ex
 Moreover, we performed interesting investigations into the inner workings of common early exiting architectures, presented in the second part. 
 Lastly, based on our investigations, we've come up with new ways of improving early exiting architectures, which we will show at the end.
 
-We struture rest of this blog post into three parts: 
+We struture the rest of this blog post into three parts: 
 1. The first part explains early exiting and its evolution in more depth.
 2. In the second part, we investigate deeper into early exiting and its monotonicity assumption. We specifically test for which architectures and especially loss functions it holds and for which it doesn't. We furthermore delve into how neural networks process "easy" and "hard" sentences, gaining insights into when early exiting makes more sense and when it doesn't.
 3. Based on our insights from section 2, we experiment with new early exiting methods.
