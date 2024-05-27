@@ -205,48 +205,39 @@ This suggests that CALM with its cross-entropy objective may be the best candida
 With this method, exiting early at a certain layer has a high likelihood of yielding the same prediction as continuing through all layers.
 
 ### Easy and Difficult Sequences: Understanding Hidden State Saturation
-
-In the previous section, we explored how a Transformer model, trained with a weighted cross-entropy objective, exhibits a monotonic pattern in token predictions. However, this doesn’t mean the model can confidently exit early on every possible sequence. Some sequences are more straightforward ("easy") while others are more ambiguous ("difficult"). For instance, consider the sequence "One of the biggest cities in the world is New _". The next word is likely to be "York" because it's a well-known fact. In contrast, the sequence "The students went to _" is harder to predict without additional context.
+In the previous section, we found that a Transformer model trained with a weighted cross-entropy objective exhibits a monotonic pattern in token predictions. However, this doesn’t mean the model can confidently exit early on every possible sequence. 
+Some sequences are more straightforward ("easy") while others are more ambiguous ("difficult"). For instance, consider the sequence "One of the biggest cities in the world is New _". The next word is likely to be "York" because it's a well-known fact. In contrast, the sequence "The students went to _" is harder to predict without additional context.
 
 ### Investigating Hidden States: Easy vs. Difficult Sequences
+To further investigate what happens in early exiting, in this section, we look at which sequences are "easy" for the model, and which are "difficult".
+We say that a sequence is "easy" if for that sequence the hidden state does not change much between the early layers and the final layer. 
+Intuitively, this means that the model has some idea about what comes next, and more computation minimall changes this idea. 
+We use the CNN Daily Mail summarization dataset, selecting 2500 examples from the validation set. 
+These sequences are fed into a T5 model using the CALM method in an autoregressive manner, recording the hidden states at each layer. 
+With this procedure, we generate 24 hidden states per sequence, given the T5 model has 24 layers.
 
-To understand the properties of hidden states in a monotonic network and their relation to sequence difficulty, we conducted a second experiment. We used the CNN Daily Mail summarization dataset, selecting 2500 examples from the validation set. These sequences were fed into a T5 model in an autoregressive manner, recording the hidden states at each layer. This procedure generated 24 hidden states per sequence, given the T5 model has 24 layers.
+We compute the cosine similarity between the last hidden state (used for next token prediction) and the hidden states from each previous layer. This similarity vector shows how quickly hidden states saturate. If hidden states become similar to the final state after just a few layers (e.g., 4-6 layers), further computation yields minimal benefits. We classify such sequences as "easy". 
+Conversely, sequences requiring almost the entire network to saturate are "difficult".
+We calculate the mean similarity for each sequence, and label the 1000 sequences with the highest mean similarity as "easy" and the 1000 sequences with the lowest mean similarity as "difficult".
 
-#### Experiment Details
-
-1. **Cosine Similarity of Hidden States**: We computed the cosine similarity between the last hidden state (used for next token prediction) and the hidden states from each previous layer. This similarity vector shows how quickly hidden states saturate. If hidden states become similar to the final state after just a few layers (e.g., 4-6 layers), further computation yields minimal benefits. We classify such sequences as "easy". Conversely, sequences requiring almost the entire network to saturate are labeled "difficult".
-
-2. **Identifying Easy and Difficult Sequences**: We calculated the mean similarity for each sequence. We labeled the 1000 sequences with the highest mean similarity as "easy" and the 1000 sequences with the lowest mean similarity as "difficult".
-
-3. **Metrics Computed**: We analyzed the following metrics:
-   - **Index of the First Saturated Layer**: The layer where hidden states first reach high similarity.
+We analyze the following metrics:
+   - **Index of the First Saturated Layer**: The layer where hidden states first reach high similarity to the final hidden state.
    - **Number of Similar Hidden States**: The total number of layers where hidden states are similar to the final state.
    - **Sequence Length**: Average length of sequences.
    - **Monotonicity Indicator**: Whether hidden state similarities strictly increase after layers 0, 4, and 8.
 
 #### Results and Observations
 
-1. **Layer Index and Hidden State Saturation**:
-   - Easy sequences saturate much earlier, around layer 8.65 on average.
-   - Difficult sequences saturate much later, around layer 18.46, close to the model’s final layer.
-
-2. **Number of Similar Hidden States**:
-   - Easy sequences have a larger number of similar hidden states (14.35 on average).
-   - Difficult sequences have fewer similar hidden states (4.54 on average).
-
-3. **Sequence Length**:
-   - Easy sequences tend to be longer (58.16 tokens on average). 
-   - Difficult sequences are shorter (11.48 tokens on average).
-
-4. **Monotonicity of Hidden States**:
-   - A significant portion of easy sequences shows strictly increasing hidden state similarity from the start.
-   - Difficult sequences exhibit monotonic behavior later, with a noticeable increase after layers 4 and 8.
-
-[We should explain what these results imply (e.g. 3. Can be explained by that long sequences have more context and therefore are easier to predict. 1&2 imply that there exist sequences for which we can confidently early exit. 4 provides additional evidence for the monotonicity assumption.)]
+After this experiment, we can say the following things about "easy" and "difficult" sequences:
+ - "Easy" sequences saturate earlier have a larger number of similar hidden states than "difficult" sequences. This means that there are sequences for which we can confidently exit early. 
+ - "Easy" sequences tend to be longer than "difficult" ones. This can be explained by that long sequences have more context and may be easier to predict. This information could be used in the future to speed up the process by only considering early exiting for long sequences.
+ - A large part of the "easy" sequences show strictly increasing hidden state similarity from the start. For the "difficult" sequences, the hidden state similarity noticeably increases after layers 4 and 8.
+  
+[Add back the table]
 
 #### Visualizing Hidden State Evolution
 
-To better illustrate these findings, we plotted the hidden state similarities for various sequences, showing how the hidden states evolve across layers for both easy and difficult sequences. These visualizations highlight the differences in saturation and monotonic behavior.
+To illustrate these findings, we plot the hidden state similarities for various sequences, showing how the hidden states evolve across layers for both easy and difficult sequences. These visualizations highlight the differences in saturation and monotonic behavior.
 
 <p 
    align='center'
@@ -275,8 +266,9 @@ To better illustrate these findings, we plotted the hidden state similarities fo
 </p>
 
 ### Conclusion
-
-Our analysis indicates that an early exit mechanism can benefit from considering sequence length and the early layers’ computation. Even the easiest sequences require a few initial layers before reaching high confidence, suggesting that the first few layers should not be used for early exits to avoid unnecessary computation on confidence measures. This understanding helps refine early exiting mechanisms, optimizing resource use without sacrificing performance.
+Our analysis of "easy" and "difficult" sequences indicates that an early exit mechanism could benefit from considering sequence length.
+Even the easiest sequences require a few initial layers before reaching high confidence, suggesting that the first few layers should not be used for early exits to avoid unnecessary computation of confidence measures. 
+This understanding helps refine early exiting mechanisms, optimizing resource use without sacrificing performance.
 
 ## 3. Experimenting with New Early Exiting Methods Based on Our Insights
 ### Making use of the monotonicity assumption for early exiting
