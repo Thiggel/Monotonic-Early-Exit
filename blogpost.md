@@ -220,11 +220,17 @@ We compute the cosine similarity between the last hidden state (used for next to
 Conversely, sequences requiring almost the entire network to saturate are "difficult".
 We calculate the mean similarity to the final hidden state across layers for each sequence, and label the 1000 sequences with the highest mean similarity as "easy" and the 1000 sequences with the lowest mean similarity as "difficult".
 
-We analyze the following metrics:
-   - **Index of the First Saturated Layer**: The layer where hidden states first reach high similarity to the final hidden state.
-   - **Number of Saturated Layers**: The total number of layers where hidden states are similar to the final state.
-   - **Sequence Length**: Average length of sequences.
-   - **Monotonicity Indicator**: Whether hidden state similarities strictly increase through all layers.
+In these experiments, we look at when the hidden state becomes saturated, and at whether the hidden state similarity increases monotonically. 
+For each layer, we measure the cosine similarity to the hidden state of the final layer, and if this similarity is larger than 0.9, we say the hidden state is saturated. 
+For this analysis, we chose this number somewhat arbitrarily, but it corresponds to situations in which the hidden state at a certain layer is similar to the final hidden state. 
+
+> [!NOTE]
+> A hidden state being saturated does not mean that the prediction cannot change. Small changes in the hidden state may lead to different predictions.
+> Also, we don't know what the proper threshold for classifying a state as saturated is. In some cases it may be the case that the cosine similarity between two hidden states is 0.999, but the predictions made by those layers are different.
+> Nonetheless, looking at the similarity of hidden states across layers, gives us some insight into how feasible early exiting is, and which sequences are "easy" and "difficult".
+
+[reference the table somewhere]
+
 
 |  | Easy sequences | Difficult sequences |
 | :--- | :---: | :---: |
