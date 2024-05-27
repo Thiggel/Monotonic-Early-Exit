@@ -20,7 +20,7 @@ We structure the rest of this blog post into three parts:
 2. In the second part, we investigate early exiting and its monotonicity assumption. We specifically test for which architectures and loss functions it holds. We then delve into how neural networks process "easy" and "hard" sentences, gaining insight into when early exiting makes sense and when it doesn't.
 3. Based on our insights from part 2, we experiment with new early exiting methods.
 
-## 1. What is Early-Exiting in Neural Networks?
+## 1. What is Early Exiting in Neural Networks?
 
 <p 
    align='center'
@@ -131,9 +131,9 @@ $$
 
 In this equation, $\mathbf{H}_S^i$ denotes the hidden state in the shallow module (before the early exit point), and $\mathbf{H}_D^{m(i)}$ denotes the corresponding hidden state in the deep module (after the early exit point). $m(i)$ is usually chosen to successively map the layers in both the shallow and deep modules to one another starting from the end. That is to say, the last layers are mapped to each other, as are the second to last layers, and so on.
 
-## 2. What happens inside an Early-Exiting network?
+## 2. What happens inside an Early Exiting network?
 
-### Do Early-Exiting Networks Behave Monotonically?
+### Do Early Exiting Networks Behave Monotonically?
 
 Now, let's dive deeper into a key assumption underlying early exiting methods: the monotonicity assumption. This assumption posits that as a model processes a token through more layers, its confidence in the prediction for that token should steadily increase. In simpler terms, the more computation the model performs on a token sequence, the more certain it becomes about its prediction.
 
@@ -278,7 +278,7 @@ We design, train, and test three new confidence measures to put this theory to t
 >
    <img 
       src="img/diagrams/early_exit_3_mlp.png" 
-      alt="An MLP that is fed with three hidden states and produces an early-exit decision" 
+      alt="An MLP that is fed with three hidden states and produces an early exit decision" 
       style="
         width: 800px; 
         max-width: 100%;
@@ -286,7 +286,7 @@ We design, train, and test three new confidence measures to put this theory to t
       "
    />
    <br />
-   <em><b>Figure 1:</b> An MLP that is fed with three hidden states and produces an early-exit decision.</em>
+   <em><b>Figure 1:</b> An MLP that is fed with three hidden states and produces an early exit decision.</em>
    <br />
 </p>
 
@@ -330,7 +330,7 @@ We design, train, and test three new confidence measures to put this theory to t
 
 ### Comparing confidence measures
 We use T5 models pre-trained with a weighted cross-entropy objective, tuned for monotonic behavior, to evaluate our methods. 
-To get insight into how our proposed new early-exiting methods work in various scenarios, we want to test them on Question-Answering, Summarization, and Translation, which are the most popular tasks for LLMs.
+To get insight into how our proposed new early exiting methods work in various scenarios, we want to test them on Question-Answering, Summarization, and Translation, which are the most popular tasks for LLMs.
 
 1. **Open-book SQuAD 1.1**[^11]: A Question-Answering dataset sourced from Wikipedia articles, supplemented with questions and corresponding answers from the context.
 2. **WMT15 EN-FR**[^12]: This dataset contains English sentences paired with their French translations.
@@ -406,10 +406,10 @@ Where does this leave us? We've gained the insight that making use of monotonici
 
 ## Wrapping Up
 
-In this blog post, we deep-dove into the monotonous behavior of early-exiting models, first hypothesizing and then showing how and in what situations they become increasingly more confident of a prediction over time. Based on this, we designed new confidence mechanisms that make use of this property and ended up displaying much higher accuracy compared to other confidence measures. Nonetheless, there are still questions remaining that should be addressed through further research:
+In this blog post, we deep-dove into the monotonous behavior of early exiting models, first hypothesizing and then showing how and in what situations they become increasingly more confident of a prediction over time. Based on this, we designed new confidence mechanisms that make use of this property and ended up displaying much higher accuracy compared to other confidence measures. Nonetheless, there are still questions remaining that should be addressed through further research:
 
 1. Can we make use of monotonicity and still have the performance benefits of CALM's confidence methods that only look at the current hidden state? This is most likely an engineering problem that requires many additional optimizations that we did not have the time to implement yet.
-2. Is early exiting the best way of making a model more efficient? We showed that early-exiting crucially depends on this assumption, and that making the model decide on a decision as early as possible benefits the exit mechanism. In other words, we are restricting the model to steer its thinking process in one direction quickly, which takes away the ability to freely ponder. Perhaps, models could benefit from being able to randomly contemplate many different things. There are two further directions we want to mention here: (1) This blog post[^14] and this paper[^15] show that LLMs use their first few layers to randomly explore different "thoughts" while later layers are much more predictable in terms of the end prediction. This leads us to hypothesize that it would be better to constrain the weighted cross entropy objective to just optimize the last ~70% of the model's layers, restricting it less and giving it more time to ponder and explore different directions at first. (2) A very different approach is Mixture-of-Depths[^16] which skips layers instead of exiting altogether. This alleviates the model of having to be monotonous and hence doesn't restrict it at all. It can exhibit completely random behavior, think in many different ways, and at the same time decide to skip certain parts, "specializing" different stages for different processing steps of a token.
+2. Is early exiting the best way of making a model more efficient? We showed that early exiting crucially depends on this assumption, and that making the model decide on a decision as early as possible benefits the exit mechanism. In other words, we are restricting the model to steer its thinking process in one direction quickly, which takes away the ability to freely ponder. Perhaps, models could benefit from being able to randomly contemplate many different things. There are two further directions we want to mention here: (1) This blog post[^14] and this paper[^15] show that LLMs use their first few layers to randomly explore different "thoughts" while later layers are much more predictable in terms of the end prediction. This leads us to hypothesize that it would be better to constrain the weighted cross entropy objective to just optimize the last ~70% of the model's layers, restricting it less and giving it more time to ponder and explore different directions at first. (2) A very different approach is Mixture-of-Depths[^16] which skips layers instead of exiting altogether. This alleviates the model of having to be monotonous and hence doesn't restrict it at all. It can exhibit completely random behavior, think in many different ways, and at the same time decide to skip certain parts, "specializing" different stages for different processing steps of a token.
 
 ## Further Reading
 
