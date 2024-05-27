@@ -258,7 +258,31 @@ To understand the properties of hidden states in a monotonic network and their r
 
 To better illustrate these findings, we plotted the hidden state similarities for various sequences, showing how the hidden states evolve across layers for both easy and difficult sequences. These visualizations highlight the differences in saturation and monotonic behavior.
 
-[Add the plots]
+<p 
+   align='center'
+>
+   <img 
+      src="img/sequence_types/example_93.png" 
+      alt="Fraction of predictions that do not change after each respective layer" 
+      style="
+        width: 800px; 
+        max-width: 100%;
+        height: auto;
+      "
+   />
+   <img 
+      src="img/sequence_types/example_58.png" 
+      alt="Fraction of predictions that do not change after each respective layer" 
+      style="
+        width: 800px; 
+        max-width: 100%;
+        height: auto;
+      "
+   />
+   <br />
+   <em><b>Figure N:</b> Examples of how hidden state similarities evolve over layers in "easy" (green) and "difficult" sequences (blue).</em>
+   <br />
+</p>
 
 ### Conclusion
 
