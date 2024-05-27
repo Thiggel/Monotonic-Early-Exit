@@ -121,7 +121,7 @@ Even though [...], a challenge with CALM is handling attention between tokens wh
 
 #### FREE: Fast and Robust Early Exiting
 
-FREE extends CALM by balancing computational adaptability with reduced overhead. Instead of providing an exit point after every layer, FREE restricts it to two specific points—early in the network and after the final layer. For instance, the model might exit at the fourth layer or use the entire network. This approach allows for copying of missing hidden states in parallel, reducing the computational burden.
+FREE extends CALM by balancing computational adaptability with reduced overhead. Instead of providing an exit point after every layer, FREE restricts it to two specific points—early in the network and after the final layer. For instance, the model might exit at the fourth layer or use the entire network. This approach allows for the copying of missing hidden states in parallel, reducing the computational burden.
 
 FREE also replaces the calibrated confidence thresholds in CALM with learned ones. In addition to the weighted cross-entropy objective, FREE incorporates a layer-wise knowledge distillation loss:
 
@@ -129,9 +129,7 @@ $$
 \mathcal{L}_{KD}= \frac{1}{L_S} \sum _{i=1}^{L_S} \text{MSE} \left( \mathbf{H}_S^i, \mathbf{H}_D^{m(i)} \right)  
 $$
 
-In this equation, $\mathbf{H}_S^i$ denotes the hidden state in the shallow module (before the early exit point), and $\mathbf{H}_D^{m(i)}$ denotes the corresponding hidden state in the deep module (after the early exit point). The mapping $m(i)$ can take various forms:
-
-[Usually the last layer of the shallow module is mapped to the last layer of the deep module and so on.]
+In this equation, $\mathbf{H}_S^i$ denotes the hidden state in the shallow module (before the early exit point), and $\mathbf{H}_D^{m(i)}$ denotes the corresponding hidden state in the deep module (after the early exit point). $m(i)$ is usually chosen to successively map the layers in both the shallow and deep modules to one another starting from the end. That is to say, the last layers are mapped to each other, as are the second to last layers, and so on.
 
 ## 2. What happens inside an Early-Exiting network?
 
@@ -143,11 +141,11 @@ But why is this assumption so important? Imagine if a model's confidence didn't 
 
 ### Testing the Monotonicity Assumption
 
-The early exiting methods implicitly assume the monotonicity property, but they don’t test whether it actually holds. So to see if this monotonicity assumption holds, we conduct experiments with three different versions of the T5 model. The T5 model is a common encoder-decoder architecture with 24 layers. 
-We test the monotonicity assumption on a T5 model which doesn't use early exiting, one which uses the CALM method, and one which uses the FREE method. 
+The early exiting methods implicitly assume the monotonicity property, but they don’t test whether it holds. So to see if this monotonicity assumption holds, we conduct experiments with three different versions of the T5 model. The T5 model is a common encoder-decoder architecture with 24 layers. 
+We test the monotonicity assumption on a T5 model that doesn't use early exiting, one that uses the CALM method, and one that uses the FREE method. 
 We use the BigPatent dataset[^9], which is commonly used for summarization tasks. 
  
-The monotonicity assumption states that when a model makes a top prediction at a given layer, this prediction will persist as top prediction through subsequent layers, with the model becoming increasingly confident in this prediction as it progresses.
+The monotonicity assumption states that when a model makes a top prediction at a given layer, this prediction will persist as a top prediction through subsequent layers, with the model becoming increasingly confident in this prediction as it progresses.
 In other words, there are two parts to this assumption: the prediction remains the same after a given layer, and the model (monotonically) becomes more confident in that prediction with each additional layer. We test both parts of the monotonicity assumption with the following two experiments. 
 
 **Fraction of Stable Predictions**: We measure the fraction of tokens for which the top-1 prediction remains unchanged after each layer. If this fraction is high for a certain layer, it means that at that layer the model has often made a final prediction and doesn't change it in later layers.
@@ -168,8 +166,6 @@ In other words, there are two parts to this assumption: the prediction remains t
    <em><b>Figure 1:</b> The fraction of predictions that do not change after each respective layer.</em>
    <br />
 </p>
-
-[change it so that in both plots the default network is called "no early exit(ing)"]
 
 From the results, we can see that the CALM model often makes a final prediction very early on in the network, and rarely changes its prediction. 
 In contrast, the default (no early exit) and FREE models change their predictions much more often in later layers. This indicates that the CALM model may be a better candidate for using early exiting, because it is much less likely to change the prediction for a given token. 
@@ -313,7 +309,7 @@ We design, train, and test three new confidence measures to put this theory to t
    <br />
 </p>
 
-**Heuristic Based on Top-1 Softmax Scores**: This heuristic exits if the last three layers' top-1 softmax scores are monotonically increasing and the current top-1 confidence exceeds 0.9. This heuristic is grounded in our observations from the monotonicity experiments, where such patterns almost always indicated a stable prediction.
+**Heuristic Based on Top-1 Softmax Scores**: This heuristic exits if the last three layers' top-1 softmax scores are monotonically increasing and the current top-1 confidence exceeds 0.9. This heuristic is grounded in our observations from the monotonicity experiments, where such patterns almost always indicate a stable prediction.
 
 <p 
    align='center'
@@ -435,7 +431,7 @@ In this blog post, we deep-dove into the monotonous behavior of early-exiting mo
 
 [^9]: E. Sharma, C. Li, and L. Wang, “BIGPATENT: a Large-Scale dataset for abstractive and coherent summarization,” arXiv.org, Jun. 10, 2019. https://arxiv.org/abs/1906.03741
 
-[^10]: Sepp Hochreiter and Jürgen Schmidhuber. “Long Short-Term memory,” MIT Press Journals & Magazine | IEEE Xplore, Nov. 15, 1997. https://ieeexplore.ieee.org/abstract/document/6795963
+[^10]: Sepp Hochreiter and Jürgen Schmidhuber. “Long Short-Term Memory,” MIT Press Journals & Magazine | IEEE Xplore, Nov. 15, 1997. https://ieeexplore.ieee.org/abstract/document/6795963
 
 [^11]: P. Rajpurkar, J. Zhang, K. Lopyrev, and P. Liang, “SQUAD: 100,000+ questions for machine comprehension of text,” arXiv.org, Jun. 16, 2016. https://arxiv.org/abs/1606.05250
 
