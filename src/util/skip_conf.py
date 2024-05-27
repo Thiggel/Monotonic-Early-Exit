@@ -120,13 +120,6 @@ def last_three_top_prob_heuristic(
     above_threshold = top_probs[:, -1] > threshold
 
     confidence = increasing & above_threshold
-
-    if True in confidence:
-        print("EE at : " + str(layer_index) + " entire list looks like: " + str(confidence))
-    elif layer_index > 22:
-        print("nothing at the last layer")
-
-
     confidence = confidence.float()
     
     return confidence
