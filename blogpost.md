@@ -62,9 +62,6 @@ $$
 \mathcal{L}_{KD}= \frac{1}{L_S} \sum _{i=1}^{L_S} \text{MSE} \left( \mathbf{H}_S^i, \mathbf{H}_D^{m(i)} \right)  
 $$
 
-[TODO: make equation simpler]
-
-
 In this equation, $\mathbf{H}_S^i$ denotes the hidden state in the shallow module (before the early exit point), and $\mathbf{H}_D^{m(i)}$ denotes the corresponding hidden state in the deep module (after the early exit point). The mapping $m(i)$ can take various forms:
 
 [Usually the last layer of the shallow module is mapped to the last layer of the deep module and so on.]
@@ -87,10 +84,44 @@ We evaluate these models using the BigPatent dataset, which is commonly used for
 
 1. **Fraction of Stable Predictions**: We measure the fraction of tokens for which the top-1 prediction remains unchanged after each layer. If a model can make a correct prediction early on and maintain it, this suggests that the model's confidence is indeed increasing with more computation.
 
+<p 
+   align='center'
+>
+   <img 
+      src="https://github.com/Thiggel/Monotonic-Early-Exit/blob/main/img/nochange-1.png?raw=true" 
+      alt="Fraction of predictions that do not change after each respective layer" 
+      style="
+        width: 800px; 
+        max-width: 100%;
+        height: auto;
+      "
+   />
+   <br />
+   <em><b>Figure 1:</b> The fraction of predictions that do not change after each respective layer.</em>
+   <br />
+</p>
+
+
 The results shown in Figure 1 indicate that the CALM model rapidly gains confidence. By the second layer, CALM's top-1 prediction stabilizes for a significant fraction of tokens. By the fourth layer, it maintains its prediction for most tokens. In contrast, the default T5 and FREE models exhibit much less certainty, indicating less monotonic behavior.
 
 
 2. **Confidence Over Layers**: We plot the mean and standard deviation of the model's confidence in its final prediction across layers. This helps us visualize how the model's confidence evolves as it processes more layers.
+
+<p 
+   align='center'
+>
+   <img 
+      src="https://github.com/Thiggel/Monotonic-Early-Exit/blob/main/img/top1_curves-1.png?raw=true" 
+      alt="Fraction of predictions that do not change after each respective layer" 
+      style="
+        max-width: 100%;
+        height: auto;
+      "
+   />
+   <br />
+   <em><b>Figure 2:</b> The mean and standard deviation of the confidence curves for the eventual predictions, plotted at each layer.</em>
+   <br />
+</p>
 
 Figure 2 demonstrates that CALM shows a clear monotonic increase in confidence as it processes more layers. The vanilla T5 model, however, gains confidence much later in the network, while FREE shows a more complex pattern: its confidence increases until the first exit point, drops slightly, and then increases again towards the end.
 
