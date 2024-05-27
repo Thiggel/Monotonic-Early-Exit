@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 
-def plot_hidden_state_similarities(sequences, similarity_thereshold=0.9, save_path=None, colors=None):
+def plot_hidden_state_similarities(sequences, similarity_thereshold=0.9, save_path=None, colors=None, save_format='png'):
     # Plot the hidden state similarities
     figure = plt.gcf()
     ax = figure.gca()
@@ -37,7 +37,7 @@ def plot_hidden_state_similarities(sequences, similarity_thereshold=0.9, save_pa
     ax.xaxis.label.set_size(16)
     ax.yaxis.label.set_size(16)
 
-    ax.set_title("Similarities between the last and every other hidden state")
+    # ax.set_title("Similarities between the last and every other hidden state")
     # Set title size
     ax.title.set_size(18)
 
@@ -47,4 +47,4 @@ def plot_hidden_state_similarities(sequences, similarity_thereshold=0.9, save_pa
 
     # Save figure
     if save_path:
-        plt.savefig(save_path, format='pdf', bbox_inches='tight')
+        plt.savefig(save_path+f".{save_format}", format=save_format, bbox_inches='tight', dpi=200)
