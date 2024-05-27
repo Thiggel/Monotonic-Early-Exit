@@ -12,6 +12,7 @@ def recurrent_classifier(
     all_softmax_values: list[torch.Tensor] = None,
     layer_index: int = None,
     should_reset: bool = False,
+    threshold: float = None,
 ):
     assert hidden_states is not None
     assert classifier is not None
@@ -37,6 +38,7 @@ def last_three_hiddens_classifier(
     all_softmax_values: list[torch.Tensor] = None,
     layer_index: int = None,
     should_reset: bool = False,
+    threshold: float = None,
 ):
     assert classifier is not None
 
@@ -57,6 +59,7 @@ def hidden_state_saturation(
     all_softmax_values: list[torch.Tensor] = None,
     layer_index: int = None,
     should_reset: bool = False,
+    threshold: float = None,
 ):
     if all_hidden_states is None or len(all_hidden_states) < 2:
         return torch.zeros(hidden_states.shape[0])
@@ -77,6 +80,7 @@ def last_three_top_prob_heuristic(
     all_softmax_values: list[torch.Tensor] = None,
     layer_index: int = None,
     should_reset: bool = False,
+    threshold: float = None,
 ):
     if (
         all_softmax_values is None 
@@ -113,9 +117,14 @@ def last_three_top_prob_heuristic(
     increasing = torch.all(top_probs[:, 1:] > top_probs[:, :-1], dim=1)
 
     # last confidence must be above 0.9
-    above_threshold = top_probs[:, -1] > 0.9
+    above_threshold = top_probs[:, -1] > threshold
 
     confidence = increasing & above_threshold
+
+    if True in confidence:
+        print("EE at : " + str(layer_index) + " entire list looks like: " + confidence )
+    elif layer_index > 22:
+        print("nothing at the last layer")
 
 
     confidence = confidence.float()
@@ -130,6 +139,7 @@ def softmax_confidence(
     all_softmax_values: list[torch.Tensor] = None,
     layer_index: int = None,
     should_reset: bool = False,
+    threshold: float = None,
 ):
     assert logits is not None
     probs = torch.softmax(logits, dim=-1)
@@ -148,6 +158,7 @@ def meta_confidence(
     all_softmax_values: list[torch.Tensor] = None,
     layer_index: int = None,
     should_reset: bool = False,
+    threshold: float = None,
 ):
     assert hidden_states is not None
     assert classifier is not None
@@ -155,31 +166,6 @@ def meta_confidence(
     preds = classifier(hidden_states)
     probs = torch.softmax(preds, dim=-1)
     return probs[..., 1].squeeze()
-
-def meta_n_confidence(
-    logits: torch.Tensor = None,
-    hidden_states: torch.Tensor = None,
-    classifier: torch.nn.Linear = None,
-    all_hidden_states: list[torch.Tensor] = None,
-    all_softmax_values: list[torch.Tensor] = None,
-    layer_index: int = None,
-    should_reset: bool = False,
-):
-    assert hidden_states is not None
-    assert classifier is not None
-    if hidden_states.shape[0] < 3:
-        print(hidden_states.shape)
-        return torch.tensor([0.0])
-    print("==============================")
-    print("hs shape")
-    print(hidden_states.shape)
-    print("hs")
-    print(hidden_states)
-    print("==============================")
-    preds = classifier(hidden_states[-3:])
-    probs = torch.softmax(preds, dim=-1)
-    return_value = probs[..., 1].squeeze()
-    return return_value
 
 
 def get_confidence_class(key):
@@ -237,6 +223,7 @@ def get_skip_mask(
         all_softmax_values=all_softmax_values,
         layer_index=layer_index,
         should_reset=should_reset,
+        threshold=config.exit_conf_threshold,
     )
     mask = torch.where(conf <= threshold, 0., 1.).bool()
     if not return_conf:
