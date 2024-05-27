@@ -273,18 +273,18 @@ This understanding helps refine early exiting mechanisms, optimizing resource us
 ## 3. Experimenting with New Early Exiting Methods Based on Our Insights
 ### Making use of the monotonicity assumption for early exiting
 
-After our deep dive into the behavior of hidden states, we realized there’s a lot of potential in leveraging multiple layers' hidden states to improve the early exit decision process. If we train our model with a weighted cross-entropy objective, it encourages a sort of "confidence buildup" layer by layer. This observation led us to hypothesize that using a combination of hidden states from previous layers, rather than just the current one, could make our exit mechanism more reliable.
+After our deep dive into the behavior of hidden states, we realized there’s a lot of potential in leveraging multiple layers' hidden states to improve the early exit decision process. If we train our model with a weighted cross-entropy objective, it encourages a sort of "confidence buildup" layer by layer. This observation leads us to hypothesize that using a combination of hidden states from previous layers, rather than just the current one, could make our exit mechanism more reliable.
 
-We designed, trained, and tested three new confidence measures to put this theory to the test:
+We design, train, and test three new confidence measures to put this theory to the test:
 
-**Three-Previous-Hidden-States Classifier**: Here, we use a two-layered MLP. The input comprises three times the transformer's hidden dimensionality, corresponding to three consecutive hidden states. This is the same as what was used in the [....CALM/FREE.....] paper, but here the classifier looks at the last three hidden states instead of only the last one. With ReLU activation and a hidden layer matching the transformer's dimensionality, this classifier aims to leverage more context from the model's internal states.
+**Three-Previous-Hidden-States Classifier**: Here, we use a two-layered MLP that takes in the concatenation of the last three layers' hidden states.
 
 <p 
    align='center'
 >
    <img 
       src="img/diagrams/early_exit_3_mlp.png" 
-      alt="Fraction of predictions that do not change after each respective layer" 
+      alt="An MLP that is fed with three hidden states and produces an early-exit decision" 
       style="
         width: 800px; 
         max-width: 100%;
@@ -292,7 +292,7 @@ We designed, trained, and tested three new confidence measures to put this theor
       "
    />
    <br />
-   <em><b>Figure 1:</b> The overview of the early exiting framwork.</em>
+   <em><b>Figure 1:</b> An MLP that is fed with three hidden states and produces an early-exit decision.</em>
    <br />
 </p>
 
@@ -303,7 +303,7 @@ We designed, trained, and tested three new confidence measures to put this theor
 >
    <img 
       src="img/diagrams/early_exit_lstm.png" 
-      alt="Fraction of predictions that do not change after each respective layer" 
+      alt="An LSTM that sequentially processes the hidden state at each layer" 
       style="
         width: 800px; 
         max-width: 100%;
@@ -311,7 +311,7 @@ We designed, trained, and tested three new confidence measures to put this theor
       "
    />
    <br />
-   <em><b>Figure 1:</b> The overview of the early exiting framwork.</em>
+   <em><b>Figure 1:</b> An LSTM that sequentially processes the hidden state at each layer.</em>
    <br />
 </p>
 
@@ -330,18 +330,17 @@ We designed, trained, and tested three new confidence measures to put this theor
       "
    />
    <br />
-   <em><b>Figure 1:</b> The overview of the early exiting framwork.</em>
+   <em><b>Figure 1:</b> A heuristic that exits if the last three top-1 predictions are increasing and the model is at least 90% confident.</em>
    <br />
 </p>
 
-For each confidence measure, we set a minimum exit layer at four, based on our understanding that even the simplest sequences need a few initial layers to build confidence.
-
 ### Comparing confidence measures
-We use T5 models pre-trained with a weighted cross-entropy objective, tuned for monotonic behavior, to evaluate our methods. The datasets include:
+We use T5 models pre-trained with a weighted cross-entropy objective, tuned for monotonic behavior, to evaluate our methods. 
+To get insight into how our proposed new early-exiting methods work in various scenarios, we want to test them on Question-Answering, Summarization, and Translation, which are the most popular tasks for LLMs.
 
-1. **Open-book SQuAD 1.1**: A QA dataset sourced from Wikipedia articles, supplemented with questions and corresponding answers from the context.
-2. **CNN/DM**: Comprising news articles and their summaries, perfect for testing summarization tasks.
-3. **WMT15 EN-FR**: This dataset contains English sentences paired with their French translations, ideal for translation tasks.
+1. **Open-book SQuAD 1.1**: A Question-Answering dataset sourced from Wikipedia articles, supplemented with questions and corresponding answers from the context.
+2. **WMT15 EN-FR**: This dataset contains English sentences paired with their French translations.
+3. **CNN/DM**: A summarization dataset composed of news articles and their target summaries.
 
 #### Baselines and Novel Measures
 
@@ -351,9 +350,9 @@ We compare our new confidence measures against the three baseline methods from C
 2. **Hidden-State Saturation**: Measures the change in hidden state similarity across layers.
 3. **Single Hidden State Classifier**: A classifier trained on the current hidden state.
 
-We use a threshold value of 0.9, inspired by the FREE repository, and apply decaying threshold temperatures of 4 for each dataset.
+To summarize, we are evaluating six different confidence measures, three of which are classifiers that need to be trained before. Therefore, we first train these for five epochs, driving them to output true whenever the current layer's prediction matches the ground-truth target, and "false" otherwise.
 
-We train the proposed classifiers using the loss function proposed for the CALM classifier, running for five epochs to ensure robustness.
+The results on the three datasets are shown in the plots below. More specifically, these plots show each confidence measure's performance vs. its latency, i.e., how good it is vs. how fast it is. Performance is measured in different ways (F1, BLEU, and ROUGE-1), but generally, the higher the performance, the more similar its prediction is to the ground truth. Furthermore, latency is measured as the number of tokens the model produces per second. Thus, the closer a point is to the top-right corner of the plot, the better. 
 
 <p 
    align='center'
@@ -368,7 +367,7 @@ We train the proposed classifiers using the loss function proposed for the CALM 
       "
    />
    <br />
-   <em><b>Figure 1:</b> The overview of the early exiting framwork.</em>
+   <em><b>Figure 1:</b> The results on SQuAD (Question-Answering), measured in F1-score vs. produced samples per second.</em>
    <br />
 </p>
 
@@ -385,7 +384,7 @@ We train the proposed classifiers using the loss function proposed for the CALM 
       "
    />
    <br />
-   <em><b>Figure 1:</b> The overview of the early exiting framwork.</em>
+   <em><b>Figure 1:</b> The results on IWSLT (Translation), measured in BLEU-score vs. produced samples per second.</em>
    <br />
 </p>
 
@@ -402,11 +401,31 @@ We train the proposed classifiers using the loss function proposed for the CALM 
       "
    />
    <br />
-   <em><b>Figure 1:</b> The overview of the early exiting framwork.</em>
+   <em><b>Figure 1:</b> The results on CNN/DM (Summarization), measured in ROUGE-1-score vs. produced samples per second.</em>
    <br />
 </p>
 
+
+These results show that our proposed confidence measures exhibit much better performance than CALM's confidence, i.e., they are much closer to the top (and the no-early-exiting baseline) than the original measures. However, they also exhibit high latency, mostly even slower than no early exiting.
+
+Where does this leave us? We've gained the insight that making use of monotonicity does benefit the model's performance. Nevertheless, optimizing these confidence measures would still be crucial to making them useful for real-world applications. It seems to make sense to condition a classifier on multiple past hidden states since the classifier can truly make use of this information and arrive at much better-informed exit decisions. On the other hand, the downside of using multiple hidden states seems to be that there is that it creates a lot more overhead as the classifier has to process more information and more memory is used for saving past hidden states.
+
+## Wrapping Up
+
+In this blog post, we deep-dove into the monotonous behavior of early-exiting models, first hypothesizing and then showing how and in what situations they become increasingly more confident of a prediction over time. Based on this, we designed new confidence mechanisms that make use of this property and actually ended up displaying much higher accuracy compared to other confidence measures. Nonetheless, there are still questions remaining that should be addressed through further research:
+
+1. Can we make use of monotonicity and still have the performance benefits of CALM's confidence methods that only look at the current hidden state? This is most likely an engineering problem which requires many additional optimizations that we did not have the time to implement yet.
+2. Is early exiting the best way of making a model more efficient? We showed that early-exiting crucially depends on this assumption, and that making the model decide on a decision as early as possible benefits the exit mechanism. In other words, we are restricting the model to steer its thinking process into one direction quickly, which takes away the ability to freely ponder. Perhaps, models could benefit from being able to randomly contemplate many different things. There is two further directions we want to mention here: (1) This blogpost^[1] and this paper^[2] show that the first few layers of LLMs exhibit quite random behavior while the rest is more predictable. This leads us to hypothesize that it would be better to constrain the weighted cross entropy objective to just optimizing the last 70% of the model's layers, restricting it less and giving it more time to ponder and explore different directions at first. (2) A very different approach is Mixture-of-Depths^[3] which skips layers instead of exiting altogether. This alleviates the model of having to be monotonous and hence doesn't restrict it at all. It can exhibit completely random behavior, think in many different ways, and at the same time decide to skip certain parts, "specializing" different stages for different processing steps of a token.
+
 ## References
+
+[1] Nostalgebraist, “interpreting GPT: the logit lens,” Aug. 31, 2020. https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens
+
+[2] C. Wendler, V. Veselovsky, G. Monea, and R. West, “Do llamas work in English? on the latent language of multilingual transformers,” arXiv.org, Feb. 16, 2024. https://arxiv.org/abs/2402.10588
+
+[3] D. Raposo, S. Ritter, B. Richards, T. Lillicrap, P. C. Humphreys, and A. Santoro, “Mixture-of-Depths: Dynamically allocating compute in transformer-based language models,” arXiv.org, Apr. 02, 2024. https://arxiv.org/abs/2404.02258
+
+
 
 [1] Josh Achiam et al. GPT-4 Technical Report. 2024. arXiv: 2303.08774 [cs.CL].
 
