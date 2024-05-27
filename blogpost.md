@@ -9,7 +9,7 @@ Large Language Models (LLMs) exhibit exceptional performance. The primary factor
 
 However, this progress comes at a significant cost. Training these massive models requires an enormous amount of energy and resources, which in turn leads to substantial environmental impact. For example, GPT-3 consumed 1,287 MWh of energy and emitted 552 tonnes of CO₂ equivalents during its training process. That's about as much carbon dioxide as 120 average cars emit in a year. Furthermore, many applications, such as autonomous driving or real-time voice assistants, cannot afford high latency when generating predictions.
 
-How can we continue to advance AI while avoiding a high-latency bottleneck? One promising direction is to make models allocate their resources more efficiently. Imagine we could teach a model to be smart about how it uses its computational power — only activating certain parts of its network when needed, or knowing when it’s done processing a piece of information early. Drawing an analogy to the human brain, you might think of it as the model being able to choose how long it ponders about a certain thing, so that we can optimize it to contemplate for as little time as possible. This concept is known as adaptive computation allocation.
+How can we continue to advance AI while avoiding a high-latency bottleneck? One promising direction is to make models allocate their resources more efficiently. Imagine we could teach a model to be smart about how it uses its computational power — only activating certain parts of its network when needed, or knowing when it’s done processing a piece of information early. Drawing an analogy to the human brain, you might think of it as the model being able to choose how long it ponders about a certain decision. This concept is known as adaptive computation allocation.
 
 One promising approach within this concept is called early exiting. Instead of running every piece of input through every layer of a model, the model can decide to "exit" early if it’s confident enough in its prediction. This way, we save computational resources by not over-processing data. 
 
@@ -157,15 +157,15 @@ But why is this assumption so important? Imagine if a model's confidence didn't 
 
 ### Testing the Monotonicity Assumption
 
-The early exiting methods implicitly assume the monotonicity property, but they don’t test whether it actually holds. So to see if this monotonicity assumption holds, we conduct an experiment with three different settings of the T5 model:
+The early exiting methods implicitly assume the monotonicity property, but they don’t test whether it actually holds. So to see if this monotonicity assumption holds, we conduct experiments with three different versions of the T5 model.
+We test the monotonicity assumption on the default T5 model, which does not use early exiting, the CALM model, and the FREE model. 
+We use the BigPatent dataset, which is commonly used for summarization tasks. 
+ 
+The monotonicity assumption states that when a model makes a top prediction at a given layer, this prediction will persist as top prediction through subsequent layers, with the model becoming increasingly confident in this prediction as it progresses.
+In other words, there are two parts to this assumption: the prediction remains the same after a given layer, and the model (monotonically) becomes more confident in that prediction with each additional layer. We test both parts of the monotonicity assumption with the following two experiments. 
 
-1. **Default T5**: The standard model without any early exiting mechanism.
-2. **CALM**: A model optimized with a weighted cross-entropy objective to favor predictions from higher layers.
-3. **FREE**: An extended version of CALM that includes a layer-wise knowledge distillation loss to refine the early exiting process.
 
-We evaluate these models using the BigPatent dataset, which is commonly used for summarization tasks. Here's how we test the monotonicity assumption:
-
-1. **Fraction of Stable Predictions**: We measure the fraction of tokens for which the top-1 prediction remains unchanged after each layer. If a model can make a correct prediction early on and maintain it, this suggests that the model's confidence is indeed increasing with more computation.
+**Fraction of Stable Predictions**: We measure the fraction of tokens for which the top-1 prediction remains unchanged after each layer. If this fraction is high for a certain layer, it means that at that layer the model has often made a prediction and doesn't change it in later layers.
 
 <p 
    align='center'
@@ -184,11 +184,13 @@ We evaluate these models using the BigPatent dataset, which is commonly used for
    <br />
 </p>
 
+[change it so that in both plots the default network is called either "Default" or "Vanilla"]
 
-The results shown in Figure 1 indicate that the CALM model rapidly gains confidence. By the second layer, CALM's top-1 prediction stabilizes for a significant fraction of tokens. By the fourth layer, it maintains its prediction for most tokens. In contrast, the default T5 and FREE models exhibit much less certainty, indicating less monotonic behavior.
+From the results, we can see that the CALM model often makes a final prediction very early on in the network, and rarely changes its prediction. 
+In contrast, the default and FREE models change their predictions much more often in later layers. This indicates that the CALM model may be a better candidate for using early exiting, because exiting early is much less likely to change the prediction for a given token. 
 
 
-2. **Confidence Over Layers**: We plot the mean and standard deviation of the model's confidence in its final prediction across layers. This helps us visualize how the model's confidence evolves as it processes more layers.
+**Confidence Over Layers**: We also plot the mean and standard deviation of the model's confidence in its final prediction across layers. This helps us visualize how the model's confidence evolves as it processes more layers.
 
 <p 
    align='center'
@@ -206,13 +208,11 @@ The results shown in Figure 1 indicate that the CALM model rapidly gains confide
    <br />
 </p>
 
-Figure 2 demonstrates that CALM shows a clear monotonic increase in confidence as it processes more layers. The vanilla T5 model, however, gains confidence much later in the network, while FREE shows a more complex pattern: its confidence increases until the first exit point, drops slightly, and then increases again towards the end.
+Figure 2 demonstrates that CALM shows a clear monotonic increase in confidence as it processes more layers. The default model, however, gains confidence much later in the network, while FREE shows a more complex pattern: its confidence increases until the first exit point, drops slightly, and then increases again towards the end. Technically speaking, this means that the monotonicity assumption holds for both the default and CALM models, but the CALM model gains confidence much earlier in the network and therefore seems to be more fit for being used with early exiting. 
 
-Figure 3 illustrates three example forward passes of the same sequence for the three models. The default T5 shows unpredictable changes in its top predictions across layers. FREE also displays non-monotonic behavior but to a lesser extent. CALM, on the other hand, decides on a prediction early and sticks with it, demonstrating more consistent confidence growth.
-
-### Conclusion
-
-These results suggest that the weighted cross-entropy objective in CALM encourages the model to decide on predictions as early as possible, exhibiting a predominantly monotonic increase in confidence. This behavior supports the feasibility of early exiting mechanisms. By leveraging this monotonic confidence growth, models can exit early, saving computational resources without sacrificing accuracy. 
+The results of these experiments show that the monotonicity assumption holds best for the CALM method. 
+This suggests that CALM with its cross-entropy objective may be the best candidate for early exiting. 
+With this method, exiting early at a certain layer has a high likelihood of yielding the same prediction as continuing through all layers.
 
 ### Easy and Difficult Sequences: Understanding Hidden State Saturation
 
