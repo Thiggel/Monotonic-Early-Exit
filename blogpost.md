@@ -24,7 +24,7 @@ We struture the rest of this blog post into three parts:
 2. In the second part, we investigate deeper into early exiting and its monotonicity assumption. We specifically test for which architectures and especially loss functions it holds and for which it doesn't. We furthermore delve into how neural networks process "easy" and "hard" sentences, gaining insights into when early exiting makes more sense and when it doesn't.
 3. Based on our insights from section 2, we experiment with new early exiting methods.
 
-## 1. Early Exiting in Neural Networks
+## 1. What is Early-Exiting in Neural Networks?
 
 <p 
    align='center'
@@ -137,7 +137,7 @@ In this equation, $\mathbf{H}_S^i$ denotes the hidden state in the shallow modul
 
 [Usually the last layer of the shallow module is mapped to the last layer of the deep module and so on.]
 
-## 2. Our Investigations Into the Inner Workings of Early Exiting
+## 2. What happens inside an Early-Exiting network?
 
 ### Do Early-Exiting Networks Behave Monotonically?
 
