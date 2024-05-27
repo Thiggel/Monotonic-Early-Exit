@@ -143,13 +143,6 @@ class PlotMonotonicity:
             fig = plt.gcf()
             ax = fig.gca()
 
-            white_blue = '#cee0e0'
-            ax.set_facecolor(white_blue)
-            ax.spines['right'].set_visible(False)
-            ax.spines['top'].set_visible(False)
-            ax.spines['bottom'].set_visible(False)
-            ax.spines['left'].set_visible(False)
-
             dark_grey = '#202020'
 
             # Customize the color of the ticks
