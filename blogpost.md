@@ -363,7 +363,56 @@ We use a threshold value of 0.9, inspired by the FREE repository, and apply deca
 
 We train the proposed classifiers using the loss function proposed for the CALM classifier, running for five epochs to ensure robustness.
 
+<p 
+   align='center'
+>
+   <img 
+      src="img/SQUAD F1 Score-1.png" 
+      alt="Fraction of predictions that do not change after each respective layer" 
+      style="
+        width: 800px; 
+        max-width: 100%;
+        height: auto;
+      "
+   />
+   <br />
+   <em><b>Figure 1:</b> The overview of the early exiting framwork.</em>
+   <br />
+</p>
 
+<p 
+   align='center'
+>
+   <img 
+      src="img/ISWLT BLEU Score-1.png" 
+      alt="Fraction of predictions that do not change after each respective layer" 
+      style="
+        width: 800px; 
+        max-width: 100%;
+        height: auto;
+      "
+   />
+   <br />
+   <em><b>Figure 1:</b> The overview of the early exiting framwork.</em>
+   <br />
+</p>
+
+<p 
+   align='center'
+>
+   <img 
+      src="img/CNNDM ROUGE-1 Score-1.png" 
+      alt="Fraction of predictions that do not change after each respective layer" 
+      style="
+        width: 800px; 
+        max-width: 100%;
+        height: auto;
+      "
+   />
+   <br />
+   <em><b>Figure 1:</b> The overview of the early exiting framwork.</em>
+   <br />
+</p>
 
 ## References
 
