@@ -13,30 +13,18 @@ How can we continue to advance AI while avoiding a high-latency bottleneck? One 
 
 One promising approach within this concept is called early exiting. Instead of running every piece of input through every layer of a model, the model can decide to "exit" early if it’s confident enough in its prediction. This way, we save computational resources by not over-processing data. 
 
-In this work, we focus on Transformer models, the backbone of most state-of-the-art language models. For early exiting to work effectively, there’s an underlying assumption: the more a model processes a token, the more confident it becomes in its prediction. We call this the *monotonicity assumption*. Essentially, it means that as the model processes information layer by layer, its confidence should steadily increase without decreasing again.
+In this work, we focus on Transformer models, the backbone of most state-of-the-art language models. For early exiting to work effectively, there’s an underlying assumption: the more a model processes a token, the more confident it becomes in its prediction. We call this the *monotonicity assumption*. Essentially, it means that as the model processes information layer by layer, confidence should steadily increase without decreasing again. [also, say that it shouldnt change its prediction]
 
 In the first part of this blog post, we want to give an introduction to early exiting, explaining it and its evolution in more depth. 
 Moreover, we performed interesting investigations into the inner workings of common early exiting architectures, presented in the second part. 
 Lastly, based on our investigations, we've come up with new ways of improving early exiting architectures, which we will show at the end.
 
-We struture rest of this blog post into three parts: The first part explains early exiting and its evolution in more depth
+We struture rest of this blog post into three parts: 
+1. The first part explains early exiting and its evolution in more depth.
+2. In the second part, we investigate deeper into early exiting and its monotonicity assumption. We specifically test for which architectures and especially loss functions it holds and for which it doesn't. We furthermore delve into how neural networks process "easy" and "hard" sentences, gaining insights into when early exiting makes more sense and when it doesn't.
+3. Based on our insights from section 2, we experiment with new early exiting methods.
 
-In the first part of this blog post, we give an explanation of early exiting 
-
-In the second 
-and the relevance of monotonicity. 
-
-Then, we perform experiments about monotonicity.
-
-Finally, we use what we found to propose and test new early exiting architectures.
-
-We (1) investigate the monotonicity assumption in prominent early exiting architectures (Bae et al., 2023; Schuster et al., 2022). We conclude that a weighted cross-entropy learning objective drives the model to decide on a prediction (1) as early as possible, leading to mostly monotonic behavior after a certain layer. Furthermore, we (2) explore the hidden states of a network produced by processing sequences of different difficulty levels and examine the effects of the difficulty levels on hidden state saturation and monotonicity.
-
-Based on the findings, we (3) propose a new early exiting mechanism that exploits monotonic
-behavior, called Monotonic Early Exiting (MEE). Our method exits based on the hidden states of
-the last n layers while employing a minimum exit layer.
-
-### Early Exiting in Neural Networks
+## 1. Early Exiting in Neural Networks
 
 <p 
    align='center'
@@ -148,6 +136,8 @@ $$
 In this equation, $\mathbf{H}_S^i$ denotes the hidden state in the shallow module (before the early exit point), and $\mathbf{H}_D^{m(i)}$ denotes the corresponding hidden state in the deep module (after the early exit point). The mapping $m(i)$ can take various forms:
 
 [Usually the last layer of the shallow module is mapped to the last layer of the deep module and so on.]
+
+## 2. Our Investigations Into the Inner Workings of Early Exiting
 
 ### Do Early-Exiting Networks Behave Monotonically?
 
