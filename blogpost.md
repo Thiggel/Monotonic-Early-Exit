@@ -210,30 +210,38 @@ Some sequences are more straightforward ("easy") while others are more ambiguous
 
 ### Investigating Hidden States: Easy vs. Difficult Sequences
 To further investigate what happens in early exiting, in this section, we look at which sequences are "easy" for the model, and which are "difficult".
-We say that a sequence is "easy" if for that sequence the hidden state does not change much between the early layers and the final layer. 
-Intuitively, this means that the model has some idea about what comes next, and more computation minimall changes this idea. 
+We say that a sequence is "easy" if for that sequence the hidden state at the early layers is already almost the same as it will be after the final layer.
+Intuitively, this means that early on the model has almost the same idea about which token comes next as after all the layers. 
 We use the CNN Daily Mail summarization dataset, selecting 2500 examples from the validation set. 
 These sequences are fed into a T5 model using the CALM method in an autoregressive manner, recording the hidden states at each layer. 
 With this procedure, we generate 24 hidden states per sequence, given the T5 model has 24 layers.
 
 We compute the cosine similarity between the last hidden state (used for next token prediction) and the hidden states from each previous layer. This similarity vector shows how quickly hidden states saturate. If hidden states become similar to the final state after just a few layers (e.g., 4-6 layers), further computation yields minimal benefits. We classify such sequences as "easy". 
 Conversely, sequences requiring almost the entire network to saturate are "difficult".
-We calculate the mean similarity for each sequence, and label the 1000 sequences with the highest mean similarity as "easy" and the 1000 sequences with the lowest mean similarity as "difficult".
+We calculate the mean similarity to the final hidden state across layers for each sequence, and label the 1000 sequences with the highest mean similarity as "easy" and the 1000 sequences with the lowest mean similarity as "difficult".
 
 We analyze the following metrics:
    - **Index of the First Saturated Layer**: The layer where hidden states first reach high similarity to the final hidden state.
-   - **Number of Similar Hidden States**: The total number of layers where hidden states are similar to the final state.
+   - **Number of Saturated Layers**: The total number of layers where hidden states are similar to the final state.
    - **Sequence Length**: Average length of sequences.
-   - **Monotonicity Indicator**: Whether hidden state similarities strictly increase after layers 0, 4, and 8.
+   - **Monotonicity Indicator**: Whether hidden state similarities strictly increase through all layers.
+
+|  | Easy sequences | Difficult sequences |
+| :--- | :---: | :---: |
+| First saturated layer| $8.65(±1.34)$ | $18.46(±0.76)$ |
+| Number of saturated layers | $14.35(±1.34)$ | $4.54(±0.76)$ |
+| Sequence length | $58.16(±31.81)$ | $11.48(±20.69)$ |
+| Monotonic increase in similarity (all layers) | $24$% | $3$% |
+
+Table 1: the properties of sequence types.
 
 #### Results and Observations
 
 After this experiment, we can say the following things about "easy" and "difficult" sequences:
- - "Easy" sequences saturate earlier have a larger number of similar hidden states than "difficult" sequences. This means that there are sequences for which we can confidently exit early. 
+ - "Easy" sequences saturate earlier and have a larger number of saturated layers than "difficult" sequences. This means that there are sequences for which we can confidently exit early. 
  - "Easy" sequences tend to be longer than "difficult" ones. This can be explained by that long sequences have more context and may be easier to predict. This information could be used in the future to speed up the process by only considering early exiting for long sequences.
- - A large part of the "easy" sequences show strictly increasing hidden state similarity from the start. For the "difficult" sequences, the hidden state similarity noticeably increases after layers 4 and 8.
+ - A larger fraction of the "easy" sequences show strictly increasing hidden state similarity from the start, compared to "difficult" sequences.
   
-[Add back the table]
 
 #### Visualizing Hidden State Evolution
 
