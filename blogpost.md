@@ -228,16 +228,10 @@ In these experiments, we are investigating two things: the saturation of the hid
 
 Table 1: the properties of sequence types.
 
-
-#### Results and Observations
-
 After this experiment, we can say the following things about "easy" and "difficult" sequences:
  - "Easy" sequences saturate earlier and have a larger number of saturated layers than "difficult" sequences. This means that there are sequences for which we can confidently exit early. 
  - "Easy" sequences tend to be longer than "difficult" ones. This can be explained by the fact that long sequences have more context and may be easier to predict. This information could be used in the early exiting frameworks to speed up the process by only considering early exiting for long sequences.
  - In addition to quicker saturation, a larger fraction of the "easy" sequences show strictly increasing hidden state similarity from the start, compared to "difficult" sequences.
-  
-
-#### Visualizing Hidden State Evolution
 
 In addition to the quantitative analysis, we plot the hidden state similarities for various sequences, showing how the hidden states evolve across layers for both easy and difficult sequences. These visualizations highlight the differences in saturation and monotonic behavior. As can be seen in Figure ..., the described phenomenon can be inspected visually. 
 
@@ -268,7 +262,6 @@ In addition to the quantitative analysis, we plot the hidden state similarities 
    <br />
 </p>
 
-### Conclusion
 Our analysis shows that "easy" sequences that can be predicted without much effort by human beings also exhibit a similar pattern in neural networks. These sequences tend to be long, highly contextual, and can represent factual knowledge about the world, which excludes ambiguity. 
 
 The practical implications of this analysis are that an early exit mechanism could benefit from considering sequence length.
