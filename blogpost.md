@@ -1,15 +1,15 @@
-# Monotonic Early Exiting for Fast Inference in Transformer-based Generation 
+# Exploring Efficiency in Large Language Models: A Journey into Adaptive Computation and Monotonic Early Exiting
 
 ### _Filipe Laitenberger, Max Belitsky, Oliver Savolainen, Mark Bodracska, Denys Sheremet_
 
 ---
-**Exploring Efficiency in Large Language Models: A Journey into Adaptive Computation and Monotonic Early Exiting**
+> **If someone asks you what 12 times 17 equates to, you contemplate for a while. On the other hand, when someone asks you for your name, you answer without thinking. While this seems natural, could it also be a missing component in Neural Networks?**
 
 Large Language Models (LLMs) exhibit exceptional performance, with prominent LLMs able to do things we all thought were impossible two years ago (e.g. have a look at GPT[^1] or Gemini[^2]). The primary factor behind this rapid advancement is the substantial increase in the size of the models and datasets used. By expanding the models and providing them with larger datasets, we have been able to achieve unprecedented levels of performance.
 
 However, this progress comes at a significant cost. Training these massive models requires an enormous amount of energy and resources, which in turn leads to substantial environmental impact. For example, GPT-3 consumed 1,287 MWh of energy and emitted 552 tonnes of CO₂ equivalents during its training process[^3][^4]. That's about as much carbon dioxide as 120 average cars emit in a year[^5] (We also direct the interested reader towards [^6]. On another note, many applications, such as autonomous driving or real-time voice assistants, cannot afford high latency when generating predictions.
 
-How can we continue to advance AI while avoiding a high-latency bottleneck? One promising direction is to make models allocate their resources more efficiently. Imagine we could teach a model to be smart about how it uses its computational power — only activating certain parts of its network when needed, or knowing when it’s done processing a piece of information early. Drawing an analogy to the human brain, you might think of it as the model being able to choose how long it ponders about a certain decision. This concept is known as adaptive computation allocation.
+How can we continue to advance AI while avoiding a high-latency bottleneck? One promising direction is to make models allocate their resources more efficiently. Imagine we could teach a model to be smart about how it uses its computational power — only activating certain parts of its network when needed, or knowing when it’s done processing a piece of information early. Drawing an analogy to the human brain, you might think of it as the model being able to choose how long it ponders about a certain decision. This concept is known as adaptive computation allocation. 
 
 One promising approach within this concept is called early exiting. Instead of running every piece of input through every layer of a model, the model can decide to "exit" early if it’s confident enough in its prediction. This way, we save computational resources by not over-processing data. 
 
