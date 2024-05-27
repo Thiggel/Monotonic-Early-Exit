@@ -7,13 +7,28 @@
 
 Large Language Models (LLMs) exhibit exceptional performance. The primary factor behind this rapid advancement is the substantial increase in the size of the models and datasets used. By expanding the models and providing them with larger datasets, we have been able to achieve unprecedented levels of performance.
 
-However, this progress comes at a significant cost. Training these massive models requires an enormous amount of energy and resources, which in turn leads to substantial environmental impact. For example, GPT-3 consumed 1,287 MWh of energy and emitted 552 tonnes of CO₂ equivalents during its training process. That's about as much carbon dioxide as 120 average cars emit in a year. [this is also important for latency-critical applications]
+However, this progress comes at a significant cost. Training these massive models requires an enormous amount of energy and resources, which in turn leads to substantial environmental impact. For example, GPT-3 consumed 1,287 MWh of energy and emitted 552 tonnes of CO₂ equivalents during its training process. That's about as much carbon dioxide as 120 average cars emit in a year. Furthermore, many applications, such as autonomous driving or real-time voice assistants, cannot afford high latency when generating predictions.
 
-This brings us to a crucial question: How can we continue to advance AI without further straining our planet’s resources? One promising direction is to make these models more efficient. Imagine we could teach a model to be smart about how it uses its computational power—only activating certain parts of its network when needed, or knowing when it’s done processing a piece of information early. This concept is known as adaptive computation allocation.
+How can we continue to advance AI while avoiding a high-latency bottleneck? One promising direction is to make models allocate their resources more efficiently. Imagine we could teach a model to be smart about how it uses its computational power — only activating certain parts of its network when needed, or knowing when it’s done processing a piece of information early. Drawing an analogy to the human brain, you might think of it as the model being able to choose how long it ponders about a certain thing, so that we can optimize it to contemplate for as little time as possible. This concept is known as adaptive computation allocation.
 
-One fascinating approach within this concept is called early exiting. Instead of running every piece of input through every layer of a model, the model can decide to "exit" early if it’s confident enough in its prediction. This way, we save computational resources by not over-processing data. 
+One promising approach within this concept is called early exiting. Instead of running every piece of input through every layer of a model, the model can decide to "exit" early if it’s confident enough in its prediction. This way, we save computational resources by not over-processing data. 
 
-In this work, we focus on Transformer models, the backbone of most state-of-the-art language models. For early exiting to work effectively, there’s an underlying assumption: the more a model processes a token, the more confident it becomes in its prediction. This is called the monotonicity assumption. Essentially, it means that as the model processes information layer by layer, its confidence should steadily increase.
+In this work, we focus on Transformer models, the backbone of most state-of-the-art language models. For early exiting to work effectively, there’s an underlying assumption: the more a model processes a token, the more confident it becomes in its prediction. We call this the *monotonicity assumption*. Essentially, it means that as the model processes information layer by layer, its confidence should steadily increase without decreasing again.
+
+In the first part of this blog post, we want to give an introduction to early exiting, explaining it and its evolution in more depth. 
+Moreover, we performed interesting investigations into the inner workings of common early exiting architectures, presented in the second part. 
+Lastly, based on our investigations, we've come up with new ways of improving early exiting architectures, which we will show at the end.
+
+We struture rest of this blog post into three parts: The first part explains early exiting and its evolution in more depth
+
+In the first part of this blog post, we give an explanation of early exiting 
+
+In the second 
+and the relevance of monotonicity. 
+
+Then, we perform experiments about monotonicity.
+
+Finally, we use what we found to propose and test new early exiting architectures.
 
 We (1) investigate the monotonicity assumption in prominent early exiting architectures (Bae et al., 2023; Schuster et al., 2022). We conclude that a weighted cross-entropy learning objective drives the model to decide on a prediction (1) as early as possible, leading to mostly monotonic behavior after a certain layer. Furthermore, we (2) explore the hidden states of a network produced by processing sequences of different difficulty levels and examine the effects of the difficulty levels on hidden state saturation and monotonicity.
 
