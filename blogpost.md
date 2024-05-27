@@ -3,25 +3,21 @@
 ### _Filipe Laitenberger, Max Belitsky, Oliver Savolainen, Mark Bodracska, Denys Sheremet_
 
 ---
-> **If someone asks you what 12 times 17 equates to, you contemplate for a while. On the other hand, when someone asks you for your name, you answer without thinking. While this seems natural, could it also be a missing component in Neural Networks?**
+> **When someone asks you what 12 times 17 is, you think for a while. But when someone asks you for your name, you answer without thinking. While this is natural for people, most neural networks don't currently do this. Could they benefit from it as well?**
 
-Large Language Models (LLMs) exhibit exceptional performance, with prominent LLMs able to do things we all thought were impossible two years ago (e.g. have a look at GPT[^1] or Gemini[^2]). The primary factor behind this rapid advancement is the substantial increase in the size of the models and datasets used. By expanding the models and providing them with larger datasets, we have been able to achieve unprecedented levels of performance.
+Large Language Models (LLMs) are capable of things we all thought were impossible two years ago (see GPT[^1] or Gemini[^2]). A primary factor behind this rapid advancement is the substantial increase in the size of the models and datasets used. By expanding the models and providing them with larger datasets, we have been able to achieve unprecedented levels of performance.
 
-However, this progress comes at a significant cost. Training these massive models requires an enormous amount of energy and resources, which in turn leads to substantial environmental impact. For example, GPT-3 consumed 1,287 MWh of energy and emitted 552 tonnes of CO₂ equivalents during its training process[^3][^4]. That's about as much carbon dioxide as 120 average cars emit in a year[^5] (We also direct the interested reader towards [^6]. On another note, many applications, such as autonomous driving or real-time voice assistants, cannot afford high latency when generating predictions.
+However, this progress comes at a significant cost. Training these massive models requires an enormous amount of energy and resources, which in turn leads to substantial environmental impact. For example, GPT-3 consumed 1,287 MWh of energy and emitted 552 tonnes of CO₂ equivalents during its training process[^3][^4]. That's about as much carbon dioxide as 120 average cars emit in a year[^5] (We also direct the interested reader towards [^6]).
+On another note, there are many applications where inference speed is crucial. Examples include autonomous driving or real-time voice assistants, which cannot afford high latency when generating predictions. We do not want our cars to process for two minutes before deciding not to run over a kid.
 
-How can we continue to advance AI while avoiding a high-latency bottleneck? One promising direction is to make models allocate their resources more efficiently. Imagine we could teach a model to be smart about how it uses its computational power — only activating certain parts of its network when needed, or knowing when it’s done processing a piece of information early. Drawing an analogy to the human brain, you might think of it as the model being able to choose how long it ponders about a certain decision. This concept is known as adaptive computation allocation. 
+How can we make AI models faster? One promising direction is to make models allocate their resources more efficiently. Imagine we could teach a model to be smart about how it uses its computational power — only activating certain parts of its network when needed, or knowing when it’s done processing a piece of information early. Drawing an analogy to the human brain, you might think of it as the model being able to choose how long it ponders about a certain decision. This concept is known as adaptive computation allocation. 
 
 One promising approach within this concept is called early exiting. Instead of running every piece of input through every layer of a model, the model can decide to "exit" early if it’s confident enough in its prediction. This way, we save computational resources by not over-processing data. 
+In this work, we focus on Transformer models, the backbone of most state-of-the-art language models. For early exiting to work effectively, there’s an underlying assumption: the more a model processes a sequence, the more confident it becomes in its prediction. We call this the *monotonicity assumption*. Essentially, it means that as the model processes information layer by layer, confidence should steadily increase without decreasing again, and the prediction of the model should remain unchanged.
 
-In this work, we focus on Transformer models, the backbone of most state-of-the-art language models. For early exiting to work effectively, there’s an underlying assumption: the more a model processes a token, the more confident it becomes in its prediction. We call this the *monotonicity assumption*. Essentially, it means that as the model processes information layer by layer, confidence should steadily increase without decreasing again.
-
-In the first part of this blog post, we want to give an introduction to early exiting, explaining it and its evolution in more depth. 
-Moreover, we performed interesting investigations into the inner workings of common early exiting architectures, presented in the second part. 
-Lastly, based on our investigations, we've come up with new ways of improving early exiting architectures, which we will show at the end.
-
-We struture the rest of this blog post into three parts: 
-1. The first part explains early exiting and its evolution in more depth.
-2. In the second part, we investigate deeper into early exiting and its monotonicity assumption. We specifically test for which architectures and especially loss functions it holds and for which it doesn't. We furthermore delve into how neural networks process "easy" and "hard" sentences, gaining insights into when early exiting makes more sense and when it doesn't.
+We structure the rest of this blog post into three parts: 
+1. The first part explains early exiting and its evolution.
+2. In the second part, we investigate deeper into early exiting and its monotonicity assumption. We specifically test for which architectures and loss functions it holds and for which it doesn't. We then delve into how neural networks process "easy" and "hard" sentences, gaining insight into when early exiting makes sense and when it doesn't.
 3. Based on our insights from section 2, we experiment with new early exiting methods.
 
 ## 1. What is Early-Exiting in Neural Networks?
@@ -43,8 +39,8 @@ We struture the rest of this blog post into three parts:
    <br />
 </p>
 
-In traditional neural networks, input tokens pass sequentially through many layers, each adding more processing and refining the output. However, early exiting suggests that not all inputs require the same level of computation. Some "easy" token sequences might be confidently processed by the earlier layers, while more "difficult" sequences need to go through the entire network. This idea isn't new—it was first explored in convolutional neural networks (CNNs) and has since been applied to Transformer models as well.
-Two notable studies that delve into early exiting by modeling the confidence or uncertainty of a model when generating tokens are CALM and FREE.
+In traditional neural networks, input tokens pass sequentially through many layers, each doing more computation and refining the output. However, early exiting suggests that not all inputs require the same level of computation. Some "easy" token sequences might be confidently predicted by the earlier layers, while more "difficult" sequences need to go through the entire network. This idea isn't new—it was first explored in convolutional neural networks (CNNs) and has since been applied to Transformer models as well.
+Two notable studies that delve into early exiting by modeling the confidence or uncertainty of a model when generating tokens are CALM[^7] and FREE[^8].
 
 #### CALM: Confident Adaptive Language Modelling[^7]
 
