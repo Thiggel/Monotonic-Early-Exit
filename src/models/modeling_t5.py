@@ -479,6 +479,9 @@ class EffT5Stack(T5Stack):
         self.device_map = None
         self.gradient_checkpointing = False
 
+        # Minimum sequence length for early exiting
+        self.min_exit_seq_len = config.min_exit_seq_len or 0
+
         # Early-Exit framework
         self.use_early_exit = False
         if self.is_decoder and config.exit_conf_type is not None:
@@ -510,7 +513,13 @@ class EffT5Stack(T5Stack):
         return_dict=None,
         lm_head=None,
         cm_head=None,
-    ):
+    ):  
+        # Record the number of already generated tokens  
+        if past_key_values:
+            prev_sequence_length = past_key_values[-1][0].shape[2]
+        else:
+            prev_sequence_length = 0
+
         # Model parallel
         if self.model_parallel:
             torch.cuda.set_device(self.first_device)
@@ -686,24 +695,29 @@ class EffT5Stack(T5Stack):
                             hidden_, _, ids_restore = split_tensors_by_mask(hidden_, self.skip_mask_cache)
                             _, skip_cache, _ = split_tensors_by_mask(self.skip_mask_cache, self.skip_mask_cache, ids_restore)
 
-                        hidden_ = self.dropout(self.final_layer_norm(hidden_))
-                        logits = lm_head(hidden_) if not self.config.tie_word_embeddings \
-                            else lm_head(hidden_ * (self.config.d_model ** -0.5))
+                        # If the sequence length is small, don't early exit
+                        if prev_sequence_length < self.min_exit_seq_len:
+                            skip_mask = torch.zeros(hidden_.shape[0]).bool() 
+                        else:
+                            hidden_ = self.dropout(self.final_layer_norm(hidden_))
+                            logits = lm_head(hidden_) if not self.config.tie_word_embeddings \
+                                else lm_head(hidden_ * (self.config.d_model ** -0.5))
 
-                        if self.config.exit_conf_type == 'last_three_top_prob_heuristic':
-                            all_softmax_values.append(F.softmax(logits, dim=-1))
+                            if self.config.exit_conf_type == 'last_three_top_prob_heuristic':
+                                all_softmax_values.append(F.softmax(logits, dim=-1))
 
-                        skip_mask = get_skip_mask(
-                            logits,
-                            hidden_,
-                            cm_head,
-                            config=self.config,
-                            pos_time=past_key_value[0].shape[2] + 1 if past_key_value is not None else 1,
-                            all_hidden_states=all_hidden_states,
-                            all_softmax_values=all_softmax_values,
-                            layer_index=i,
-                            should_reset=last_layer,
-                        )
+                            skip_mask = get_skip_mask(
+                                logits,
+                                hidden_,
+                                cm_head,
+                                config=self.config,
+                                pos_time=past_key_value[0].shape[2] + 1 if past_key_value is not None else 1,
+                                all_hidden_states=all_hidden_states,
+                                all_softmax_values=all_softmax_values,
+                                layer_index=i,
+                                should_reset=last_layer,
+                            )
+
                         if (not skip_mask == None) and (torch.all(skip_mask)):
                             break
 

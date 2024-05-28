@@ -54,6 +54,9 @@ class AdditionalArguments:
     train_meta_cm_head: Optional[bool] = field(
         default=False, metadata={"help": ("Train cm (confidence measure) head to align last hidden_states when exit_conf_type is set to meta.")}
     )
+    min_exit_seq_len: Optional[int] = field(
+        default=0, metadata={"help": ("Define the minimum sequence length for early exiting.")}
+    )
         
     # shallow-deep framework
     use_shallow_deep: Optional[bool] = field(
@@ -146,6 +149,7 @@ def update_autoconfig(config, additional_args, **kwargs):
         'exit_min_layer': additional_args.exit_min_layer,
         'train_meta_cm_head': additional_args.train_meta_cm_head,
         'max_answer_length': kwargs.get('max_answer_length', None),
+        'min_exit_seq_len': additional_args.min_exit_seq_len or 0
     }
     config.update(early_exit_config)
     
