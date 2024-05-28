@@ -1,6 +1,6 @@
 import numpy as np
 import torch
-
+import torch.nn.functional as F
 from transformers import AutoConfig
 
 
@@ -12,6 +12,7 @@ def recurrent_classifier(
     all_softmax_values: list[torch.Tensor] = None,
     layer_index: int = None,
     should_reset: bool = False,
+    threshold: float = None,
 ):
     assert hidden_states is not None
     assert classifier is not None
@@ -37,6 +38,7 @@ def last_three_hiddens_classifier(
     all_softmax_values: list[torch.Tensor] = None,
     layer_index: int = None,
     should_reset: bool = False,
+    threshold: float = None,
 ):
     assert classifier is not None
 
@@ -57,6 +59,7 @@ def hidden_state_saturation(
     all_softmax_values: list[torch.Tensor] = None,
     layer_index: int = None,
     should_reset: bool = False,
+    threshold: float = None,
 ):
     if all_hidden_states is None or len(all_hidden_states) < 2:
         return torch.zeros(hidden_states.shape[0])
@@ -77,6 +80,7 @@ def last_three_top_prob_heuristic(
     all_softmax_values: list[torch.Tensor] = None,
     layer_index: int = None,
     should_reset: bool = False,
+    threshold: float = None,
 ):
     if (
         all_softmax_values is None 
@@ -84,16 +88,36 @@ def last_three_top_prob_heuristic(
         or layer_index < 3 # minimum exit is layer 4
     ):
         return torch.zeros(hidden_states.shape[0])
+    max_length = max(sm.size(1) for sm in all_softmax_values[-3:])
 
-    all_softmax_values = torch.stack(all_softmax_values[:3], dim=1)
+    # Pad each softmax tensor in the last three to have the same sequence length
+    padded_softmax_values = [
+        F.pad(sm, (0, 0, 0, max_length - sm.size(1)), "constant", 0)
+        if sm.size(1) < max_length else sm
+        for sm in all_softmax_values[-3:]
+    ]
 
-    top_probs = torch.max(all_softmax_values, dim=-1)[0].squeeze()
+    # Ensure all tensors have the same batch size and softmax dimension
+    max_dim_0 = max(sm.size(0) for sm in padded_softmax_values)  # max batch size
+    max_dim_2 = max(sm.size(2) for sm in padded_softmax_values)  # max softmax dimension
 
-    # along dimension 1, is top_probs increasing?
+    # Final padding for batch size and softmax dimension
+    fully_padded_softmax_values = [
+        F.pad(sm, (0, max_dim_2 - sm.size(2), 0, max_length - sm.size(1), 0, max_dim_0 - sm.size(0)), "constant", 0)
+        for sm in padded_softmax_values
+    ]
+
+    # Stack the padded softmax values
+    softmax_stack = torch.stack(fully_padded_softmax_values, dim=1)
+
+    # Compute the max probability across the softmax dimension
+    top_probs = softmax_stack.max(dim=-1).values.squeeze(-1)
+
+    # Check if the probabilities are increasing across the last three
     increasing = torch.all(top_probs[:, 1:] > top_probs[:, :-1], dim=1)
 
     # last confidence must be above 0.9
-    above_threshold = top_probs[:, -1] > 0.9
+    above_threshold = top_probs[:, -1] > threshold
 
     confidence = increasing & above_threshold
     confidence = confidence.float()
@@ -108,6 +132,7 @@ def softmax_confidence(
     all_softmax_values: list[torch.Tensor] = None,
     layer_index: int = None,
     should_reset: bool = False,
+    threshold: float = None,
 ):
     assert logits is not None
     probs = torch.softmax(logits, dim=-1)
@@ -126,6 +151,7 @@ def meta_confidence(
     all_softmax_values: list[torch.Tensor] = None,
     layer_index: int = None,
     should_reset: bool = False,
+    threshold: float = None,
 ):
     assert hidden_states is not None
     assert classifier is not None
@@ -133,31 +159,6 @@ def meta_confidence(
     preds = classifier(hidden_states)
     probs = torch.softmax(preds, dim=-1)
     return probs[..., 1].squeeze()
-
-def meta_n_confidence(
-    logits: torch.Tensor = None,
-    hidden_states: torch.Tensor = None,
-    classifier: torch.nn.Linear = None,
-    all_hidden_states: list[torch.Tensor] = None,
-    all_softmax_values: list[torch.Tensor] = None,
-    layer_index: int = None,
-    should_reset: bool = False,
-):
-    assert hidden_states is not None
-    assert classifier is not None
-    if hidden_states.shape[0] < 3:
-        print(hidden_states.shape)
-        return torch.tensor([0.0])
-    print("==============================")
-    print("hs shape")
-    print(hidden_states.shape)
-    print("hs")
-    print(hidden_states)
-    print("==============================")
-    preds = classifier(hidden_states[-3:])
-    probs = torch.softmax(preds, dim=-1)
-    return_value = probs[..., 1].squeeze()
-    return return_value
 
 
 def get_confidence_class(key):
@@ -215,6 +216,7 @@ def get_skip_mask(
         all_softmax_values=all_softmax_values,
         layer_index=layer_index,
         should_reset=should_reset,
+        threshold=config.exit_conf_threshold,
     )
     mask = torch.where(conf <= threshold, 0., 1.).bool()
     if not return_conf:
