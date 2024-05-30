@@ -704,7 +704,7 @@ class EffT5Stack(T5Stack):
                                 else lm_head(hidden_ * (self.config.d_model ** -0.5))
 
                             if self.config.exit_conf_type == 'last_three_top_prob_heuristic':
-                                all_softmax_values.append(logits)
+                                all_softmax_values.append(F.softmax(logits, dim=-1))
 
                             skip_mask = get_skip_mask(
                                 logits,

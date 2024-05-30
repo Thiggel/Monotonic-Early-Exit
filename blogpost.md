@@ -5,9 +5,10 @@
 ---
 > **When someone asks you what 12 times 17 is, you think for a while. But when someone asks you for your name, you answer without thinking. While this is natural for people, most neural networks don't currently do this. Could they benefit from it as well?**
 
-Large Language Models (LLMs) are capable of things we all thought were impossible two years ago (see GPT[^1] or Gemini[^2]). A primary factor behind this rapid advancement is the substantial increase in the size of the models and datasets used. By expanding the models and providing them with larger datasets, we have been able to achieve unprecedented levels of performance.
+Large Language Models (LLMs) are capable of things we all thought were impossible a couple years ago (see GPT[^1] or Gemini[^2]). A primary factor behind this rapid advancement is the substantial increase in the size of the models and datasets used. By expanding the models and providing them with larger datasets, we have been able to achieve unprecedented levels of performance.
 
-However, this progress comes at a significant cost. Training these massive models requires an enormous amount of energy and resources, which in turn leads to substantial environmental impact. For example, GPT-3 consumed 1,287 MWh of energy and emitted 552 tonnes of CO₂ equivalents during its training process[^3][^4]. That's about as much carbon dioxide as 120 average cars emit in a year[^5]. Inference is similarly costly (We also direct the interested reader towards [^6]). 
+However, this progress comes at a significant cost. Training these massive models requires an enormous amount of energy and resources, which in turn leads to substantial environmental impact. For example, GPT-3 consumed 1,287 MWh of energy and emitted 552 tonnes of CO₂ equivalents during its training process[^3][^4]. That's about as much carbon dioxide as 120 average cars emit in a year[^5]. Inference is similarly costly, as each time a user interacts with a model like GPT-3, the model's servers consume significant amounts of energy. This is because the model needs to process the input, run complex calculations across numerous layers of neural networks, and then generate a coherent output, all in real-time. As the popularity and usage of these models increase, so does the cumulative energy consumption. (We also direct the interested reader towards [^6]).
+
 In addition to that, there are many applications where inference speed is crucial. Examples include autonomous driving or real-time voice assistants, which cannot afford high latency when generating predictions. We do not want our cars to process for two minutes before deciding not to run over a kid.
 
 How can we make AI models faster? One promising direction is to make models allocate their resources more efficiently. Imagine we could teach a model to be smart about how it uses its computational power — only activating certain parts of its network when needed, or knowing when it’s done processing a piece of information early. Drawing an analogy to the human brain, you might think of it as the model being able to choose how long it ponders about a certain decision. This concept is known as adaptive computation allocation. 
@@ -16,9 +17,9 @@ One promising approach within this concept is called early exiting. Instead of r
 In this article, we focus on Transformer models, the backbone of most state-of-the-art language models. For early exiting to work effectively, there’s an underlying assumption: the more a model processes a sequence, the more confident it becomes in its prediction. We call this the *monotonicity assumption*. Essentially, it means that as the model processes information layer by layer, confidence should steadily increase without decreasing again, and the prediction of the model should remain unchanged.
 
 We structure the rest of this blog post into three parts: 
-1. The first part explains early exiting.
-2. In the second part, we investigate early exiting and its monotonicity assumption. We specifically test for which architectures and loss functions it holds. We then delve into how neural networks process "easy" and "hard" sentences, gaining insight into when early exiting makes sense and when it doesn't.
-3. Based on our insights from part 2, we experiment with new early exiting methods.
+1. The first part explains the early exiting mechanism in more detail.
+2. In the second part, we investigate early exiting and its monotonicity assumption. We specifically test for which architectures and loss functions it holds. Then, through a series of experiments, we analyze how neural networks handle "easy" and "hard" sentences. By doing so, we gain insights into the conditions under which early exiting is effective and when it might fail.
+3. Based on our insights from part 2, we design and experiment with new early exiting methods.
 
 ## 1. What is Early Exiting in Neural Networks?
 
@@ -130,6 +131,8 @@ $$
 $$
 
 In this equation, $\mathbf{H}_S^i$ denotes the hidden state in the shallow module (before the early exit point), and $\mathbf{H}_D^{m(i)}$ denotes the corresponding hidden state in the deep module (after the early exit point). $m(i)$ is usually chosen to successively map the layers in both the shallow and deep modules to one another starting from the end. That is to say, the last layers are mapped to each other, as are the second to last layers, and so on.
+
+In an additional paper that is worth mentioning, Wang et al.[^17] propose a class-based early-exiting strategy. This method leverages the use of intermediate layer features to exclude part of the tokens, allowing later layers to focus on a reduced subset of potential tokens.
 
 ## 2. What happens inside an Early Exiting network?
 
@@ -296,7 +299,7 @@ We design, train, and test three new confidence measures to put this theory to t
    <br />
 </p>
 
-**Heuristic Based on Top-1 Softmax Scores**: This heuristic exits if the last three layers' top-1 softmax scores are monotonically increasing and the current top-1 confidence exceeds 0.9. This heuristic is grounded in our observations from the monotonicity experiments, where such patterns almost always indicate a stable prediction.
+**Heuristic Based on Top-1 Softmax Scores**: This heuristic exits if the last three layers' top-1 softmax scores are monotonically increasing and the current top-1 confidence exceeds a certain threshold. This heuristic is grounded in our observations from the monotonicity experiments, where such patterns almost always indicate a stable prediction.
 
 <p 
    align='center'
@@ -311,7 +314,7 @@ We design, train, and test three new confidence measures to put this theory to t
       "
    />
    <br />
-   <em><b>Figure 10:</b> A heuristic that exits if the last three top-1 predictions are increasing and the model is at least 90% confident.</em>
+   <em><b>Figure 10:</b> A heuristic that exits if the last three top-1 predictions are increasing and the model is at least x% confident.</em>
    <br />
 </p>
 
@@ -391,12 +394,54 @@ These results show that our proposed confidence measures exhibit much better pre
 
 Where does this leave us? We've gained the insight that making use of monotonicity does benefit the model's performance. Nevertheless, optimizing these confidence measures would still be crucial to making them useful for real-world applications. It seems to make sense to condition a classifier on multiple past hidden states since it generally arrives at better-informed exit decisions. On the other hand, the downside of using multiple hidden states seems to be that it creates a lot more overhead as the classifier has to process more information. The same applies to heuristics processing multiple past layers.
 
+## Additional experiments
+To gain deeper insights into the proposed confidence measures, we conducted additional experiments by changing two hyperparameters: the threshold and the minimum sequence length (before early exiting). The results of these experiments are presented in the tables below, with the first table focusing on the QA task and the second on summarization.
+
+| Method | Threshold | Min Seq Len | Samples Per Second | F1    |
+|---------------------------------|-----------|-------------|--------------------|-------|
+| No Early Exit                   | 0         | 0           | 5.70               | 86.8  |
+| Softmax                         | 0.7       | 10          | 5.50               | 86.5  |
+| Softmax                         | 0.9       | 0           | 7.00               | 80.5  |
+| Softmax                         | 0.9       | 5           | 5.50               | 86.5  |
+| Softmax                         | 0.9       | 15          | 5.50               | 86.9  |
+| Softmax                         | 0.9       | 20          | 5.41               | 86.6  |
+| Hidden State Saturation         | 0.9       | 0           | 8.00               | 81.5  |
+| Hidden State Saturation         | 0.9       | 5           | 6.00               | 86.04 |
+| Hidden State Saturation         | 0.95      | 0           | 7.70               | 81.6  |
+| Hidden State Saturation         | 0.95      | 5           | 5.84               | 86.24 |
+| Last Three Hidden States Classifier | 0.7   | 0           | 7.46               | 84.59 |
+| Last Three Hidden States Classifier | 0.7   | 5           | 5.27               | 86.04 |
+| Last Three Hidden States Classifier | 0.9   | 20          | 5.41               | 86.6  |
+| Last Three Top-1 Probabilities  | 0         | 10          | 5.30               | 86.7  |
+| Last Three Top-1 Probabilities  | 0.9       | 5           | 5.16               | 86.5  |
+
+| Method                          | Threshold | Min Seq Len | Samples Per Second | Rouge Score |
+|---------------------------------|-----------|-------------|--------------------|-------|
+| No Early Exit                   | 0         | 15          | 1.08               | 41.32       |
+| Softmax                         | 0.9       | 15          | 0.62               | 36.10       |
+| Softmax                         | 0.95      | 15          | 0.60               | 39.25       |
+| Hidden State Saturation         | 0.95      | 0           | 3.50               | 4.00        |
+| Hidden State Saturation         | 0.95      | 15          | 2.32               | 17.57       |
+| Last Three Top-1 Probabilities  | 0         | 0           | 1.09               | 37.21       |
+| Last Three Top-1 Probabilities  | 0         | 15          | 0.80               | 40.67       |
+| Last Three Top-1 Probabilities  | 0.5       | 0           | 0.74               | 41.42       |
+| Last Three Top-1 Probabilities  | 0.5       | 15          | 0.77               | 41.42       |
+| Last Three Top-1 Probabilities  | 0.9       | 0           | 0.74               | 41.47       |
+| Last Three Top-1 Probabilities  | 0.9       | 15          | 0.77               | 41.47       |
+
+
+The main takeaways from these results could be summarized as the followings:
+- configurations with fixed thresholds and higher minimum sequence lengths generally maintain higher scores but at an decreased processing speed
+- higher thresholds and zero or low minimum sequence lengths can increase efficiency
+- adding a minimum sequence length could be more beneficial to faster, but worse performing model than to slower, but higher performing ones
+- the heuristic-based confidence measure (named Last Three Top-1 Probabilities in the tables) with zero threshold achieves a speedup compared to the no early exit scenario, while maintaining similar performance, so we can conclude that picking a measure-specific threshold is vital
+
 ## Wrapping Up
 
 In this blog post, we deep-dove into the monotonic behavior of early exiting models, first hypothesizing and then showing how and in what situations they become increasingly more confident of a prediction over time. Based on this, we designed new confidence mechanisms that make use of this property and ended up displaying much higher accuracy compared to other confidence measures. Nonetheless, there are still questions remaining that should be addressed through further research:
 
 1. Can we make use of monotonicity and still have the performance benefits of CALM's confidence methods that only look at the current hidden state? This is most likely an engineering problem that requires many additional optimizations that we did not have the time to implement yet.
-2. Is early exiting the best way of making a model more efficient? We showed that early exiting crucially depends on this assumption, and that making the model decide on a decision as early as possible benefits the exit mechanism. In other words, we are restricting the model to steer its thinking process in one direction quickly, which takes away the ability to freely ponder. Perhaps, models could benefit from being able to randomly contemplate many different things. There are two further directions we want to mention here: (1) This blog post[^14] and this paper[^15] show that LLMs use their first few layers to randomly explore different "thoughts" while later layers are much more predictable in terms of the end prediction. This leads us to hypothesize that it would be better to constrain the weighted cross entropy objective to just optimize the last ~70% of the model's layers, restricting it less and giving it more time to ponder and explore different directions at first. (2) A very different approach is Mixture-of-Depths[^16] which skips layers instead of exiting altogether. This alleviates the model of having to be monotonic and hence doesn't restrict it at all. It can exhibit completely random behavior, think in many different ways, and at the same time decide to skip certain parts, "specializing" different stages for different processing steps of a token.
+2. Is early exiting the best way of making a model more efficient? We investigated whether early exiting depends on this assumption, and that making the model decide on a decision as early as possible benefits the exit mechanism. In other words, we are restricting the model to steer its thinking process in one direction quickly, which takes away the ability to freely ponder. Perhaps, models could benefit from being able to randomly contemplate many different things. There are two further directions we want to mention here: (1) This blog post[^14] and this paper[^15] show that LLMs use their first few layers to randomly explore different "thoughts" while later layers are much more predictable in terms of the end prediction. This leads us to hypothesize that it would be better to constrain the weighted cross entropy objective to just optimize the last ~70% of the model's layers, restricting it less and giving it more time to ponder and explore different directions at first. (2) A different approach is Mixture-of-Depths[^16] which skips layers instead of exiting altogether. This alleviates the model of having to be monotonic and hence doesn't restrict it at all. It can exhibit completely random behavior, think in many different ways, and at the same time decide to skip certain parts, "specializing" different stages for different processing steps of a token.
 
 ## Further Reading
 
@@ -432,14 +477,16 @@ In this blog post, we deep-dove into the monotonic behavior of early exiting mod
 
 [^16]: D. Raposo, S. Ritter, B. Richards, T. Lillicrap, P. C. Humphreys, and A. Santoro, “Mixture-of-Depths: Dynamically allocating compute in transformer-based language models,” arXiv.org, Apr. 02, 2024. https://arxiv.org/abs/2404.02258
 
+[^17]: G. Zhang, "Early-Exit with Class Exclusion for Efficient Inference of Neural Networks," arXiv.org, 2024. https://arxiv.org/abs/2309.13443
+
 ## Author Contributions
 
 Denys Sheremet: Ideation, participation in meetings, writing and improving blog post, writing job files and debugging code for running experiments, writing of new confidence measures
 
 Max Belitsky: Ideation, participation in meetings, sequence type experiments, writing and improving blog post, writing of new confidence measures
 
-Oliver Savolainen: Ideation, participation in meetings, exploration of code, initial experimentation with new confidence measures, writing of new confidence measures
+Oliver Savolainen: Ideation, participation in meetings, exploration of code, initial experimentation with new confidence measures, writing of new confidence measures, adding extra experiments
 
-Mark Bodracska: Ideation, participation in meetings, exploration of code, writing of new confidence measures
+Mark Bodracska: Ideation, participation in meetings, exploration of code, writing of new confidence measures, polishing blogpost, running toy experiments
 
 Filipe Laitenberger: Ideation, participation in meetings, monotonicity experiment, writing initial draft of report, writing and improving blog post, writing of new confidence measures, running experiments
