@@ -20,7 +20,7 @@ We structure the rest of this blog post into three parts:
 2. In the second part, we investigate early exiting and its monotonicity assumption. We specifically test for which architectures and loss functions it holds. We then delve into how neural networks process "easy" and "hard" sentences, gaining insight into when early exiting makes sense and when it doesn't.
 3. Based on our insights from part 2, we experiment with new early exiting methods.
 
-## 1. What is Early-Exiting in Neural Networks?
+## 1. What is Early Exiting in Neural Networks?
 
 <p 
    align='center'
@@ -74,7 +74,7 @@ CALM explores three different ways to measure confidence:
       "
    />
    <br />
-   <em><b>Figure 1:</b> The overview of the early exiting framwork.</em>
+   <em><b>Figure 2:</b> The softmax difference confidence measure.</em>
    <br />
 </p>
    
@@ -93,7 +93,7 @@ CALM explores three different ways to measure confidence:
       "
    />
    <br />
-   <em><b>Figure 1:</b> The overview of the early exiting framwork.</em>
+   <em><b>Figure 3:</b> The hidden state similarity confidence measure.</em>
    <br />
 </p>
    
@@ -112,11 +112,11 @@ CALM explores three different ways to measure confidence:
       "
    />
    <br />
-   <em><b>Figure 1:</b> The overview of the early exiting framework.</em>
+   <em><b>Figure 4:</b> The classifier-based confidence measure.</em>
    <br />
 </p>
 
-Even though [...], a challenge with CALM is handling attention between tokens when some have exited earlier than others, requiring individual copying of hidden states. This slows down the computation. 
+Even though CALM aims to make token prediction faster by exiting early, a challenge with CALM is handling attention between tokens when some have exited earlier than others, requiring individual copying of hidden states. This slows down the computation. 
 
 
 #### FREE: Fast and Robust Early Exiting
@@ -131,9 +131,9 @@ $$
 
 In this equation, $\mathbf{H}_S^i$ denotes the hidden state in the shallow module (before the early exit point), and $\mathbf{H}_D^{m(i)}$ denotes the corresponding hidden state in the deep module (after the early exit point). $m(i)$ is usually chosen to successively map the layers in both the shallow and deep modules to one another starting from the end. That is to say, the last layers are mapped to each other, as are the second to last layers, and so on.
 
-## 2. What happens inside an Early-Exiting network?
+## 2. What happens inside an Early Exiting network?
 
-### Do Early-Exiting Networks Behave Monotonically?
+### Do Early Exiting Networks Behave Monotonically?
 
 Now, let's dive deeper into a key assumption underlying early exiting methods: the monotonicity assumption. This assumption posits that as a model processes a token through more layers, its confidence in the prediction for that token should steadily increase. In simpler terms, the more computation the model performs on a token sequence, the more certain it becomes about its prediction.
 
@@ -163,12 +163,12 @@ In other words, there are two parts to this assumption: the prediction remains t
       "
    />
    <br />
-   <em><b>Figure 1:</b> The fraction of predictions that do not change after each respective layer.</em>
+   <em><b>Figure 5:</b> The fraction of predictions that do not change after each respective layer.</em>
    <br />
 </p>
 
 From the results, we can see that the CALM model often makes a final prediction very early on in the network, and rarely changes its prediction. 
-In contrast, the default (no early exit) and FREE models change their predictions much more often in later layers. This indicates that the CALM model may be a better candidate for using early exiting, because it is much less likely to change the prediction for a given token. 
+In contrast, the default (no early exit) and FREE models change their predictions much more often in later layers. This indicates that the CALM model may be a better candidate for using early exiting because it is much less likely to change the prediction for a given token. 
 
 
 **Confidence Over Layers**: We also plot the mean and standard deviation of the model's confidence in its final prediction across layers. This helps us visualize how the model's confidence evolves as the input goes through more layers.
@@ -185,35 +185,29 @@ In contrast, the default (no early exit) and FREE models change their prediction
       "
    />
    <br />
-   <em><b>Figure 2:</b> The mean and standard deviation of the confidence curves for the eventual predictions, plotted at each layer.</em>
+   <em><b>Figure 6:</b> The mean and standard deviation of the confidence curves for the eventual predictions, plotted at each layer.</em>
    <br />
 </p>
 
-Figure 2 demonstrates that CALM shows a clear monotonic increase in confidence through the layers. The default model, however, gains confidence much later in the network, and FREE shows a more complex pattern: its confidence increases until the first exit point, drops slightly, and then increases again towards the end. Technically speaking, this means that the monotonicity assumption holds for both the default and CALM models, but the CALM model gains confidence much earlier in the network and therefore seems to be more fit for being used with early exiting. 
+Figure 6 demonstrates that CALM shows a clear monotonic increase in confidence through the layers. The default model, however, gains confidence much later in the network, and FREE shows a more complex pattern: its confidence increases until the first exit point, drops slightly, and then increases again towards the end. Technically speaking, this means that the monotonicity assumption holds for both the default and CALM models, but the CALM model gains confidence much earlier in the network and therefore seems to be more fit for being used with early exiting. 
 
 The results of these experiments show that the monotonicity assumption holds best for the CALM method. 
-This suggests that CALM with its cross-entropy objective may be the best candidate for early exiting. 
-With this method, exiting early at a certain layer has a high likelihood of yielding the same prediction as continuing through all layers.
+This suggests that CALM with its layerwise weighted cross-entropy objective may be the best candidate for early exiting. 
+With this method, exiting early at a certain layer has a high likelihood of yielding the same prediction as if the input went through all layers.
 
 ### Easy and Difficult Sequences: Understanding Hidden State Saturation
-In the previous section, we found that a Transformer model trained with a weighted cross-entropy objective exhibits a monotonic pattern in token predictions. However, this doesn’t mean the model can confidently exit early on every possible sequence. 
+In the previous section, we found that a Transformer model trained with a layerwise weighted cross-entropy objective exhibits a monotonic pattern in token predictions. However, this doesn’t mean the model can confidently exit early on every possible sequence. 
 Some sequences are more straightforward ("easy") while others are more ambiguous ("difficult"). For instance, consider the sequence "*One of the biggest cities in the world is New _*". The next word is likely to be "*York*" because it's a well-known fact. In contrast, the sequence "*The students went to _*" is harder to predict without additional context.
 
-To further investigate what happens in early exiting, in this section, we look at which sequences are "easy" for the model, and which are "difficult". We say that a sequence is "easy" if for that sequence the hidden state at the early layers is already almost the same as it will be after the final layer. We call such a hidden state saturated. Intuitively, this means that early on in the forward pass the model has almost the same idea about which token comes next as after the full pass. 
+To further investigate what happens in early exiting, in this section, we look at which sequences are "easy" for the model, and which are "difficult". We say that a sequence is "easy" if the hidden states at the early layers are almost the same as the ones after the final layer. We call such a hidden state saturated. Intuitively, this means that early on in the forward pass the model has almost the same idea about which token comes next as after the full pass.
 
-We use the CNN Daily Mail summarization dataset, selecting 2500 examples from the validation set. These sequences are fed into a T5-large model using the weights from the CALM method in an autoregressive manner, recording the hidden states at each layer.  With this procedure, we generate 24 hidden states per sequence, given the T5 model has 24 layers.
+We use the CNN Daily Mail summarization dataset, selecting 2500 examples from the validation set. These sequences are fed into a T5 model using the weights from the CALM method in an autoregressive manner, recording the hidden states at each layer. With this procedure, we generate 24 hidden states per sequence, since the T5-large model has 24 layers. We then compute the cosine similarities between the last hidden state (used for the next token prediction) and the hidden states from each previous layer. The obtained similarities show how quickly hidden states saturate. If hidden states of a sequence become similar to the final state after just a few layers (e.g., 4-6 layers), further computation yields minimal benefits. We classify such sequences as "easy". Conversely, sequences requiring almost the entire network to saturate are "difficult". To categorize the sequences, we compute the average similarity between the hidden states from all layers and the final hidden state for each sequence. We then label the 1000 sequences with the highest average similarity as "easy" and the 1000 sequences with the lowest average similarity as "difficult".
 
-We compute the cosine similarity between the last hidden state (used for the next token prediction) and the hidden states from each previous layer. This similarity vector shows how quickly hidden states saturate. If hidden states become similar to the final state after just a few layers (e.g., 4-6 layers), further computation yields minimal benefits. We classify such sequences as "easy". Conversely, sequences requiring almost the entire network to saturate are "difficult". To find these sequences, we calculate the mean similarity to the final hidden state across layers for each sequence, and label the 1000 sequences with the highest mean similarity as "easy" and the 1000 sequences with the lowest mean similarity as "difficult".
-
-In these experiments, we are investigating two things: the saturation of the hidden states and the monotonicity of the hidden state similarities. We say that the hidden state is saturated at layer *N* if the cosine similarity between the hidden state of that layer and the hidden state of the last layer in the network is equal to or larger than 0.9. The threshold of 0.9 was chosen empirically after experimenting with the hidden states of various sequences.
+Here we are investigating two things: the saturation of the hidden states and the monotonicity of the hidden state similarities. We say that the hidden state is saturated at layer *N* if the cosine similarity between the hidden state of that layer and the hidden state of the last layer in the network is at least 0.9. The threshold of 0.9 was chosen empirically after experimenting with the hidden states of various sequences.
 
 > [!NOTE]
-> A saturated hidden state does not imply that the prediction cannot change. Small changes in the hidden states may lead to different predictions.
-> Also, we don't know what the proper threshold for classifying a state as saturated is. In some cases, it may be the case that the cosine similarity between two hidden states is 0.999, but the predictions made by those layers are different.
-> Nonetheless, looking at the similarity of hidden states across layers, gives us some insight into how feasible early exiting is, and which sequences are "easy" and "difficult".
-
-[reference the table somewhere]
-
+> A saturated hidden state does not imply that the prediction cannot change. Small changes in the hidden state may lead to different predictions. It may be the case that two hidden states with a very high cosine similarity (e.g. 0.999) lead to different predictions.
+> Nonetheless, looking at the similarity of hidden states across layers gives us some insight into how feasible early exiting is, and which sequences are "easy" and "difficult" for the network.
 
 |  | Easy sequences | Difficult sequences |
 | :--- | :---: | :---: |
@@ -222,15 +216,12 @@ In these experiments, we are investigating two things: the saturation of the hid
 | Sequence length | $58.16(±31.81)$ | $11.48(±20.69)$ |
 | Monotonic increase in similarity (all layers) | $24$% | $3$% |
 
-Table 1: the properties of sequence types.
-
-After this experiment, we can say the following things about "easy" and "difficult" sequences:
+Looking at the table above, we can say the following things about "easy" and "difficult" sequences:
  - "Easy" sequences saturate earlier and have a larger number of saturated layers than "difficult" sequences. This means that there are sequences for which we can confidently exit early. 
  - "Easy" sequences tend to be longer than "difficult" ones. This can be explained by the fact that long sequences have more context and may be easier to predict. This information could be used in the early exiting frameworks to speed up the process by only considering early exiting for long sequences.
  - In addition to quicker saturation, a larger fraction of the "easy" sequences show strictly increasing hidden state similarity from the start, compared to "difficult" sequences.
 
-In addition to the quantitative analysis, we plot the hidden state similarities for various sequences, showing how the hidden states evolve across layers for both easy and difficult sequences. These visualizations highlight the differences in saturation and monotonic behavior. As can be seen in Figure ..., the described phenomenon can be inspected visually. 
-
+In addition to the quantitative analysis, we plot the hidden state similarities for various sequences, showing how the hidden states evolve across layers for both easy and difficult sequences. These visualizations highlight the differences in saturation and monotonic behavior. In the figure below, we visualize two representative examples exhibiting the behavior described above.
 
 <p 
    align='center'
@@ -254,18 +245,14 @@ In addition to the quantitative analysis, we plot the hidden state similarities 
       "
    />
    <br />
-   <em><b>Figure N:</b> Examples of how hidden state similarities evolve over layers in "easy" (green) and "difficult" sequences (blue).</em>
+   <em><b>Figure 7:</b> Examples of how hidden state similarities evolve over layers in "easy" (green) and "difficult" sequences (blue).</em>
    <br />
 </p>
 
-Our analysis shows that "easy" sequences that can be predicted without much effort by human beings also exhibit a similar pattern in neural networks. These sequences tend to be long, highly contextual, and can represent factual knowledge about the world, which excludes ambiguity. 
+Going through the "easy" examples, we found that they would be easy for humans to predict. These sequences are generally long, highly contextual, and often represent facts, which remove the ambiguity. The practical implication of this is that an early exit mechanism could benefit from considering sequence length.
+Even the easiest sequences require a few initial layers before reaching high confidence, which suggests that the first few layers should not be used for early exits to avoid unnecessary computation of confidence measures.
 
-The practical implications of this analysis are that an early exit mechanism could benefit from considering sequence length.
-Even the easiest sequences require a few initial layers before reaching high confidence, suggesting that the first few layers should not be used for early exits to avoid unnecessary computation of confidence measures. 
-This understanding helps refine early exiting mechanisms, optimizing resource use without sacrificing performance.
-
-## 3. Experimenting with New Early Exiting Methods Based on Our Insights
-### Making use of the monotonicity assumption for early exiting
+## 3. Can we improve the confidence measures by explicitly taking monotonicity into account?
 
 After our deep dive into the behavior of hidden states, we realized there’s a lot of potential in leveraging multiple layers' hidden states to improve the early exit decision process. If we train our model with a weighted cross-entropy objective, it encourages a sort of "confidence buildup" layer by layer. This observation leads us to hypothesize that using a combination of hidden states from previous layers, rather than just the current one, could make our exit mechanism more reliable.
 
@@ -278,7 +265,7 @@ We design, train, and test three new confidence measures to put this theory to t
 >
    <img 
       src="img/diagrams/early_exit_3_mlp.png" 
-      alt="An MLP that is fed with three hidden states and produces an early-exit decision" 
+      alt="An MLP that is fed with three hidden states and produces an early exit decision" 
       style="
         width: 800px; 
         max-width: 100%;
@@ -286,11 +273,11 @@ We design, train, and test three new confidence measures to put this theory to t
       "
    />
    <br />
-   <em><b>Figure 1:</b> An MLP that is fed with three hidden states and produces an early-exit decision.</em>
+   <em><b>Figure 8:</b> An MLP that is fed with three hidden states and produces an early exit decision.</em>
    <br />
 </p>
 
-**LSTM-based Classifier**: This method employs a two-layered LSTM network[^10]. This is similar to the Three-Previous-Hidden-States Classifier, but it utilizes the recurrent architecture to look at all of the previous hidden states. 
+**LSTM-based Classifier**: This method employs a two-layered LSTM network[^10]. This is similar to the Three-Previous-Hidden-States Classifier, but it utilizes the recurrent architecture to look at all of the previous hidden states.
 
 <p 
    align='center'
@@ -305,7 +292,7 @@ We design, train, and test three new confidence measures to put this theory to t
       "
    />
    <br />
-   <em><b>Figure 1:</b> An LSTM that sequentially processes the hidden state at each layer.</em>
+   <em><b>Figure 9:</b> An LSTM that sequentially processes the hidden state at each layer.</em>
    <br />
 </p>
 
@@ -324,13 +311,13 @@ We design, train, and test three new confidence measures to put this theory to t
       "
    />
    <br />
-   <em><b>Figure 1:</b> A heuristic that exits if the last three top-1 predictions are increasing and the model is at least 90% confident.</em>
+   <em><b>Figure 10:</b> A heuristic that exits if the last three top-1 predictions are increasing and the model is at least 90% confident.</em>
    <br />
 </p>
 
 ### Comparing confidence measures
-We use T5 models pre-trained with a weighted cross-entropy objective, tuned for monotonic behavior, to evaluate our methods. 
-To get insight into how our proposed new early-exiting methods work in various scenarios, we want to test them on Question-Answering, Summarization, and Translation, which are the most popular tasks for LLMs.
+We use T5 models pre-trained with a layerwise weighted cross-entropy objective, tuned for monotonic behavior, to evaluate our methods. 
+To get insight into how our proposed new early exiting methods work in various scenarios, we want to test them on Question-Answering, Summarization, and Translation, which are the most popular tasks for LLMs. We therefore use the following datasets:
 
 1. **Open-book SQuAD 1.1**[^11]: A Question-Answering dataset sourced from Wikipedia articles, supplemented with questions and corresponding answers from the context.
 2. **WMT15 EN-FR**[^12]: This dataset contains English sentences paired with their French translations.
@@ -361,7 +348,7 @@ The results on the three datasets are shown in the plots below. More specificall
       "
    />
    <br />
-   <em><b>Figure 1:</b> The results on SQuAD (Question-Answering), measured in F1-score vs. produced samples per second.</em>
+   <em><b>Figure 11:</b> The results on SQuAD (Question-Answering), measured in F1-score vs. produced samples per second.</em>
    <br />
 </p>
 
@@ -378,7 +365,7 @@ The results on the three datasets are shown in the plots below. More specificall
       "
    />
    <br />
-   <em><b>Figure 1:</b> The results on IWSLT (Translation), measured in BLEU-score vs. produced samples per second.</em>
+   <em><b>Figure 12:</b> The results on IWSLT (Translation), measured in BLEU-score vs. produced samples per second.</em>
    <br />
 </p>
 
@@ -395,21 +382,21 @@ The results on the three datasets are shown in the plots below. More specificall
       "
    />
    <br />
-   <em><b>Figure 1:</b> The results on CNN/DM (Summarization), measured in ROUGE-1-score vs. produced samples per second.</em>
+   <em><b>Figure 13:</b> The results on CNN/DM (Summarization), measured in ROUGE-1-score vs. produced samples per second.</em>
    <br />
 </p>
 
 
-These results show that our proposed confidence measures exhibit much better performance than CALM's confidence, i.e., they are much closer to the top (and the no-early-exiting baseline) than the original measures. However, they also exhibit high latency, mostly even slower than no early exiting.
+These results show that our proposed confidence measures exhibit much better prediction quality than CALM, i.e., they predict the correct token more often. However, they also exhibit high latency, mostly even slower than no early exiting.
 
-Where does this leave us? We've gained the insight that making use of monotonicity does benefit the model's performance. Nevertheless, optimizing these confidence measures would still be crucial to making them useful for real-world applications. It seems to make sense to condition a classifier on multiple past hidden states since the classifier can truly make use of this information and arrive at much better-informed exit decisions. On the other hand, the downside of using multiple hidden states seems to be that there is that it creates a lot more overhead as the classifier has to process more information and more memory is used for saving past hidden states.
+Where does this leave us? We've gained the insight that making use of monotonicity does benefit the model's performance. Nevertheless, optimizing these confidence measures would still be crucial to making them useful for real-world applications. It seems to make sense to condition a classifier on multiple past hidden states since it generally arrives at better-informed exit decisions. On the other hand, the downside of using multiple hidden states seems to be that it creates a lot more overhead as the classifier has to process more information. The same applies to heuristics processing multiple past layers.
 
 ## Wrapping Up
 
-In this blog post, we deep-dove into the monotonous behavior of early-exiting models, first hypothesizing and then showing how and in what situations they become increasingly more confident of a prediction over time. Based on this, we designed new confidence mechanisms that make use of this property and ended up displaying much higher accuracy compared to other confidence measures. Nonetheless, there are still questions remaining that should be addressed through further research:
+In this blog post, we deep-dove into the monotonic behavior of early exiting models, first hypothesizing and then showing how and in what situations they become increasingly more confident of a prediction over time. Based on this, we designed new confidence mechanisms that make use of this property and ended up displaying much higher accuracy compared to other confidence measures. Nonetheless, there are still questions remaining that should be addressed through further research:
 
 1. Can we make use of monotonicity and still have the performance benefits of CALM's confidence methods that only look at the current hidden state? This is most likely an engineering problem that requires many additional optimizations that we did not have the time to implement yet.
-2. Is early exiting the best way of making a model more efficient? We showed that early-exiting crucially depends on this assumption, and that making the model decide on a decision as early as possible benefits the exit mechanism. In other words, we are restricting the model to steer its thinking process in one direction quickly, which takes away the ability to freely ponder. Perhaps, models could benefit from being able to randomly contemplate many different things. There are two further directions we want to mention here: (1) This blog post[^14] and this paper[^15] show that LLMs use their first few layers to randomly explore different "thoughts" while later layers are much more predictable in terms of the end prediction. This leads us to hypothesize that it would be better to constrain the weighted cross entropy objective to just optimize the last ~70% of the model's layers, restricting it less and giving it more time to ponder and explore different directions at first. (2) A very different approach is Mixture-of-Depths[^16] which skips layers instead of exiting altogether. This alleviates the model of having to be monotonous and hence doesn't restrict it at all. It can exhibit completely random behavior, think in many different ways, and at the same time decide to skip certain parts, "specializing" different stages for different processing steps of a token.
+2. Is early exiting the best way of making a model more efficient? We showed that early exiting crucially depends on this assumption, and that making the model decide on a decision as early as possible benefits the exit mechanism. In other words, we are restricting the model to steer its thinking process in one direction quickly, which takes away the ability to freely ponder. Perhaps, models could benefit from being able to randomly contemplate many different things. There are two further directions we want to mention here: (1) This blog post[^14] and this paper[^15] show that LLMs use their first few layers to randomly explore different "thoughts" while later layers are much more predictable in terms of the end prediction. This leads us to hypothesize that it would be better to constrain the weighted cross entropy objective to just optimize the last ~70% of the model's layers, restricting it less and giving it more time to ponder and explore different directions at first. (2) A very different approach is Mixture-of-Depths[^16] which skips layers instead of exiting altogether. This alleviates the model of having to be monotonic and hence doesn't restrict it at all. It can exhibit completely random behavior, think in many different ways, and at the same time decide to skip certain parts, "specializing" different stages for different processing steps of a token.
 
 ## Further Reading
 
